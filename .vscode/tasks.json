@@ -1,0 +1,41 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: gcc.exe build active file",
+            "command": "C:/msys64/ucrt64/bin/gcc.exe",
+            "args": [
+                "-I${workspaceFolder}/scope_table/include",
+                "-I${workspaceFolder}/comp_include",
+                "-I${workspaceFolder}/irp_include",
+                "-I${workspaceFolder}/illeshian_include",
+                "-I${workspaceFolder}/ill_include",
+                "${workspaceFolder}/scope_table/src/*.c",
+                "${workspaceFolder}/comp_src/*.c",
+                "${workspaceFolder}/irp_src/*.c",
+                  "${workspaceFolder}/ill_src/*.c",
+                "-fdiagnostics-color=always",
+                "-Wall",
+                "-Wextra",
+                "-pedantic",
+                "-g",
+                "-o",
+                "${workspaceFolder}/bin/compiler.exe",
+                "-L${workspaceFolder}/scope_table/lib",
+                "-lscope_table"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "compiler: C:/msys64/ucrt64/bin/gcc.exe"
+        }
+    ]
+}

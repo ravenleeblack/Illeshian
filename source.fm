@@ -1,0 +1,4 @@
+use: ill_decl.h, ill_defs.h;
+link: main.ill, lex.ill;
+
+

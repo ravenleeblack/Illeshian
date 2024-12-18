@@ -1,0 +1,63 @@
+universal start:
+    .file
+        extern global: write;                          // Write function so we can write to stdout
+        extern global: yield;                          // Yield function so we can yield to the kernel
+    .code 
+        jump: main;
+    .end_section
+
+global main:
+    .file
+        passage: file = "file.seed", 0;                   // passage stream for files. null terminated strand for file name
+    .declare
+        hold aisle: fd;
+        hold aisle: open_flags;
+        hold aisle: open_mode;
+        hold aisle: file_buffer;
+        hold aisle: bytes_read;                           // Hold number of bytes read from the file
+    .assign 
+        assign: fd = 1;
+        assign: open_flags = 0;                           // open in read only mode
+        assign: open_mode = 0;                            // no special mode for read
+        assign: file_buffer = 512;                        // buffer to store file content
+        assign: bytes_read = 0;                           // bytes to read
+    .literal 
+        strand:  error_msg = "Error opening file", 0;    // error msg strand
+    .code
+        //open file
+        move_aisle: eax, 5;                               // sys_open system call
+        move_aisle: ebx, address[file];                   // pass file
+        move_aisle: ecx, open_flags;                      // pass flags
+        move_aisle: edx, open_mode;                       // pass mode
+        num: 0x80;
+
+        test: eax, eax;                                   // check i fresult is negative (error)
+        jump_neg: handle_error;                           // jmup to handle error if failed
+        move_aisle: fd, eax;                              // Save file descriptor. dereference
+
+        //Write file contents to stdout
+        move_aisle: eax, 4;                               // sys_write system call
+        move_aisle: ebx, 1;                               // File descriptor (stdout)
+        move_aisle: ecx, buffer;                          // Buffer containing data
+        move_aisle: edx, eax;                             // Number of bytes read (stored in EAX)
+        num: 0x80;                                        // Call kernel
+
+        //Close the file
+        move_aisle: eax, 6;                               // sys_close system call
+        move_aisle: ebx, aisle_ptr[fd];                       // File descriptor
+        num: 0x80;                                        // Call kernel
+
+        jump: yield;                                      // Yield to kernel
+    .end_section 
+
+global_block handle_error:
+   .code
+        // Write error message to stderr
+        move_aisle: eax, 4;                              // sys_write system call
+        move_aisle: ebx, 2;                              // File descriptor (stderr)
+        move_aisle: ecx, error_msg;                      // Error message
+        move_aisle: edx, 20;                             // Length of error message
+        num: 0x80;                                       // Call kernel
+        jump: yield;                                     // Yield to kernel
+   .end_section
+

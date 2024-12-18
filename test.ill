@@ -1,0 +1,17 @@
+num main manager: num argc, mark_ptr[mark table: argv[]]`
+{
+    hold num: test;
+    mark_ptr[str];
+    
+    check: test > 0`
+    {
+        assign: test = 2;
+        assign: str = "Hello World";
+    } pass_arg: 0`;
+    
+    loop: test < 10`
+    {
+        assign: test = test + 1;
+    } pass_arg: 0`;
+    
+} yield: 0`; 

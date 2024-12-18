@@ -1,0 +1,255 @@
+{
+  "C_Cpp_Runner.cCompilerPath": "gcc",
+  "C_Cpp_Runner.cppCompilerPath": "g++",
+  "C_Cpp_Runner.debuggerPath": "gdb",
+  "C_Cpp_Runner.cStandard": "",
+  "C_Cpp_Runner.cppStandard": "",
+  "C_Cpp_Runner.msvcBatchPath": "C:/Program Files/Microsoft Visual Studio/VR_NR/Community/VC/Auxiliary/Build/vcvarsall.bat",
+  "C_Cpp_Runner.useMsvc": false,
+  "C_Cpp_Runner.warnings": [
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Wshadow",
+    "-Wformat=2",
+    "-Wcast-align",
+    "-Wconversion",
+    "-Wsign-conversion",
+    "-Wnull-dereference"
+  ],
+  "C_Cpp_Runner.msvcWarnings": [
+    "/W4",
+    "/permissive-",
+    "/w14242",
+    "/w14287",
+    "/w14296",
+    "/w14311",
+    "/w14826",
+    "/w44062",
+    "/w44242",
+    "/w14905",
+    "/w14906",
+    "/w14263",
+    "/w44265",
+    "/w14928"
+  ],
+  "C_Cpp_Runner.enableWarnings": true,
+  "C_Cpp_Runner.warningsAsError": false,
+  "C_Cpp_Runner.compilerArgs": [],
+  "C_Cpp_Runner.linkerArgs": [],
+  "C_Cpp_Runner.includePaths": [],
+  "C_Cpp_Runner.includeSearch": [
+    "*",
+    "**/*"
+  ],
+  "C_Cpp_Runner.excludeSearch": [
+    "**/build",
+    "**/build/**",
+    "**/.*",
+    "**/.*/**",
+    "**/.vscode",
+    "**/.vscode/**"
+  ],
+  "C_Cpp_Runner.useAddressSanitizer": false,
+  "C_Cpp_Runner.useUndefinedSanitizer": false,
+  "C_Cpp_Runner.useLeakSanitizer": false,
+  "C_Cpp_Runner.showCompilationTime": false,
+  "C_Cpp_Runner.useLinkTimeOptimization": false,
+  "C_Cpp_Runner.msvcSecureNoWarnings": false,
+  "workbench.colorCustomizations": {
+    "terminal.foreground": "#949494",
+    "terminal.background": "#1f1b16",
+    "terminal.ansiBlack": "#504b46",
+    "terminal.ansiBlue": "#27022b",
+    "terminal.ansiBrightBlack": "#dc75e4",
+    "terminal.ansiBrightBlue": "#40032c",
+    "terminal.ansiBrightCyan": "#939292",
+    "terminal.ansiBrightGreen": "#065c5c",
+    "terminal.ansiBrightMagenta": "#3a043e",
+    "terminal.ansiBrightRed": "#569CD6",
+    "terminal.ansiBrightWhite": "#939292",
+    "terminal.ansiBrightYellow": "#b47d07",
+    "terminal.ansiCyan": "#91b66f",
+    "terminal.ansiGreen": "#1b626d",
+    "terminal.ansiMagenta": "#6e6e6d",
+    "terminal.ansiRed": "#939292",
+    "terminal.ansiWhite": "#939292",
+    "terminal.ansiYellow": "#939292"
+  },
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "keyword.function_related.illeshian",
+        "settings": {
+          "foreground": "#91b66f"
+        }
+      },
+      {
+        "scope": "keyword.data_type.illeshian",
+        "settings": {
+          "foreground": "#569CD6",
+          "fontStyle": ""
+        }
+      },
+      {
+        "scope": "keyword.data_tool_one.illeshian",
+        "settings": {
+          "foreground": "#BD63C5"
+        }
+      },
+      {
+        "scope": "keyword.data_tool_two.illeshian",
+        "settings": {
+          "foreground": "#BD63C5"
+        }
+      },
+      {
+        "scope": "keyword.data_modifier.illeshian",
+        "settings": {
+          "foreground": "#b47d07"
+        }
+      },
+      {
+        "scope": "string.quoted.double.illeshian",
+        "settings": {
+          "foreground": "#CE9178"
+        }
+      },
+      {
+        "scope": "comment.line.double-slash.illeshian",
+        "settings": {
+          "foreground": "#627562"
+        }
+      },
+      {
+        "scope": "constant.numeric.illeshian",
+        "settings": {
+          "foreground": "#B5CEA8"
+        }
+      },
+      {
+        "scope": "keyword.pointer_one.illeshian",
+        "settings": {
+          "foreground": "#569CD6",
+          "fontStyle": ""
+        }
+      },
+      {
+        "scope": "keyword.pointer_two.illeshian",
+        "settings": {
+          "foreground": "#6d6d6d",
+          "fontStyle": ""
+        }
+      },
+      {
+        "scope": "keyword.groupitive.illeshian",
+        "settings": {
+          "foreground": "#5a5a5a"
+        }
+      },
+      {
+        "scope": "keyword.operator_one.illeshian",
+        "settings": {
+          "foreground": "#7e7d7d"
+        }
+      },
+      {
+        "scope": "keyword.operator_two.illeshian",
+        "settings": {
+          "foreground": "#91b66f"
+        }
+      },
+      {
+        "scope": "variable.other.illeshian",
+        "settings": {
+          "foreground": "#9e9e9e"
+        }
+      },
+      {
+        "scope": "keyword.scope.seedling",
+        "settings": {
+          "foreground": "#91b66f"
+        }
+      },
+      {
+        "scope": "keyword.sections.seedling",
+        "settings": {
+          "foreground": "#91b66f"
+        }
+      },
+      {
+        "scope": "keyword.data_type.seedling",
+        "settings": {
+          "foreground": "#569CD6"
+        }
+      },
+      {
+        "scope": "keyword.data_tool_one.seedling",
+        "settings": {
+          "foreground": "#BD63C5"
+        }
+      },
+      {
+        "scope": "keyword.data_tool_two.seedling",
+        "settings": {
+          "foreground": "#569CD6"
+        }
+      },
+      {
+        "scope": "keyword.arch_8_regs.seedling",
+        "settings": {
+          "foreground": "#eda2dd"
+        }
+      },
+      {
+        "scope": "keyword.arch_16_regs.seedling",
+        "settings": {
+          "foreground": "#b2dd82"
+        }
+      },
+      {
+        "scope": "keyword.arch_32_regs.seedling",
+        "settings": {
+          "foreground": "#87b7df"
+        }
+      },
+      {
+        "scope": "keyword.arch_64_regs.seedling",
+        "settings": {
+          "foreground": "#d66756"
+        }
+      },
+      {
+        "scope": "keyword.data_modifier.seedling",
+        "settings": {
+          "foreground": "#b47d07"
+        }
+      },
+      {
+        "scope": "string.quoted.double.seedling",
+        "settings": {
+          "foreground": "#CE9178"
+        }
+      },
+      {
+        "scope": "comment.line.double-slash.seedling",
+        "settings": {
+          "foreground": "#6A9955"
+        }
+      },
+      {
+        "scope": "constant.numeric.seedling",
+        "settings": {
+          "foreground": "#B5CEA8"
+        }
+      },
+      {
+        "scope": "variable.other.seedling",
+        "settings": {
+          "foreground": "#9e9e9e"
+        }
+      }
+    ]
+  },
+
+}

@@ -1,0 +1,34 @@
+{
+  "configurations": [
+    {
+      "name": "windows-gcc-x64",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.16.27023/include/**",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.17763.0/ucrt/**",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.17763.0/um/**",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.17763.0/shared/**"
+      ],
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "compilerPath": "C:/msys64/ucrt64/bin/gcc.exe",
+      "browse": {
+        "path": [
+          "${workspaceFolder}",
+          "${workspaceFolder}/comp_src",
+          "${workspaceFolder}/comp_include",
+          "${workspaceFolder}/irp_src",
+          "${workspaceFolder}/irp_include",
+          "${workspaceFolder}/ill_include",
+          "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.16.27023/include",
+          "C:/Program Files (x86)/Windows Kits/10/Include/10.0.17763.0/ucrt",
+          "C:/Program Files (x86)/Windows Kits/10/Include/10.0.17763.0/um",
+          "C:/Program Files (x86)/Windows Kits/10/Include/10.0.17763.0/shared"
+        ],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      }
+    }
+  ],
+  "version": 4
+}
