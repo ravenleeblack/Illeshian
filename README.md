@@ -38,7 +38,15 @@ approach to ui elements in procedural app building by using functions and functi
     Would get translated down into seedling as something along the lines of:
   
        ![convert_ex](https://github.com/user-attachments/assets/3a550446-7b62-4bf2-b889-280f859a3c97)
-  
+
+  - In Illeshian we catogerize everything into 4 groups: data, data types, data tools, and data modifiers. I am working on a data tool designed for state machines. It derives from the switch but where it is
+  different is that down in the assembly, it will have a stack for the state data tools and a stack for each step that is in the state data tool. It should allow us to keep the overall data in the state but also
+  allow things to happen in each step. We also have a new data tool named cycle that you can use in a step in order to reset the stack ptr to the base. The cycle data tool will be based off conditions. So if the
+  condition is not met, then it will re-iterate and reset the stack by moving the stack ptr back to base, then write over the old data. If the condition is met then we use next to move to next step or break to break.
+  I will admit this is a poor example of a state machine but I wanted to try and express it anyway with some code.
+
+    ![state_ex](https://github.com/user-attachments/assets/215d9b74-b5d7-4a83-86c7-f155fd2cad8c)
+
   - There also will be a seedling function in Illeshian at some point. Since the seedling function is local scope. When Illeshian gets converted, the seedling function, just becomes a local label.
   This allows seedling to be natively written in Illeshian.
 
