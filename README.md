@@ -39,12 +39,6 @@ approach to ui elements in procedural app building by using functions and functi
   
        ![convert_ex](https://github.com/user-attachments/assets/3a550446-7b62-4bf2-b889-280f859a3c97)
 
-  - In Illeshian we catogerize everything into 4 groups: data, data types, data tools, and data modifiers.
-     - data - is just some value
-     - data types - the type of data the data value can be num, mark, deci, decii, strand, hollow.
-     - data tools - the tools that manipulate the data in order to achieve a purpose.
-       check/else, loop, set_loop, compare, state, pare, tripare, manager, function, seedling, log, list, table, hold, assign are all data tools.
-     - data modifiers - external, internal, hide, show, proto, cycle, next, break.
   
   - I am working on a data tool designed for state machines. It derives from the switch but where it is
  different is down in the assembly, it will have a stack for the state data tool and a stack for each step that is in the state data tool. This should allow us to preserve the overall state data in the data tool but also
