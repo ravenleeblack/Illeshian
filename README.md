@@ -39,11 +39,18 @@ approach to ui elements in procedural app building by using functions and functi
   
        ![convert_ex](https://github.com/user-attachments/assets/3a550446-7b62-4bf2-b889-280f859a3c97)
 
-  - In Illeshian we catogerize everything into 4 groups: data, data types, data tools, and data modifiers. I am working on a data tool designed for state machines. It derives from the switch but where it is
-  different is that down in the assembly, it will have a stack for the state data tools and a stack for each step that is in the state data tool. It should allow us to keep the overall data in the state but also
-  allow things to happen in each step. We also have a new data tool named cycle that you can use in a step in order to reset the stack ptr to the base. The cycle data tool will be based off conditions. So if the
-  condition is not met, then it will re-iterate and reset the stack by moving the stack ptr back to base, then write over the old data. If the condition is met then we use next to move to next step or break to break.
-  I will admit this is a poor example of a state machine but I wanted to try and express it anyway with some code.
+  - In Illeshian we catogerize everything into 4 groups: data, data types, data tools, and data modifiers.
+     - data - is just some value
+     - data types - the type of data the data value can be num, mark, deci, decii, strand, hollow.
+     - data tools - the tools that manipulate the data in order to achieve a purpose.
+       check/else, loop, set_loop, compare, state, pare, tripare, manager, function, seedling, log, list, table, hold, assign are all data tools.
+     - data modifiers - external, internal, hide, show, proto, cycle, next, break.
+  
+  - I am working on a data tool designed for state machines. It derives from the switch but where it is
+ different is down in the assembly, it will have a stack for the state data tool and a stack for each step that is in the state data tool. This should allow us to preserve the overall state data in the data tool but also
+ allow things to happen in each step. We have a data tool named cycle that you can use in a step. The cycle data tool is based off conditions. So if the condition is not met, then it will re-iterate the step and
+ reset the steps stack, by moving the stack ptr back to the base, then write over the old data. If the condition is met, we save the data needed then we use the next data tool to move to the next step or break to break.
+ I will admit this is a poor example of a state machine but I wanted to try and express it visually anyway with some code.
 
     ![state_ex](https://github.com/user-attachments/assets/215d9b74-b5d7-4a83-86c7-f155fd2cad8c)
 
