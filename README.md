@@ -8,9 +8,5 @@ The Rootling linker - hasnt been started yet - root
 ```
 I am still working on everything and plan to create a linker named rootling later that supports .exe, .elf, and .elm files.
 
-
-# Main Goal Right Now:
-- Getting the seedling assembler finished as a boot strap then self hosting program so that we can write the illeshian code gen in seedling. Since we are writing the program in c, the program takes in seedling as input and produces nasm as output. This means once we actually compile the c program into binary, we have an executable program, that executable program takes in seedling and produces nasm. We then have to rewrite the assembler in seedling instead of c now that we have a program that can assemble seedling to nasm. Since the first program produces nasm output, once we use that to assemble the new seedling assembler code, then we would have a self hosting seedling assembler.
-- The current problem that I have right now is that other assemblers are section based and seedling is scope based with sections underneath. I had to create some nasm temp files, so that I collect all the
-  seedling sections then write them into the right nasm section temp file, so that later we can bring all that information back in and have it write to the proper nasm files properly.
+If  you want to know more then check out the wiki!! Been adding a lot of pages.
 
