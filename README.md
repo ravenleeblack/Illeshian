@@ -7,51 +7,6 @@ The Seedling assembler - seed
 The Rootling linker - hasnt been started yet - root
 ```
 
-## Concepts about Illeshian worth considering to help build and finish the project:
-- The Illeshian Language is buildt around the idea of a 2 tier function system. Its a procedural language that uses children functions that are not closures. This should allow us to replicate what classes can do and create a better 
-approach to ui elements in procedural app building by using functions and function calls like:
-
-  ![illeshian_ex](https://github.com/user-attachments/assets/082b088d-9ebe-4b8b-8d14-b484fae6daeb)
-
-- Both Illeshian and Seedling are being designed around the idea of a new scope system:
-  - Universal Scope, Global Scope, Global Block Scope, Local Scope, Local Block Scope
-
-    So something like this:
-  
-      ![scope_ex](https://github.com/user-attachments/assets/01cd2dfa-37ce-4da6-b7ed-61e581d6be21)
-
-    Will get converted down into something like this in seedling:
-  
-      ![scope_ex_one](https://github.com/user-attachments/assets/d86b0023-5b9f-4a54-8665-078199484696)
-
-- Since both the Illeshian compiler and the Seedling Assembler are being designed with these new scopes it introduces alot of new features.
-  - normal assemblers are section based. In seedling we are scope based. We seperate things by scope followed by a label. This would be called the header. Then underneath
-  the label header, we have the body, the body is where we declare and assign the sections needed to write assembly code. These sections are tied to its scope and label.
-
-    ![seedling_ex](https://github.com/user-attachments/assets/f0e6125e-2fed-46b4-82d1-13beab76d695)
-
-  - Since Illeshian gets compiled down into seedling, it does so, on a one to one basis. global to global and local to local.
-  So this in Illeshian:
-
-    ![illeshian_ex](https://github.com/user-attachments/assets/082b088d-9ebe-4b8b-8d14-b484fae6daeb)
-
-    Would get translated down into seedling as something along the lines of:
-  
-       ![convert_ex](https://github.com/user-attachments/assets/3a550446-7b62-4bf2-b889-280f859a3c97)
-
-  
-  - I am working on a data tool designed for state machines. It derives from the switch but where it is
- different is down in the assembly, it will have a stack for the state data tool and a stack for each step that is in the state data tool. This should allow us to preserve the overall state data in the data tool but also
- allow things to happen in each step. We have a data tool named cycle that you can use in a step. The cycle data tool is based off conditions. So if the condition is not met, then it will re-iterate the step and
- reset the steps stack, by moving the stack ptr back to the base, then write over the old data. If the condition is met, we save the data needed then we use the next data tool to move to the next step or break to break.
- I will admit this is a poor example of a state machine but I wanted to try and express it visually anyway with some code.
-
-    ![state_ex](https://github.com/user-attachments/assets/215d9b74-b5d7-4a83-86c7-f155fd2cad8c)
-
-  - There also will be a seedling function in Illeshian at some point. Since the seedling function is local scope. When Illeshian gets converted, the seedling function, just becomes a local label.
-  This allows seedling to be natively written in Illeshian.
-
-  - When creating libraries we would use a manager function which is global. When the linker is trying to link libraries with our program all it has to do is bring in the library as if it was just another global scope label in the program. putting it on the end. This should make relocation alot easier for the linker.
 
 
 
