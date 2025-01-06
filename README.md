@@ -10,5 +10,6 @@ I am still working on everything and plan to create a linker named rootling late
 
 If  you want to know more then check out the wiki!! 
 
-The wiki has a page on how to setup it and use the programs along with some of the languages details.
+The wiki has a page on how to setup it and use the programs along with some of the languages details. The wiki here in this 
+project is the go to place for information.
 
