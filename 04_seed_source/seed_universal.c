@@ -11,9 +11,6 @@ void process_universal_label(void)
     universal_id = insert_universal_scope(Text, scope_tool_none, scope_type_none);
     encode_universal_scope_section(nasm_out, Text, scope_universal);
     
-    // Example: Encode NASM for universal label
-    encode_scope_to_nasm("text", Text);
-
     scan(&Token);
     colon(_colon, ":");
 
@@ -30,4 +27,8 @@ void process_universal_label(void)
     }
 }
 
-
+/* Here we match the universal scope keyword then scan for the label. We insert that label into
+the scope table, we also use the ident, as the entry point seedling and the nasm output. We then
+get the colon to end the line and start parsing the body of the scope label. We use a loop and we 
+prcoess all sections until we hit a end_section. The end_section is our loop condition. Its how we
+break out of the loop. So we can start parsing the global scope and its label.*/

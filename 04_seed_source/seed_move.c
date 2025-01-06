@@ -102,7 +102,7 @@ void process_move_instruction(enum scope_type current_scope)
             }
 
             strcpy(src, Text);
-            encode_fetch_reference(src, "", false);  // Fetch for source
+            encode_fetch_reference(src, "");  // Fetch for source
 
             scan(&Token);
             rbrace(_rbrace, "]");

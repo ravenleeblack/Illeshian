@@ -405,10 +405,14 @@ void errorc(const char *message, int c);
 
 // Update the function declarations (make sure they end with semicolons)
 void clear_temp_files(void);
+
 void encode_universal_scope_section(FILE* output, const char* label, enum scope_type scope);
-void encode_global_scope_section(FILE* output, const char* label, enum scope_type scope);
-void encode_global_block_scope_section(FILE* output, const char* label, enum scope_type scope);
-void encode_local_scope_section(FILE* output, const char* label, enum scope_type scope);
+void encode_global_scope_section(FILE* output, const char* label);
+void encode_global_block_scope_section(FILE* output, const char* label);
+void encode_local_scope_section(FILE* output, const char* label);
+
+void encode_manager_to_nasm(FILE* output, const char* label_name);
+
 void finalize_scope_section(FILE* output, enum scope_type scope);
 void copy_temp_file_contents(FILE* temp, FILE* output);
 void finalize_nasm_output(FILE* output);
@@ -419,10 +423,13 @@ const char* get_current_filename(void);
 void set_current_filename(const char* filename);
 
 
+void output_declare_section_header();
+void output_assign_section_header();
+void output_code_section_header();
 
-void encode_declare_section(const char* ident, int type, enum scope_type scope);
-void encode_assign_section(const char* ident, int type, enum scope_type scope);
-void encode_literal_section(const char* ident, const char* value, int length);
+void output_declare_section_body(const char* ident, int type);
+void output_assign_section_body(const char* ident, int type);
+void encode_literal_section(const char* value, int length);
 
 
 void encode_register(const char* reg, char* nasm_reg);
@@ -443,7 +450,12 @@ void encode_pass_arg_instruction(const char* reg);
 void encode_set_flag_instruction(const char* reg1, const char* reg2);
 void encode_jump_neg_instruction(const char* label);
 
+void encode_file_section(const char* ident);
 
+void encode_test_instruction(const char* reg1, const char* reg2);
+
+void encode_lend_instruction(const char* reg1);
+void encode_fetch_reference(const char* dest, const char* src);
 
 void process_compare_instruction(enum scope_type current_scope);
 void process_set_flag_instruction(enum scope_type current_scope);
@@ -453,14 +465,10 @@ void process_jump_great_instruction(enum scope_type current_scope);
 void process_jump_equal_instruction(enum scope_type current_scope);
 void process_jump_not_equal_instruction(enum scope_type current_scope);
 void process_jump_neg_instruction(enum scope_type current_scope);
-
-
 void process_test_instruction(enum scope_type current_scope);
-void encode_test_instruction(const char* reg1, const char* reg2);
+void process_file_section(enum scope_type current_scope);
 
-void encode_lend_instruction(const char* reg1);
 
-void encode_fetch_reference(const char* dest, const char* src, bool is_dest);
 
 
 int get_architecture(void);
@@ -469,11 +477,6 @@ void set_architecture(int bits);
 // External flags
 extern int nasm_flag;
 extern int rootling_flag;
-
-
-
-void process_file_section(enum scope_type current_scope);
-void encode_file_section(const char* ident, int type, enum scope_type scope);
 
 
 #endif // SEED_DECL_H

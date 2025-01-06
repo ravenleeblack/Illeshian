@@ -7,6 +7,7 @@
 void process_code_section(enum scope_type current_scope) 
 {
     code(_code_section, ".code");
+   
 
     while(1) 
     {

@@ -23,6 +23,7 @@ SCOPE TABLE OUTPUT
 | file_buffer          | tool_assign     | type_aisle      | 2  | R0:S0:E5 | 1 |
 | bytes_read           | tool_assign     | type_aisle      | 2  | R0:S0:E6 | 1 |
 | error_msg            | tool_check      | type_strand     | 2  | R0:S0:E7 | 1 |
+| yield                | tool_manager    | type_none       | 2  | R0:S0:E8 | 1 |
 
 === Global Block Scope ===
 | Name                 | Tool Type       | Data Type       | Scope | Location | Flg |
