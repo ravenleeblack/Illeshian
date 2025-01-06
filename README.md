@@ -1,4 +1,4 @@
-# Illeshian is a suite of programs.
+# Illeshian is a series of programs.
 ```
 The Illeshian Driver - ill
 The Illeshian Runtime Preprocessor - irp
