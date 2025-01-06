@@ -75,8 +75,10 @@ void decii_literal(int t, int expected)    { if (Token.token_rep == t) { if (out
 
 void hex_literal(int t, int expected)
 {
-    if (Token.token_rep == t) {
-        if (output_flag) {
+    if (Token.token_rep == t)
+    {
+        if (output_flag)
+        {
             light_blue();
             // Check if the hex value is valid before printing
             if (Token.hex_value) {

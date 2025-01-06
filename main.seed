@@ -29,7 +29,7 @@ global main:
         move_aisle: ebx, address[file];                   // pass file
         move_aisle: ecx, open_flags;                      // pass flags
         move_aisle: edx, open_mode;                       // pass mode
-        num: 0x80;
+
 
         test: eax, eax;                                   // check i fresult is negative (error)
         jump_neg: handle_error;                           // jmup to handle error if failed
@@ -40,12 +40,12 @@ global main:
         move_aisle: ebx, 1;                               // File descriptor (stdout)
         move_aisle: ecx, buffer;                          // Buffer containing data
         move_aisle: edx, eax;                             // Number of bytes read (stored in EAX)
-        num: 0x80;                                        // Call kernel
+                                          // Call kernel
 
         //Close the file
         move_aisle: eax, 6;                               // sys_close system call
         move_aisle: ebx, aisle_ptr[fd];                       // File descriptor
-        num: 0x80;                                        // Call kernel
+                                          // Call kernel
 
         jump: yield;                                      // Yield to kernel
     .end_section 
@@ -57,7 +57,6 @@ global_block handle_error:
         move_aisle: ebx, 2;                              // File descriptor (stderr)
         move_aisle: ecx, error_msg;                      // Error message
         move_aisle: edx, 20;                             // Length of error message
-        num: 0x80;                                       // Call kernel
+                                           // Call kernel
         jump: yield;                                     // Yield to kernel
    .end_section
-

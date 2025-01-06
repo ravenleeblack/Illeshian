@@ -103,3 +103,11 @@ void process_declare_section(enum scope_type current_scope)
         }
     }
 }
+
+
+
+/*SO the current issue here is that in nasm it declares a placeholder or vairable, then byte size, then
+actually gives a numbered value. We dont do that in seedling. In seedling we only declare a placeholder
+or variable and let the .assign section take care ove assigment. So that means is we have no numbered 
+values to pass nasm right now. May have to create a global variable to keep track of assignment so we
+have something to convert over. I am stumped on this part right now.*/

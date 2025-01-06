@@ -3,8 +3,6 @@
 #include "seed_decl.h"
 
 
-
-
 void process_jump_instruction(enum scope_type current_scope) 
 {
     jump(_jump, "jump");
@@ -83,17 +81,17 @@ void process_jump_neg_instruction(enum scope_type current_scope)
 
 }
 
-void process_jump_great_instruction(enum scope_type current_scope) 
+void process_jump_great_instruction() 
 {
 
 }   
 
-void process_jump_equal_instruction(enum scope_type current_scope) 
+void process_jump_equal_instruction() 
 {
 
 }
 
-void process_jump_not_equal_instruction(enum scope_type current_scope) 
+void process_jump_not_equal_instruction() 
 {
 
 }

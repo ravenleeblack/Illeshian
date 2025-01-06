@@ -3,10 +3,6 @@
 #include "seed_decl.h"
 
 int file_type = 0;
-static char* current_file_name = NULL;
-
-
-
 
 void process_file_section(enum scope_type current_scope)
 {
@@ -50,7 +46,7 @@ void process_file_section(enum scope_type current_scope)
                     case scope_local_block:   insert_local_block_scope(Text, tool_intern, file_type);   break;
                     default:  error("seeding error: declare error: Invalid scope for declaration"); break;
                 }
-                encode_file_section(Text);
+                //encode_file_section(Text, length);
 
                 scan(&Token);
                 semicolon(_semicolon, ";");
@@ -82,7 +78,7 @@ void process_file_section(enum scope_type current_scope)
                     case scope_local_block:   insert_local_block_scope(Text, tool_extern, file_type);   break;
                     default:  error("seeding error: declare error: Invalid scope for declaration"); break;
                 }
-                encode_file_section(Text);
+                //encode_file_section(Text, length);
 
                 scan(&Token);
                 semicolon(_semicolon, ";");
@@ -97,8 +93,6 @@ void process_file_section(enum scope_type current_scope)
 
                scan(&Token);
                ident(_ident, Text);
-               char* var_name = strdup(Text);
-               current_file_name = strdup(var_name);
 
                switch(current_scope)
                {
@@ -117,14 +111,14 @@ void process_file_section(enum scope_type current_scope)
                strand_literal(_strand_literal, Token.string_value);
                 
                switch(current_scope) {
-                    case scope_universal:     insert_universal_scope(var_name, tool_strand, type_strand);     break;
-                    case scope_global:        insert_global_scope(var_name, tool_strand, type_strand);        break;
-                    case scope_global_block:  insert_global_block_scope(var_name, tool_strand, type_strand);  break;
-                    case scope_local:         insert_local_scope(var_name, tool_strand, type_strand);         break;
-                    case scope_local_block:   insert_local_block_scope(var_name, tool_strand, type_strand);   break;
+                    case scope_universal:     insert_universal_scope(Text, tool_strand, type_strand);     break;
+                    case scope_global:        insert_global_scope(Text, tool_strand, type_strand);        break;
+                    case scope_global_block:  insert_global_block_scope(Text, tool_strand, type_strand);  break;
+                    case scope_local:         insert_local_scope(Text, tool_strand, type_strand);         break;
+                    case scope_local_block:   insert_local_block_scope(Text, tool_strand, type_strand);   break;
                     default: error("seeding error: Invalid scope for strand literal"); break;
                 }
-                encode_file_section(strlen(Token.string_value));
+               // encode_file_section(Text, length);
 
                 scan(&Token);
                 comma(_comma, ",");

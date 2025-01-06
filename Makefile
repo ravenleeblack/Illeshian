@@ -275,6 +275,13 @@ clean_seed:
 	rm -rf $(SEED_OBJDIR)
 	rm -f $(SEED_TARGET)
 	rm -f seed
+	rm -f main.asm
+	rm -f write.asm
+	rm -f yield.asm
+	rm -f temp_bss.asm
+	rm -f temp_text.asm
+	rm -f temp_data.asm
+	rm -f temp_rodata.asm
 
 clean_ill:
 	@echo "Cleaning ILL..."
@@ -287,6 +294,7 @@ clean_scope:
 	rm -rf $(SCOPE_OBJDIR)
 	rm -f $(SCOPE_LIB_STATIC)
 	rm -f $(SCOPE_LIB_SHARED)
+	rm -f scope_table.txt
 
 # Update main clean to use individual cleans
 clean: clean_irp clean_comp clean_seed clean_ill clean_scope
