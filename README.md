@@ -10,6 +10,6 @@ I am still working on everything and plan to create a linker named rootling late
 
 If  you want to know more then check out the wiki!! 
 
-The wiki has a page on how to setup it and use the programs along with some of the languages details. The wiki here in this 
-project is the go to place for information.  [Illeshian Wiki]([https://github.com/ravenleeblack/Illeshian/wiki])
+The wiki has a page on how to [setup, compile, and assemble](https://github.com/ravenleeblack/Illeshian/wiki/How-to-Compile). The [Illeshian Wiki](https://github.com/ravenleeblack/Illeshian/wiki) in this 
+project is the go to place for information.
 
