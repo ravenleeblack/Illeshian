@@ -10,7 +10,7 @@ void process_global_label(void)
     scan(&Token);
     ident(_ident, Text);
     global_id = insert_global_scope(Text, scope_tool_manager, scope_type_none);        // Add to scope table and save label
-    encode_global_scope_section(nasm_out, Text, scope_global);
+    encode_manager_to_nasm(nasm_out, Text);
     
     // Set flag if this is main label
     if((strcmp(Text, "main") == 0))
@@ -20,9 +20,6 @@ void process_global_label(void)
 
     scan(&Token);
     colon(_colon, ":");
-
-    // Example: Encode NASM for global label
-    encode_scope_to_nasm("text", Text);
 
     while(1)
     {
@@ -65,3 +62,21 @@ void process_global_child_labels(int parent_global_id)
         }
     }
 }
+
+/*There is alot going on here. We match the global scope keyword, then scan for our label name 
+which is the ident, we insert into scope table so we can use later, we pass the ident over to 
+nasm output function so that it can have the global label. Here we check if its the main label.
+The reason fo this is so that we know when to use yield for the main when returning or pass_arg
+for non main globals. In illeshian and seedling the main entry always returns to the os so main
+is the only one that yields. Next we the end colon then begin parsing the sections again and 
+breaking when end_section is found. THe difference here is that we add to add a function that
+checks if the global label has any children. If it does then we process them otherwise we return.
+Since we allow 2 kinds of scope in the body of global scope, we now have 2 options here, that we
+need to parse. The difference here is in illeshian the body of check, loop, set_loop, compare, 
+and state are global block scope if its parent is global. In Seedling this means that we jump to
+the global block labels. These are relational tools that do not ness need a dedicated stack. So
+we jump to a global block label and handle business. Next we have a local label. In illeshian 
+local labels are for child functions and since we have a function we do need a stack this time.
+So we make a call to local labels. So both global block and local scope are children scope labels
+of global.FInally if we hit a end_section or enfi then we break out of the loop that processes
+children scope labels. */

@@ -11,7 +11,7 @@ void process_global_block_label(int parent_global_id)
     scan(&Token);
     ident(_ident, Text);
     global_block_id = insert_global_block_scope(Text, scope_tool_none, scope_type_none);
-    encode_global_block_scope_section(nasm_out, Text, scope_global_block);
+    //encode_global_block_scope_section(nasm_out, Text, scope_global_block);
     
     scan(&Token);
     colon(_colon, ":");

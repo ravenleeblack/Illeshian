@@ -45,7 +45,7 @@ void process_literal_section(enum scope_type current_scope)
             if (Token.token_rep == _strand_literal) 
             {
                 strand_literal(_strand_literal, Token.string_value);
-                encode_literal_section(var_name, Token.string_value, length);
+                encode_literal_section(Token.string_value, length);
                 
                 // Insert into appropriate scope table
                 switch(current_scope) {

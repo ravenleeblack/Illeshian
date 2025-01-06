@@ -186,8 +186,8 @@ all: scope irp comp seed ill
 
 # Installation target (depends on all being built first)
 install: all
-	sudo mkdir -p /usr/local/illeshian/bin
-	sudo mkdir -p /usr/local/illeshian/lib
+	sudo mkdir -p /usr/local/illeshian/00_bin
+	sudo mkdir -p /usr/local/illeshian/00_lib
 	sudo mkdir -p /usr/local/illeshian/include/illeshian
 	sudo install -m 755 $(BINDIR)/* /usr/local/illeshian/bin
 	sudo cp -r $(SCOPE_LIBDIR)/* /usr/local/illeshian/lib

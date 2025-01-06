@@ -50,7 +50,7 @@ void process_file_section(enum scope_type current_scope)
                     case scope_local_block:   insert_local_block_scope(Text, tool_intern, file_type);   break;
                     default:  error("seeding error: declare error: Invalid scope for declaration"); break;
                 }
-                encode_file_section(Text, tool_intern, current_scope);
+                encode_file_section(Text);
 
                 scan(&Token);
                 semicolon(_semicolon, ";");
@@ -82,7 +82,7 @@ void process_file_section(enum scope_type current_scope)
                     case scope_local_block:   insert_local_block_scope(Text, tool_extern, file_type);   break;
                     default:  error("seeding error: declare error: Invalid scope for declaration"); break;
                 }
-                encode_file_section(Text, tool_extern, current_scope);
+                encode_file_section(Text);
 
                 scan(&Token);
                 semicolon(_semicolon, ";");
@@ -124,7 +124,7 @@ void process_file_section(enum scope_type current_scope)
                     case scope_local_block:   insert_local_block_scope(var_name, tool_strand, type_strand);   break;
                     default: error("seeding error: Invalid scope for strand literal"); break;
                 }
-                encode_file_section(var_name, strlen(Token.string_value), current_scope);
+                encode_file_section(strlen(Token.string_value));
 
                 scan(&Token);
                 comma(_comma, ",");
