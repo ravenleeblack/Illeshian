@@ -401,17 +401,17 @@ void errorc(const char *message, int c);
 
 
 //============================================================================================================================
+// Conversion functions
+
+void convert_universal_label(const char* label);
+void convert_global_label(const char* label_name);
+void convert_global_block_label(const char* label);
+void convert_local_label(const char* label_name);
+
+void convert_global_label_pass_arg();
+void convert_local_label_pass_arg();
 
 
-// Update the function declarations (make sure they end with semicolons)
-void clear_temp_files(void);
-
-void encode_universal_scope_section(FILE* output, const char* label, enum scope_type scope);
-void encode_global_scope_section(FILE* output, const char* label);
-void encode_global_block_scope_section(FILE* output, const char* label);
-void encode_local_scope_section(FILE* output, const char* label);
-
-void encode_manager_to_nasm(FILE* output, const char* label_name);
 
 void finalize_scope_section(FILE* output, enum scope_type scope);
 void copy_temp_file_contents(FILE* temp, FILE* output);
@@ -426,11 +426,13 @@ void set_current_filename(const char* filename);
 void output_declare_section_header();
 void output_assign_section_header();
 void output_code_section_header();
+void output_literal_section_header();
 
 void output_declare_section_body(const char* ident, int type);
 void output_assign_section_body(const char* ident, int type);
 void encode_literal_section(const char* value, int length);
 
+void encode_file_section(const char* value, int length);
 
 void encode_register(const char* reg, char* nasm_reg);
 void encode_memory_reference(const char* base, const char* offset, char* nasm_ref);
@@ -450,7 +452,6 @@ void encode_pass_arg_instruction(const char* reg);
 void encode_set_flag_instruction(const char* reg1, const char* reg2);
 void encode_jump_neg_instruction(const char* label);
 
-void encode_file_section(const char* ident);
 
 void encode_test_instruction(const char* reg1, const char* reg2);
 
@@ -459,18 +460,23 @@ void encode_fetch_reference(const char* dest, const char* src);
 
 void process_compare_instruction(enum scope_type current_scope);
 void process_set_flag_instruction(enum scope_type current_scope);
+
 void process_jump_instruction(enum scope_type current_scope);
 void process_jump_less_instruction(enum scope_type current_scope);
-void process_jump_great_instruction(enum scope_type current_scope);
-void process_jump_equal_instruction(enum scope_type current_scope);
-void process_jump_not_equal_instruction(enum scope_type current_scope);
+
+void process_jump_great_instruction();
+void process_jump_equal_instruction();
+void process_jump_not_equal_instruction();
+
 void process_jump_neg_instruction(enum scope_type current_scope);
 void process_test_instruction(enum scope_type current_scope);
 void process_file_section(enum scope_type current_scope);
 
 
+void open_temp_files();
+void close_temp_files();
 
-
+void clear_temp_files(void);
 int get_architecture(void);
 void set_architecture(int bits);
 

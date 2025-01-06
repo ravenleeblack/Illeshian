@@ -10,7 +10,7 @@ void process_global_label(void)
     scan(&Token);
     ident(_ident, Text);
     global_id = insert_global_scope(Text, scope_tool_manager, scope_type_none);        // Add to scope table and save label
-    encode_manager_to_nasm(nasm_out, Text);
+    convert_global_label(Text);
     
     // Set flag if this is main label
     if((strcmp(Text, "main") == 0))
@@ -28,6 +28,8 @@ void process_global_label(void)
         if(Token.token_rep == _end_section)
         {
             process_end_section();
+            convert_global_label_pass_arg();   //output ret after the global section before the children
+
             process_global_child_labels(global_id);
             return;
         }

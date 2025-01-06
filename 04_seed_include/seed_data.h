@@ -9,10 +9,10 @@ FILE * seed_out;
 FILE* nasm_out;
 FILE* root_out;
 
-FILE* temp_bss_file;   // For .declare sections
-FILE* temp_data_file;  // For .assign sections
-FILE* temp_text_file;  // For .code sections
-
+FILE* temp_data;
+FILE* temp_bss;
+FILE* temp_text;
+FILE* temp_rodata;
 
 struct token Token;		                         
 char Text[text_length + 1];		                

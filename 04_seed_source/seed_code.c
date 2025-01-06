@@ -8,7 +8,6 @@ void process_code_section(enum scope_type current_scope)
 {
     code(_code_section, ".code");
    
-
     while(1) 
     {
         scan(&Token);
@@ -25,10 +24,7 @@ void process_code_section(enum scope_type current_scope)
             case _pop_radule:  process_pop_radule_instruction(current_scope);  break;
             case _push:        process_push_instruction(current_scope);        break;
             case _pop:         process_pop_instruction(current_scope);         break;
-            case _move_aisle:  
-                process_move_instruction(current_scope);
-                fprintf(stderr, "Debug: Processing MOVE_AISLE instruction\n");
-                break;
+            case _move_aisle:  process_move_instruction(current_scope);        break;
             case _compare:     process_compare_instruction(current_scope );    break;
             case _call:        process_call_instruction(current_scope );       break;
 
@@ -37,19 +33,12 @@ void process_code_section(enum scope_type current_scope)
             case _jump_neg:    process_jump_neg_instruction(current_scope);    break;
 
             case _pass_arg:    process_pass_arg_instruction(current_scope);    break;
-            case _set_flag:    
-                process_set_flag_instruction(current_scope);
-                fprintf(stderr, "Debug: Processing SET_FLAG instruction\n");
-                break;
+            case _set_flag:    process_set_flag_instruction(current_scope);    break;
             case _test:        process_test_instruction(current_scope);        break;
-            case _num:         
-                process_lend_instruction(current_scope);
-                fprintf(stderr, "Debug: Processing NUM instruction with value 0x%X\n", Token.num_value);
-                break;
+            case _num:         process_lend_instruction(current_scope);        break;
 
-            default:
-                fprintf(stderr, "Unknown token: %d\n", Token.token_rep);
-                break;
+            default: 
+            fprintf(stderr, "Unknown token in code section: %d\n", Token.token_rep);  break;
         }
     }
 }

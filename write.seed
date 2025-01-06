@@ -56,7 +56,7 @@ local get_num:
         move_aisle: ebx, fd;         // Get stdout from parent
         move_aisle: ecx, eax;              // buffer
         move_aisle: eax, syscall_num;
-        num: 0x80;
+    
 
         pop: edx;
         pop: ecx;
@@ -75,7 +75,7 @@ local get_hex:
         move_aisle: ebx, fd;         // Get stdout from parent
         move_aisle: ecx, eax;              // buffer
         move_aisle: eax, syscall_num;
-        num: 0x80;
+     
 
         pop: edx;
         pop: ecx;

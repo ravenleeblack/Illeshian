@@ -37,6 +37,8 @@ int entry_index = 0;
 char dest[64] = {0};
 char src[64] = {0};
 
+ char output_filename[256];
+
 
 // Modify main() to use the new dependency system
 int main(int argc, char *argv[])
@@ -79,6 +81,7 @@ int main(int argc, char *argv[])
                 fprintf(stderr, "Failed to open scope_table.txt: %s\n", strerror(errno));
                 cleanup_scope_table_system();
                 free(filenames);
+                filenames = NULL;
                 return 1;
             }
         }
@@ -87,111 +90,108 @@ int main(int argc, char *argv[])
         }
     }
 
-    // Initialize temp files if we're using NASM output
-    if (nasm_flag) {
-        clear_temp_files();
-    }
-
-    for (int i = 0; i < file_count; i++) {
-        // Open input file
-        seed_in = fopen(filenames[i], "r");
+    for (int i = 0; i < file_count; i++)
+    {
+        seed_in = fopen(filenames[i], "r");  // start parsing the source file
         if (seed_in == NULL) {
             fprintf(stderr, "Error: Unable to open input file %s: %s\n", filenames[i], strerror(errno));
-            free(filenames);
             return 1;
         }
 
-        if (nasm_flag) {
-            clear_temp_files();
-        }
+        open_temp_files();       //open the temp files so we can write nasm output to them
 
-        fprintf(stderr, "Processing input file: %s\n", filenames[i]);
-        if (debug_flag) {
-            fprintf(stderr, "Debug: Opened input file %s\n", filenames[i]);
-        }
+        result = begin_prog();   // start parsing the seedling source code
 
-        result = begin_prog();
+        fclose(seed_in);         //we are done parsing the file so close it
+        close_temp_files();      //close the temp folders we shouldnt need to append anymore
 
-        fclose(seed_in);
-        if (nasm_flag) {
-            char output_filename[256];
+        if (nasm_flag)
+        {
+            //get the source file name, remove the ext, make ext .asm, and now we have a nasm output file
             strncpy(output_filename, filenames[i], sizeof(output_filename) - 5);
             char *dot = strrchr(output_filename, '.');
             if (dot) *dot = '\0';
             strncat(output_filename, ".asm", sizeof(output_filename) - strlen(output_filename) - 1);
 
-            write_nasm_sections(output_filename);
-        }
-
-        if (debug_flag) {
-            fprintf(stderr, "Debug: Closed input file %s\n", filenames[i]);
+            //pass our new nasm output folder to write_nasm_sections so it can write in all the seedling sections nasm proper.
+            write_nasm_sections(output_filename); 
         }
     }
 
-    // Finalize NASM output
-    if (nasm_flag) {
-        finalize_nasm_output(nasm_out);
-        if (debug_flag) {
-            fprintf(stderr, "Debug: Finalized NASM output\n");
-        }
-    }
-
-    if (scope_table_flag && scope_table_out) {
-        print_all_scope_tables(scope_table_out);
-        fclose(scope_table_out);
-        if (debug_flag) {
-            fprintf(stderr, "Debug: Printed all scope tables\n");
-        }
+    if (scope_table_flag && scope_table_out)
+    {
+        print_all_scope_tables(scope_table_out);  // print out the scope table so we can verify identifiers.
+        fclose(scope_table_out);                  // close the the scope table output file
     }
 
     cleanup_scope_table_system();
     free(filenames);
-
-    fprintf(stderr, "Processing completed successfully\n");
-
     return result;
-}
-
-void clear_temp_files() {
-    // List of temporary files to clear
-    const char* temp_files[] = {
-        "temp_data.asm",
-        "temp_bss.asm",
-        "temp_text.asm"
-    };
-    size_t num_temp_files = sizeof(temp_files) / sizeof(temp_files[0]);
-
-    for (size_t i = 0; i < num_temp_files; i++) {
-        if (remove(temp_files[i]) == 0) {
-            fprintf(stderr, "Debug: Removed temporary file %s\n", temp_files[i]);
-        } else {
-            fprintf(stderr, "Warning: Failed to remove temporary file %s: %s\n", temp_files[i], strerror(errno));
-        }
-    }
 }
 
 // Function to write NASM sections to the final output file
 void write_nasm_sections(const char* output_filename)
 {
-    FILE* output = fopen(output_filename, "w");
+    FILE* output = fopen(output_filename, "a");
     if (!output) {
         fprintf(stderr, "Error: Unable to open output file %s: %s\n", output_filename, strerror(errno));
         return;
     }
 
-    const char* sections[] = {"temp_data.asm", "temp_bss.asm", "temp_text.asm"};
+    const char* sections[] = {"temp_data.asm", "temp_bss.asm", "temp_text.asm", "temp_rodata.asm"};
     for (size_t i = 0; i < sizeof(sections) / sizeof(sections[0]); i++) {
         FILE* section = fopen(sections[i], "r");
-        if (section) {
+        if (section)
+        {
             char buffer[256];
-            while (fgets(buffer, sizeof(buffer), section)) {
+
+            while (fgets(buffer, sizeof(buffer), section)) 
+            {
                 fputs(buffer, output);
             }
             fclose(section);
-        } else {
+        } 
+        else 
+        {
             fprintf(stderr, "Warning: Failed to open section file %s: %s\n", sections[i], strerror(errno));
         }
     }
 
     fclose(output);
+}
+
+
+void open_temp_files()
+{
+    temp_data = fopen("temp_data.asm", "a");
+    if (!temp_data) {
+        fprintf(stderr, "Error: Unable to open temp_data.asm\n");
+        return;
+    }
+   
+    temp_bss = fopen("temp_bss.asm", "a");
+    if (!temp_bss) {
+        fprintf(stderr, "Error: Unable to open temp_bss.asm\n");
+        return;
+    }
+   
+    temp_text = fopen("temp_text.asm", "a");
+    if (!temp_text) {
+        fprintf(stderr, "Error: Unable to open temp_text.asm\n");
+         return;
+    }
+
+    temp_rodata = fopen("temp_rodata.asm", "a");
+    if (!temp_rodata) {
+        fprintf(stderr, "Error: Unable to open temp_rodata.asm\n");
+        return;
+    }
+}
+
+void close_temp_files()
+{
+    fclose(temp_data);
+    fclose(temp_bss);
+    fclose(temp_text);
+    fclose(temp_rodata);
 }
