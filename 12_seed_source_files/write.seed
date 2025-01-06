@@ -1,0 +1,84 @@
+global write:
+    .declare
+        hold num: fd;              // Common variables children might need
+        hold num: syscall_num;
+    .assign
+        assign: fd = 1;            // stdout
+        assign: syscall_num = 4;   // sys_write
+    .end_section
+
+
+local get_mark:
+    .code
+        push: ebx;
+        push: ecx;
+        push: edx;
+
+        move_aisle: edx, ebx;                // length
+        move_aisle: ebx, fd;         // Get stdout from parent
+        move_aisle: ecx, eax;              // buffer
+        move_aisle: eax, syscall_num;
+        num: 0x80;
+
+        pop: edx;
+        pop: ecx;
+        pop: ebx;
+        pass_arg: eax;
+    .end_section
+
+
+local get_strand:
+    .code
+        push: ebx;
+        push: ecx;
+        push: edx;
+
+        move_aisle: edx, ebx;              // length
+        move_aisle: ebx, fd;         // Get stdout from parent
+        move_aisle: ecx, eax;              // buffer
+        move_aisle: eax, syscall_num;
+        num: 0x80;
+
+        pop: edx;
+        pop: ecx;
+        pop: ebx;
+        pass_arg: eax;
+    .end_section
+
+
+local get_num:
+    .code
+        push: ebx;
+        push: ecx;
+        push: edx;
+
+        move_aisle: edx, ebx;              // length
+        move_aisle: ebx, fd;         // Get stdout from parent
+        move_aisle: ecx, eax;              // buffer
+        move_aisle: eax, syscall_num;
+        num: 0x80;
+
+        pop: edx;
+        pop: ecx;
+        pop: ebx;
+        pass_arg: eax;
+    .end_section
+
+
+local get_hex:
+    .code
+        push: ebx;
+        push: ecx;
+        push: edx;
+
+        move_aisle: edx, ebx;              // length
+        move_aisle: ebx, fd;         // Get stdout from parent
+        move_aisle: ecx, eax;              // buffer
+        move_aisle: eax, syscall_num;
+        num: 0x80;
+
+        pop: edx;
+        pop: ecx;
+        pop: ebx;
+        pass_arg: eax;
+    .end_section
