@@ -6,24 +6,19 @@
             "label": "C/C++: gcc.exe build active file",
             "command": "C:/msys64/ucrt64/bin/gcc.exe",
             "args": [
-                "-I${workspaceFolder}/scope_table/include",
-                "-I${workspaceFolder}/comp_include",
-                "-I${workspaceFolder}/irp_include",
-                "-I${workspaceFolder}/illeshian_include",
-                "-I${workspaceFolder}/ill_include",
-                "${workspaceFolder}/scope_table/src/*.c",
-                "${workspaceFolder}/comp_src/*.c",
-                "${workspaceFolder}/irp_src/*.c",
-                  "${workspaceFolder}/ill_src/*.c",
+                "-I${workspaceFolder}/03_comp_include",
+                "-I${workspaceFolder}/02_irp_include",
+                "-I${workspaceFolder}/01_ill_include",
+                "${workspaceFolder}/03_comp_source/*.c",
+                "${workspaceFolder}/02_irp_source/*.c",
+                  "${workspaceFolder}/01_ill_source/*.c",
                 "-fdiagnostics-color=always",
                 "-Wall",
                 "-Wextra",
                 "-pedantic",
                 "-g",
                 "-o",
-                "${workspaceFolder}/bin/compiler.exe",
-                "-L${workspaceFolder}/scope_table/lib",
-                "-lscope_table"
+                "${workspaceFolder}/00_bin/compiler.exe"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

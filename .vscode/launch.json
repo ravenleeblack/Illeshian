@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/current_projects/compiler_design/Illeshian/seed_src",
-      "program": "c:/current_projects/compiler_design/Illeshian/seed_src/build/Debug/outDebug",
+      "cwd": "c:/current_projects/compiler_design/Illeshian/03_comp_source",
+      "program": "c:/current_projects/compiler_design/Illeshian/03_comp_source/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

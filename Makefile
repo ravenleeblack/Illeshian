@@ -4,18 +4,18 @@ CFLAGS = -Wall -Wextra -pedantic -fPIC -I$(SCOPE_INCLUDEDIR)
 LDFLAGS = -shared
 
 # Directories
-IRP_SRCDIR = irp_src
-COMP_SRCDIR = comp_src
-ILL_SRCDIR = ill_src
-SEED_SRCDIR = seed_src
-SCOPE_SRCDIR = scope_src
-SCOPE_INCLUDEDIR = scope_include
+IRP_SRCDIR = 02_irp_source
+COMP_SRCDIR = 03_comp_source
+ILL_SRCDIR = 01_ill_source
+SEED_SRCDIR = 04_seed_source
+SCOPE_SRCDIR = 05_scope_source
+SCOPE_INCLUDEDIR = 05_scope_include
 
 # Include directories
-IRP_INCLUDEDIR = irp_include
-COMP_INCLUDEDIR = comp_include
-ILL_INCLUDEDIR = ill_include
-SEED_INCLUDEDIR = seed_include
+IRP_INCLUDEDIR = 02_irp_include
+COMP_INCLUDEDIR = 03_comp_include
+ILL_INCLUDEDIR = 01_ill_include
+SEED_INCLUDEDIR = 04_seed_include
 
 # Object directories
 IRP_OBJDIR = irp_obj
@@ -25,8 +25,8 @@ SEED_OBJDIR = seed_obj
 SCOPE_OBJDIR = $(OBJDIR)/scope
 
 # Scope table library directories
-SCOPE_SRCDIR = scope_src
-SCOPE_INCLUDEDIR = scope_include
+SCOPE_SRCDIR = 05_scope_source
+SCOPE_INCLUDEDIR = 05_scope_include
 SCOPE_OBJDIR = $(OBJDIR)/scope
 SCOPE_LIBDIR = lib
 
@@ -148,9 +148,9 @@ ILL_SRCS = $(ILL_SRCDIR)/ill_main.c \
 ILL_OBJS = $(patsubst $(ILL_SRCDIR)/%.c,$(ILL_OBJDIR)/%.o,$(ILL_SRCS))
 
 # Local build directories
-BINDIR = bin
-OBJDIR = obj
-LIBDIR = lib
+BINDIR = 00_bin
+OBJDIR = 00_obj
+LIBDIR = 00_lib
 
 # Object subdirectories
 IRP_OBJDIR = $(OBJDIR)/irp
