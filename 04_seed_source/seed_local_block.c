@@ -11,6 +11,8 @@ void process_local_block_label(int parent_global_id)
     scan(&Token);
     ident(_ident, Text);
     local_block_id = insert_local_block_scope(Text, scope_tool_none, scope_type_none);
+    convert_local_block_label(Text);
+
 
     scan(&Token);
     colon(_colon, ":");
@@ -22,6 +24,8 @@ void process_local_block_label(int parent_global_id)
         if(Token.token_rep == _end_section)
         {
             process_end_section();
+            convert_label_pass_arg();
+            
             process_local_block_child_labels(local_block_id);
             return 0;
         }

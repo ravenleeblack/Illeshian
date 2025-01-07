@@ -386,20 +386,22 @@ int keyword(char *s)
 		    break;
         
         case 'm': 
-            if (!strcmp(s, "move_den"))      return _move_den;
-            if (!strcmp(s, "move_bay"))      return _move_bay; 
-            if (!strcmp(s, "move_aisle"))    return _move_aisle;
-            if (!strcmp(s, "move_zone"))     return _move_zone;
-            if (!strcmp(s, "move_dens"))     return _move_dens;
-            if (!strcmp(s, "move_bays"))     return _move_bays;
-            if (!strcmp(s, "move_aisles"))   return _move_aisles;
-            if (!strcmp(s, "move_zones"))    return _move_zones;
             if (!strcmp(s, "mul"))           return _mul;
             if (!strcmp(s, "mul_den"))       return _mul_den;
             if (!strcmp(s, "mul_bay"))       return _mul_bay;
 			if (!strcmp(s, "mark"))          return _mark;
 			if (!strcmp(s, "mark_ptr"))      return _mark_ptr;
 			if (!strcmp(s, "mark_literal"))  return _mark_literal;
+
+            if (!strcmp(s, "move_den"))      return _move_den;
+            if (!strcmp(s, "move_bay"))      return _move_bay; 
+            if (!strcmp(s, "move_aisle"))    return _move_aisle;
+            if (!strcmp(s, "move_zone"))     return _move_zone;
+            
+            if (!strcmp(s, "move_dens"))     return _move_dens;
+            if (!strcmp(s, "move_bays"))     return _move_bays;
+            if (!strcmp(s, "move_aisles"))   return _move_aisles;
+            if (!strcmp(s, "move_zones"))    return _move_zones;
             break;
         
         case 'n': 
@@ -417,14 +419,29 @@ int keyword(char *s)
 			break;
         
         case 'p': 
-		   if (!strcmp(s, "push"))          return _push; 
-		   if (!strcmp(s, "pop"))           return _pop; 
-		   if (!strcmp(s, "ptr"))           return _ptr;
-		   if (!strcmp(s, "push_radule"))   return _push_radule; 
-		   if (!strcmp(s, "pop_radule"))    return _pop_radule;
-		   if (!strcmp(s, "pass_arg"))      return _pass_arg;
-           if (!strcmp(s, "passage"))       return _passage;
-		   break;
+            if (!strcmp(s, "ptr"))            return _ptr;
+            if (!strcmp(s, "pass_arg"))       return _pass_arg;
+            if (!strcmp(s, "passage"))        return _passage;
+    
+            // New Push/Pop Variants
+            if (!strcmp(s, "push_den"))       return _push_den;
+            if (!strcmp(s, "pop_den"))        return _pop_den;
+            if (!strcmp(s, "push_bay"))       return _push_bay;
+            if (!strcmp(s, "pop_bay"))        return _pop_bay;
+            if (!strcmp(s, "push_aisle"))     return _push_aisle;
+            if (!strcmp(s, "pop_aisle"))      return _pop_aisle;
+            if (!strcmp(s, "push_zone"))      return _push_zone;
+            if (!strcmp(s, "pop_zone"))       return _pop_zone;
+
+            if (!strcmp(s, "push_dens"))       return _push_den;
+            if (!strcmp(s, "pop_dens"))        return _pop_den;
+            if (!strcmp(s, "push_bays"))       return _push_bay;
+            if (!strcmp(s, "pop_bays"))        return _pop_bay;
+            if (!strcmp(s, "push_aisles"))     return _push_aisle;
+            if (!strcmp(s, "pop_aisles"))      return _pop_aisle;
+            if (!strcmp(s, "push_zones"))      return _push_zone;
+            if (!strcmp(s, "pop_zones"))       return _pop_zone;
+            break;
         
         case 'r': 
             if (!strcmp(s, "return"))       return _return;
@@ -558,25 +575,34 @@ int scan(struct token *t)
         case EOF:  t->token_rep = _enfi;       return 0;
        
         case '"':  // Handle string literals
-        t->token_rep = _strand_literal;
-        
-        // Get the previous identifier name that was scanned
-        t->token_str = strdup(Text); // Store the last scanned identifier
-        if (!t->token_str) {
-            error("Failed to allocate memory for string identifier");
-            return 0;
-        }
-        
-        // Scan the actual string content
-        scanstr(Text);
-        
-        // Store the string content
-        t->string_value = strdup(Text);
-        if (!t->string_value) {
-            free(t->token_str);
-            error("Failed to allocate memory for string literal value");
-            return 0;
-        }
+            t->token_rep = _strand_literal;
+            
+            // Ensure Text is not NULL or improperly sized
+            if (!Text) {
+                error("Text buffer is NULL");
+                return 0;
+            }
+            if (strlen(Text) == 0) {
+                error("Text buffer is empty");
+                return 0;
+            }
+            
+            t->token_str = strdup(Text); // Store the last scanned identifier
+            if (!t->token_str) {
+                error("Failed to allocate memory for string identifier");
+                return 0;
+            }
+            
+            // Scan the actual string content
+            scanstr(Text);
+            
+            // Store the string content
+            t->string_value = strdup(Text);
+            if (!t->string_value) {
+                free(t->token_str);
+                error("Failed to allocate memory for string literal value");
+                return 0;
+            }
         break;
         default:
             // Handle numbers (both hex and decimal)

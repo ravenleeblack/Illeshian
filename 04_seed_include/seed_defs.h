@@ -79,7 +79,7 @@ enum {
     _r8w, _r9w, _r10w, _r11w, _r12w, _r13w, _r14w, _r15w,
     _al,  _bl,  _cl,  _dl,  _sil, _dil, _bpl, _spl,                       // 8-bit
     _r8b, _r9b, _r10b, _r11b, _r12b, _r13b, _r14b, _r15b,
-
+    _ah, _bh, _ch, _dh,
     // Basic instructions
     _move, _push, _pop, _add, _sub, _mul, _div,                           // Core operations
     _and, _or, _xor, _not, _lshift, _rshift, _rotate_left, _rotate_right, // Logical/Shifts
@@ -107,6 +107,23 @@ enum {
     _push_radule, _pop_radule, _push_sadule, _pop_sadule,               // Stack variants
     _push_dadule, _pop_dadule,
 
+    _push_den,    // 1 unsigned byte
+    _push_dens,   // 1 signed byte
+    _push_bay,    // 2 unsigned byte
+    _push_bays,   // 2 signed byte
+    _push_aisle,  // 4 unsigned byte
+    _push_aisles, // 4 signed byte
+    _push_zone,   // 8 unsigned byte
+    _push_zones,   // 8 signed byte
+
+    _pop_den,    // 1 unsigned byte
+    _pop_dens,   // 1 signed byte
+    _pop_bay,    // 2 unsigned byte
+    _pop_bays,   // 2 signed byte
+    _pop_aisle,  // 4 unsigned byte
+    _pop_aisles, // 4 signed byte
+    _pop_zone,   // 8 unsigned byte
+    _pop_zones,   // 8 signed byte
     // Addressing and directives
     _ptr, _offset, _rel, _align, _org, _bits, _equ, _times,
 
@@ -119,6 +136,8 @@ enum {
     _set_flag, 
 
     _file_section, 
+
+    _get_den_reg, _get_bay_reg, _get_aisle_reg, _get_zone_reg, _get_dens_reg, _get_bays_reg, _get_aisles_reg, _get_zones_reg,
 };
 
 // Token structure

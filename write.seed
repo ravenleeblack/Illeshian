@@ -18,7 +18,6 @@ local get_mark:
         move_aisle: ebx, fd;         // Get stdout from parent
         move_aisle: ecx, eax;              // buffer
         move_aisle: eax, syscall_num;
-        num: 0x80;
 
         pop: edx;
         pop: ecx;
@@ -37,7 +36,6 @@ local get_strand:
         move_aisle: ebx, fd;         // Get stdout from parent
         move_aisle: ecx, eax;              // buffer
         move_aisle: eax, syscall_num;
-        num: 0x80;
 
         pop: edx;
         pop: ecx;

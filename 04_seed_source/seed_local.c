@@ -21,7 +21,7 @@ void process_local_label(int parent_global_id)
         if(Token.token_rep == _end_section) 
         {
             process_end_section();
-            convert_local_label_pass_arg();
+            convert_label_pass_arg();
             
             process_local_child_labels(local_id);
             return;

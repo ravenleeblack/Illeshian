@@ -18,7 +18,7 @@ void convert_global_label(const char* label_name)
 // Function to convert global block scope label into nasm
 void convert_global_block_label(const char* label) 
 {
-    fprintf(temp_text, ".%s:\n", label);
+    fprintf(temp_text, "%s:\n", label);
 }
 
 // Function to convert local scope label into nasm
@@ -27,23 +27,25 @@ void convert_local_label(const char* label_name)
     fprintf(temp_text, "%s:\n", label_name);
 }
 
+// Function to convert local block scope label into nasm
+void convert_local_block_label(const char* label_name)
+{
+    fprintf(temp_text, "%s:\n", label_name);
+}
+
+
 // Function to add ret onto end of global scope label
-void convert_global_label_pass_arg()
+void convert_label_pass_arg()
 {
     fprintf(temp_text, "    ret\n");
 }
 
-// Function to add ret onto end of global scope label
-void convert_local_label_pass_arg()
+
+void convert_extern_label(const char* label_name)
 {
-    fprintf(temp_text, "    ret\n");
+    fprintf(temp_text, "    extern %s\n", label_name);
 }
 
-/* Function to encode a Seedling assign section to NASM  */
-void output_assign_section_body(const char* ident, int type)
-{
-    fprintf(temp_data, "    %s db %d\n", ident, type); 
-}
 
 
 
@@ -56,8 +58,7 @@ void encode_instruction(const char* instr, const char* dest, const char* src) {
 // Function to encode a Seedling call function instruction to NASM
 void encode_call_function_instruction(const char* label_one, const char* label_two) {
 
-    fprintf(temp_text, "    call %s\n", label_one);
-    fprintf(temp_text, "    call %s\n", label_two);
+    fprintf(temp_text, "    call %s.%s\n", label_one, label_two);
 }
 
 // Function to encode a Seedling call manager instruction to NASM
@@ -70,15 +71,7 @@ void encode_call_manager_instruction(const char* label) {
 // Function to encode a Seedling lend instruction to NASM
 void encode_lend_instruction(const char* reg1) {
 
-    fprintf(temp_text, "    lend %s\n", reg1);
-}
-
-
-
-// Function to encode a Seedling file section to NASM
-void encode_file_section(const char* value, int length)
-{
-    fprintf(temp_rodata, "    db %s, %d\n", value, length);
+    fprintf(temp_text, "    int %s\n", reg1);
 }
 
 
@@ -117,6 +110,7 @@ void encode_test_instruction(const char* reg1, const char* reg2) {
     fprintf(temp_text, "    test %s, %s\n", reg1, reg2);
 }
 
+
 // Function to encode a Seedling push instruction to NASM
 void encode_push_instruction(const char* reg) {
     fprintf(temp_text, "    push %s\n", reg);
@@ -134,22 +128,60 @@ void encode_number(int num) {
 
 
 // Function to encode a Seedling declare section to NASM
-void output_declare_section_body(const char* ident, int type) 
+void output_declare_section_body(const char* ident, int byte_size, int type) 
 {
-    fprintf(temp_bss, "    %s resb %d\n", ident, type); 
+    switch(byte_size)
+    {
+        case 1:  fprintf(temp_bss, "    %s resb %d\n", ident, type); break;
+        case 2:  fprintf(temp_bss, "    %s resw %d\n", ident, type); break;
+        case 4:  fprintf(temp_bss, "    %s resd %d\n", ident, type); break;
+        case 8:  fprintf(temp_bss, "    %s resq %d\n", ident, type); break;
+        default: fprintf(temp_bss, "    %s resb %d\n", ident, type); break;
+    }
 }
 
 // Function to encode a Seedling literal section to NASM
-void encode_literal_section(const char* value, int length)
+void encode_literal_section(const char* hold_name, const char* strand_value, int null_value)
 {
-    fprintf(temp_rodata, "    db %s, %d\n", value, length);
+    fprintf(temp_data, "    %s db \"%s\", %d\n", hold_name, strand_value, null_value);
+}
+
+void encode_file_section(const char* label_name, const char* label_strand, int length)
+{
+    fprintf(temp_data, "    %s db \"%s\", %d\n", label_name, label_strand, length);
 }
 
 //=====================================================================================
 // sections header functions
 
-void output_code_section_header()    { fprintf(temp_text, "section .text\n");     }
-void output_declare_section_header() { fprintf(temp_bss, "section .bss\n");       }
-void output_assign_section_header()  { fprintf(temp_data, "section .data\n");     }
-void output_literal_section_header() { fprintf(temp_rodata, "section .rodata\n"); }
+void output_code_section_header()    
+{
+    if (!text_header_printed) {
+        fprintf(temp_text, "section .text\n");
+        text_header_printed = 1;  // Set the flag after printing the header
+    }
+}
 
+void output_declare_section_header() 
+{
+    if (!bss_header_printed) {
+        fprintf(temp_bss, "section .bss\n");
+        bss_header_printed = 1;  // Set the flag after printing the header
+    }
+}
+
+void output_assign_section_header()  
+{
+    if (!data_header_printed) {
+        fprintf(temp_data, "section .data\n");
+        data_header_printed = 1;  // Set the flag after printing the header
+    }
+}
+
+void output_literal_section_header() 
+{
+    if (!rodata_header_printed) {
+        fprintf(temp_rodata, "section .rodata\n");
+        rodata_header_printed = 1;  // Set the flag after printing the header
+    }
+}

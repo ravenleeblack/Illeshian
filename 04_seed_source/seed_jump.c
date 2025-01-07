@@ -2,98 +2,29 @@
 #include "seed_data.h"
 #include "seed_decl.h"
 
-
+/*here we have no byte size, so we just get the label, were jumping to*/
 void process_jump_instruction(enum scope_type current_scope) 
 {
-    jump(_jump, "jump");
+    switch(Token.token_rep)
+    {
+        case _jump:           jump(_jump, "jump");                               break;
+        case _jump_less:      jump_less(_jump_less, "jump_less");                break;
+        case _jump_neg:       jump_neg(_jump_neg, "jump_neg");                   break;
+        case _jump_great:     jump_great(_jump_great, "jump_great");             break;
+        case _jump_equal:     jump_equal(_jump_equal, "jump_equal");             break;
+        case _jump_not_equal: jump_not_equal(_jump_not_equal, "jump_not_equal"); break;
+        default: break;
+    }
 
     scan(&Token);
     colon(_colon, ":");
 
     scan(&Token);
-    ident(_ident, Text);
-
-    switch(current_scope)
-    {
-        case scope_universal:    entry_index = search_universal_scope(Text);    break;  
-        case scope_global:       entry_index = search_global_scope(Text);       break;
-        case scope_global_block: entry_index = search_global_block_scope(Text); break;
-        case scope_local:        entry_index = search_local_scope(Text);        break;
-        case scope_local_block:  entry_index = search_local_block_scope(Text);  break;
-        default: error("seeding error: assign error: Invalid scope");           break;
-    }
+    parse_ident(current_scope);
     encode_jump_instruction(Text);
 
     scan(&Token);
     semicolon(_semicolon, ";");
-}
-
-void process_jump_less_instruction(enum scope_type current_scope) 
-{
-    jump_less(_jump_less, "jump_less");
-
-    scan(&Token);
-    colon(_colon, ":");
-
-    scan(&Token);
-    ident(_ident, Text);
-
-    switch(current_scope)
-    {
-        case scope_universal:    entry_index = search_universal_scope(Text);    break;  
-        case scope_global:       entry_index = search_global_scope(Text);       break;
-        case scope_global_block: entry_index = search_global_block_scope(Text); break;
-        case scope_local:        entry_index = search_local_scope(Text);        break;
-        case scope_local_block:  entry_index = search_local_block_scope(Text);  break;
-        default: error("seeding error: assign error: Invalid scope");           break;
-    }
-    encode_jump_less_instruction(Text);
-
-    scan(&Token);
-    semicolon(_semicolon, ";");
-
-}
-
-
-void process_jump_neg_instruction(enum scope_type current_scope) 
-{
-    jump_neg(_jump_neg, "jump_neg");
-
-    scan(&Token);
-    colon(_colon, ":");
-
-    scan(&Token);
-    ident(_ident, Text);
-
-    switch(current_scope)
-    {
-        case scope_universal:    entry_index = search_universal_scope(Text);    break;  
-        case scope_global:       entry_index = search_global_scope(Text);       break;
-        case scope_global_block: entry_index = search_global_block_scope(Text); break;
-        case scope_local:        entry_index = search_local_scope(Text);        break;
-        case scope_local_block:  entry_index = search_local_block_scope(Text);  break;
-        default: error("seeding error: assign error: Invalid scope");           break;
-    }
-    encode_jump_neg_instruction(Text);
-
-    scan(&Token);
-    semicolon(_semicolon, ";");
-
-}
-
-void process_jump_great_instruction() 
-{
-
-}   
-
-void process_jump_equal_instruction() 
-{
-
-}
-
-void process_jump_not_equal_instruction() 
-{
-
 }
 
 

@@ -2,5 +2,5 @@ global yield:
     .code
         move_aisle: eax, 1;    // syscall 1 = exit
         set_flag: ebx, ebx;    // Return code 0
-  
+        num: 0x80;
     .end_section
