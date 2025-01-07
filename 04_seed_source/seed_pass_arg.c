@@ -3,8 +3,6 @@
 #include "seed_decl.h"
 
 
-
-
 void process_pass_arg_instruction(enum scope_type current_scope) 
 {
     pass_arg(_pass_arg, "pass_arg");

@@ -79,3 +79,54 @@ int parse_type(enum scope_type current_scope)
     }
     return data_type;
 }
+
+
+int get_byte_size(int declare_type)
+ {
+    switch(declare_type) {
+        case type_num:    return 4;
+        case type_bay:    return 2;
+        case type_mark:   return 1;
+        case type_zone:   return 8;
+        default:          return 0;  // Handle invalid types
+    }
+
+}
+
+int parse_address(enum scope_type current_scope)
+{
+    char* current_placeholder;
+
+    address(_address, "address");
+
+    scan(&Token);
+    lbrace(_lbrace, "[");
+
+    scan(&Token);
+    current_placeholder = parse_ident(current_scope);
+
+    scan(&Token);
+    rbrace(_rbrace, "]");
+
+    return current_placeholder; // Return the fetched scope index
+}
+
+int parse_fetch(enum scope_type current_scope)
+{
+    char* current_placeholder;
+
+    int current_index = 0;
+
+    fetch(_fetch, "fetch");
+
+    scan(&Token);
+    lbrace(_lbrace, "[");
+
+    scan(&Token);
+    current_placeholder = parse_ident(current_scope);
+
+    scan(&Token);
+    rbrace(_rbrace, "]");
+
+    return current_placeholder; // Return the fetched scope index
+}

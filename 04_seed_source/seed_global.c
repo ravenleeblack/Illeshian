@@ -28,7 +28,10 @@ void process_global_label(void)
         if(Token.token_rep == _end_section)
         {
             process_end_section();
-            convert_global_label_pass_arg();   //output ret after the global section before the children
+            if(!is_main_entry)
+            {
+                convert_label_pass_arg();   //output ret after the global section before the children
+            }
 
             process_global_child_labels(global_id);
             return;
@@ -47,8 +50,6 @@ void process_global_child_labels(int parent_global_id)
     while(1)
     {
         scan(&Token);
-        
-        
         switch(Token.token_rep)
         {
             case _local:        process_local_label(parent_global_id);        break;

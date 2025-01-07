@@ -1,31 +1,11 @@
 section .data
-    fd db 1
+    format db "The result of %d + %d is: %d", 0
 section .bss
-    fd resb 37
-    open_flags resb 37
-    open_mode resb 37
-    file_buffer resb 37
-    bytes_read resb 37
+    num_1 resb 5
+    num_2 resb 7
+section .text
 global _start
+    extern printf
     jmp main
 main:
-    mov eax, 5
-    mov ebx, file
-    mov ecx, open_flags
-    mov edx, open_mode
-    test eax, eax
-    jng handle_error
-    mov fd, eax
-    mov eax, 4
-    mov ebx, 1
-    mov ecx, buffer
-    mov edx, eax
-    mov eax, 6
-    jmp yield
-    ret
-.handle_error:
-    mov eax, 4
-    mov ebx, 2
-    mov ecx, error_msg
-    mov edx, 20
-    jmp yield
+    mov , 1

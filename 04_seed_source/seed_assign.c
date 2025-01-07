@@ -5,9 +5,8 @@
 void process_assign_section(enum scope_type current_scope)
 {
     assign(_assign_section, ".assign");
-    output_assign_section_header();   // This should allow us to only output the section header once.
-    
-    while(1)
+   
+    while(1)    // loop the .assign section body and get all the assigments
     {
         scan(&Token);
 
@@ -36,14 +35,17 @@ void process_assign_section(enum scope_type current_scope)
 
             scan(&Token);  
             num_literal(_num_literal, Token.num_value);
-            output_assign_section_body(Text, Token.num_value);  
+            output_declare_section_body(Text, byte_size, Token.num_value);
+
+            scan(&Token);
+            semicolon(_semicolon, ";");
         }
-        if(Token.token_rep == _semicolon)
+        else
         {
+            reject_token(&Token);   //we reject it so the next section can handle it then we break out of this loop.
             break;
         }
     }
-    semicolon(_semicolon, ";");
 }
 
 

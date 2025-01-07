@@ -23,6 +23,8 @@ void process_global_block_label(int parent_global_id)
         if(Token.token_rep == _end_section) 
         {
             process_end_section();
+            convert_label_pass_arg();
+            
             process_global_block_child_labels(global_block_id);
             return;
         }

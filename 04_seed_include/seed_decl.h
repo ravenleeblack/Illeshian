@@ -368,6 +368,26 @@ void jump_neg(int t, char *expected);
 void test(int t, char *expected);
 void file_section(int t, char *expected);
 
+void push_den(int t, char *expected);
+void push_bay(int t, char *expected);
+void push_aisle(int t, char *expected);
+void push_zone(int t, char *expected);
+
+void push_dens(int t, char *expected);
+void push_bays(int t, char *expected);
+void push_aisles(int t, char *expected);
+void push_zones(int t, char *expected);
+
+void pop_den(int t, char *expected);
+void pop_bay(int t, char *expected);
+void pop_aisle(int t, char *expected);
+void pop_zone(int t, char *expected);
+
+void pop_dens(int t, char *expected);
+void pop_bays(int t, char *expected);
+void pop_aisles(int t, char *expected);
+void pop_zones(int t, char *expected);
+
 //============================================================================================================================
 // Section handling
 
@@ -389,8 +409,6 @@ void error(const char *message);
 void reject_token(struct token *t);
 
 
-int parse_type(enum scope_type current_scope);
-
 
 void process_call_instruction(enum scope_type scope);
 
@@ -407,9 +425,9 @@ void convert_universal_label(const char* label);
 void convert_global_label(const char* label_name);
 void convert_global_block_label(const char* label);
 void convert_local_label(const char* label_name);
+void convert_local_block_label(const char* label_name);
 
-void convert_global_label_pass_arg();
-void convert_local_label_pass_arg();
+void convert_label_pass_arg();
 
 
 
@@ -428,11 +446,11 @@ void output_assign_section_header();
 void output_code_section_header();
 void output_literal_section_header();
 
-void output_declare_section_body(const char* ident, int type);
+void output_declare_section_body(const char* ident, int byte_size, int type);
 void output_assign_section_body(const char* ident, int type);
-void encode_literal_section(const char* value, int length);
+void encode_literal_section(const char* hold_name, const char* strand_value, int null_value);
 
-void encode_file_section(const char* value, int length);
+void encode_file_section(const char* label_name, const char* label_strand, int length);
 
 void encode_register(const char* reg, char* nasm_reg);
 void encode_memory_reference(const char* base, const char* offset, char* nasm_ref);
@@ -470,10 +488,16 @@ void process_jump_not_equal_instruction();
 
 void process_jump_neg_instruction(enum scope_type current_scope);
 void process_test_instruction(enum scope_type current_scope);
+
+
+
 void process_file_section(enum scope_type current_scope);
+void process_literal_section(enum scope_type current_scope);
 
 
-void open_temp_files();
+
+void convert_extern_label(const char* label_name);
+void open_temp_files_for_current_file(const char *filename);
 void close_temp_files();
 
 void clear_temp_files(void);
@@ -484,6 +508,25 @@ void set_architecture(int bits);
 extern int nasm_flag;
 extern int rootling_flag;
 
+
+
+int parse_type(enum scope_type current_scope);
+int get_byte_size(int declare_type);
+int  parse_address(enum scope_type current_scope);
+int parse_fetch(enum scope_type current_scope);
+
+
+int parse_ident(enum scope_type current_scope);
+
+int parse_first_phrase(enum scope_type current_scope, int get_reg_by_type);
+int parse_second_phrase(enum scope_type current_scope, int get_reg_by_type);
+
+
+char* get_den_reg();   // 8-bit registers
+char* get_bay_reg();   // 16-bit registers
+char* get_aisle_reg(); // 32-bit registers
+char* get_zone_reg();  // 64-bit registers
+char* get_undetermined_reg();
 
 #endif // SEED_DECL_H
 

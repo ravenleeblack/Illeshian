@@ -1,7 +1,10 @@
 #include "seed_defs.h"  
 #include "seed_data.h"   
 #include "seed_decl.h" 
-
+#include <errno.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 int comp_line_pos = 0;
 int putback_char = '\n';
@@ -37,24 +40,72 @@ int entry_index = 0;
 char dest[64] = {0};
 char src[64] = {0};
 
- char output_filename[256];
+char output_filename[256];
+
+// Flags to track if the section header has been printed
+int data_header_printed = 0;
+int bss_header_printed = 0;
+int text_header_printed = 0;
+
+void reset_header_flags();
 
 
-// Modify main() to use the new dependency system
-int main(int argc, char *argv[])
+typedef struct
 {
+    char** files;
+    int count;
+    int capacity;
+} source_file_list;
+
+source_file_list* create_file_list(int capacity) 
+{
+    source_file_list* list = malloc(sizeof(source_file_list));
+    if (!list) return NULL;
+    list->files = malloc(capacity * sizeof(char*));
+    if (!list->files) {
+        free(list);
+        return NULL;
+    }
+    list->count = 0;
+    list->capacity = capacity;
+    return list;
+}
+
+void add_file_to_list(source_file_list* list, const char* filename)
+{
+    if (list->count >= list->capacity) {
+        list->capacity *= 2;
+        list->files = realloc(list->files, list->capacity * sizeof(char*));
+        if (!list->files) {
+            fprintf(stderr, "Error: Unable to allocate memory for file list\n");
+            exit(1);
+        }
+    }
+    list->files[list->count++] = strdup(filename);
+}
+
+void free_file_list(source_file_list* list) {
+    for (int i = 0; i < list->count; i++) {
+        free(list->files[i]);
+    }
+    free(list->files);
+    free(list);
+}
+
+int main(int argc, char *argv[]) {
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <input file>\n", argv[0]);
         return 1;
     }
 
     int result = 0;
-    char **filenames = malloc(argc * sizeof(char*));
-    if (!filenames) {
-        fprintf(stderr, "Error: Unable to allocate memory for filenames\n");
+
+    // Create the file list
+    source_file_list* file_list = create_file_list(10); // Initial capacity of 10
+    if (!file_list) {
+        fprintf(stderr, "Error: Unable to create file list\n");
         return 1;
     }
-    int file_count = 0;
 
     // Initialize scope table system first
     cleanup_scope_table_system();
@@ -64,70 +115,64 @@ int main(int argc, char *argv[])
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-o") == 0) {
             output_flag = 1;
-        }
-        else if (strcmp(argv[i], "-d") == 0) {
+        } else if (strcmp(argv[i], "-d") == 0) {
             debug_flag = 1;
-        }
-        else if (strcmp(argv[i], "-n") == 0) {
+        } else if (strcmp(argv[i], "-n") == 0) {
             nasm_flag = 1;
-        }
-        else if (strcmp(argv[i], "-r") == 0) {
-            rootling_flag = 1;
-        }
-        else if (strcmp(argv[i], "-t") == 0) {
+        } else if (strcmp(argv[i], "-t") == 0) {
             scope_table_flag = 1;
             scope_table_out = fopen("scope_table.txt", "w");
             if (!scope_table_out) {
                 fprintf(stderr, "Failed to open scope_table.txt: %s\n", strerror(errno));
-                cleanup_scope_table_system();
-                free(filenames);
-                filenames = NULL;
+                free_file_list(file_list);
                 return 1;
             }
-        }
-        else if (argv[i][0] != '-') {
-            filenames[file_count++] = argv[i];
+        } else if (argv[i][0] != '-') {
+            add_file_to_list(file_list, argv[i]);
         }
     }
 
-    for (int i = 0; i < file_count; i++)
-    {
-        seed_in = fopen(filenames[i], "r");  // start parsing the source file
-        if (seed_in == NULL) {
-            fprintf(stderr, "Error: Unable to open input file %s: %s\n", filenames[i], strerror(errno));
+    // Process each file in the list
+    for (int i = 0; i < file_list->count; i++) {
+        seed_in = fopen(file_list->files[i], "r"); // Start parsing the source file
+        if (!seed_in) {
+            fprintf(stderr, "Error: Unable to open input file %s: %s\n", file_list->files[i], strerror(errno));
+            free_file_list(file_list);
             return 1;
         }
 
         open_temp_files();       //open the temp files so we can write nasm output to them
 
-        result = begin_prog();   // start parsing the seedling source code
+        result = begin_prog(); // Start parsing the seedling source code
 
-        fclose(seed_in);         //we are done parsing the file so close it
+        fclose(seed_in); // We are done parsing the file, so close it
         close_temp_files();      //close the temp folders we shouldnt need to append anymore
 
-        if (nasm_flag)
-        {
-            //get the source file name, remove the ext, make ext .asm, and now we have a nasm output file
-            strncpy(output_filename, filenames[i], sizeof(output_filename) - 5);
-            char *dot = strrchr(output_filename, '.');
+        if (nasm_flag) {
+            // Generate output filename based on the current source file
+            strncpy(output_filename, file_list->files[i], sizeof(output_filename) - 5);
+            char* dot = strrchr(output_filename, '.');
             if (dot) *dot = '\0';
             strncat(output_filename, ".asm", sizeof(output_filename) - strlen(output_filename) - 1);
 
-            //pass our new nasm output folder to write_nasm_sections so it can write in all the seedling sections nasm proper.
-            write_nasm_sections(output_filename); 
+            // Write NASM sections to the output file
+            write_nasm_sections(output_filename);
+
+            // Reset state for the next file
+            reset_state();
         }
     }
 
-    if (scope_table_flag && scope_table_out)
-    {
-        print_all_scope_tables(scope_table_out);  // print out the scope table so we can verify identifiers.
-        fclose(scope_table_out);                  // close the the scope table output file
+    if (scope_table_flag && scope_table_out) {
+        print_all_scope_tables(scope_table_out); // Print out the scope table to verify identifiers
+        fclose(scope_table_out);                // Close the scope table output file
     }
 
     cleanup_scope_table_system();
-    free(filenames);
+    free_file_list(file_list); // Free memory allocated for the file list
     return result;
 }
+
 
 // Function to write NASM sections to the final output file
 void write_nasm_sections(const char* output_filename)
@@ -138,7 +183,7 @@ void write_nasm_sections(const char* output_filename)
         return;
     }
 
-    const char* sections[] = {"temp_data.asm", "temp_bss.asm", "temp_text.asm", "temp_rodata.asm"};
+    const char* sections[] = {"temp_data.asm", "temp_bss.asm", "temp_text.asm"};
     for (size_t i = 0; i < sizeof(sections) / sizeof(sections[0]); i++) {
         FILE* section = fopen(sections[i], "r");
         if (section)
@@ -160,32 +205,34 @@ void write_nasm_sections(const char* output_filename)
     fclose(output);
 }
 
+void reset_state() {
+    data_header_printed = 0;
+    bss_header_printed = 0;
+    text_header_printed = 0;
+}
 
 void open_temp_files()
 {
-    temp_data = fopen("temp_data.asm", "a");
+    temp_data = fopen("temp_data.asm", "w");
     if (!temp_data) {
         fprintf(stderr, "Error: Unable to open temp_data.asm\n");
         return;
     }
-   
-    temp_bss = fopen("temp_bss.asm", "a");
+    output_assign_section_header();
+
+    temp_bss = fopen("temp_bss.asm", "w");
     if (!temp_bss) {
         fprintf(stderr, "Error: Unable to open temp_bss.asm\n");
         return;
     }
-   
-    temp_text = fopen("temp_text.asm", "a");
+    output_declare_section_header();
+
+    temp_text = fopen("temp_text.asm", "w");
     if (!temp_text) {
         fprintf(stderr, "Error: Unable to open temp_text.asm\n");
          return;
     }
-
-    temp_rodata = fopen("temp_rodata.asm", "a");
-    if (!temp_rodata) {
-        fprintf(stderr, "Error: Unable to open temp_rodata.asm\n");
-        return;
-    }
+    output_code_section_header();
 }
 
 void close_temp_files()
@@ -193,5 +240,4 @@ void close_temp_files()
     fclose(temp_data);
     fclose(temp_bss);
     fclose(temp_text);
-    fclose(temp_rodata);
 }

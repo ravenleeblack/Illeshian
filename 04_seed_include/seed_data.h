@@ -18,7 +18,10 @@ struct token Token;
 char Text[text_length + 1];		                
 char strand_buffer[text_length + 1];
 
-
+int data_header_printed;
+int bss_header_printed;
+int text_header_printed;
+int rodata_header_printed;
 // Command-comp_line_pos flags
 
 // Core parsing variables
@@ -58,7 +61,8 @@ int entry_index;
 
 char dest[64];
 char src[64];
+char reg_buffer[32]; // Shared buffer for all register retrieval functions
 
-
- extern int declare_type;
+extern int byte_size;
+extern int declare_type;
 

@@ -247,6 +247,29 @@ void pop_radule(int t, char *expected)     { if (Token.token_rep == t) { if (out
 void push(int t, char *expected)           { if (Token.token_rep == t) { if (output_flag) {  light_cyan();     printf(" %s\n", expected);  reset(); } } }
 void pop(int t, char *expected)            { if (Token.token_rep == t) { if (output_flag) {  light_cyan();     printf(" %s\n", expected);  reset(); } } }
 
+void push_den(int t, char *expected) { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+void pop_den(int t, char *expected)  { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+
+void push_bay(int t, char *expected) { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+void pop_bay(int t, char *expected)  { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+
+void push_aisle(int t, char *expected) { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+void pop_aisle(int t, char *expected)  { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+
+void push_zone(int t, char *expected) { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+void pop_zone(int t, char *expected)  { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+
+void push_dens(int t, char *expected) { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+void pop_dens(int t, char *expected)  { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+
+void push_bays(int t, char *expected) { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+void pop_bays(int t, char *expected)  { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+
+void push_aisles(int t, char *expected) { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+void pop_aisles(int t, char *expected)  { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+
+void push_zones(int t, char *expected) { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
+void pop_zones(int t, char *expected)  { if (Token.token_rep == t) { if (output_flag) { light_cyan(); printf(" %s\n", expected); reset(); } } }
 
 
 
@@ -317,6 +340,11 @@ void r12b(int t, char *expected)           { if (Token.token_rep == t) { if (out
 void r13b(int t, char *expected)           { if (Token.token_rep == t) { if (output_flag) {  light_red();     printf(" %s\n", expected);  reset(); } } }
 void r14b(int t, char *expected)           { if (Token.token_rep == t) { if (output_flag) {  light_red();     printf(" %s\n", expected);  reset(); } } }
 void r15b(int t, char *expected)           { if (Token.token_rep == t) { if (output_flag) {  light_red();     printf(" %s\n", expected);  reset(); } } }
+
+void ah(int t, char *expected)             { if (Token.token_rep == t) { if (output_flag) {  light_red();     printf(" %s\n", expected);  reset(); } } }
+void bh(int t, char *expected)             { if (Token.token_rep == t) { if (output_flag) {  light_red();     printf(" %s\n", expected);  reset(); } } }
+void ch(int t, char *expected)             { if (Token.token_rep == t) { if (output_flag) {  light_red();     printf(" %s\n", expected);  reset(); } } }
+void dh(int t, char *expected)             { if (Token.token_rep == t) { if (output_flag) {  light_red();     printf(" %s\n", expected);  reset(); } } }
 
 void int_instr(int t, char *expected) { 
     if (Token.token_rep == t) { 

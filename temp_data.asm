@@ -1,2 +1,2 @@
 section .data
-    fd db 1
+    format db "The result of %d + %d is: %d", 0

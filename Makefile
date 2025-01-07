@@ -106,6 +106,7 @@ SEED_SRCS = $(SEED_SRCDIR)/seed_main.c \
             $(SEED_SRCDIR)/seed_begin_prog.c \
             $(SEED_SRCDIR)/seed_code.c \
             $(SEED_SRCDIR)/seed_compare.c \
+			$(SEED_SRCDIR)/seed_common.c \
             $(SEED_SRCDIR)/seed_call.c \
 			$(SEED_SRCDIR)/seed_nasm_encode.c \
             $(SEED_SRCDIR)/seed_end_section.c \
@@ -122,7 +123,9 @@ SEED_SRCS = $(SEED_SRCDIR)/seed_main.c \
 			$(SEED_SRCDIR)/seed_file.c \
             $(SEED_SRCDIR)/seed_match.c \
 			$(SEED_SRCDIR)/seed_pad.c \
+			$(SEED_SRCDIR)/seed_phrases.c \
             $(SEED_SRCDIR)/seed_parse_type.c \
+			$(SEED_SRCDIR)/seed_registers.c \
             $(SEED_SRCDIR)/seed_section.c \
             $(SEED_SRCDIR)/seed_universal.c \
 			$(SEED_SRCDIR)/seed_move.c \

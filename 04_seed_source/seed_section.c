@@ -2,8 +2,6 @@
 #include "seed_data.h"
 #include "seed_decl.h"
 
-
-
 void process_sections(enum scope_type current_scope)
 {
     switch(Token.token_rep)
@@ -18,6 +16,6 @@ void process_sections(enum scope_type current_scope)
         case _assign_section:   process_assign_section(current_scope);      break;
         case _literal_section:  process_literal_section(current_scope);     break;
         case _code_section:     process_code_section(current_scope);        break;
-        default:                break;
+        default: break;
     }
 }
