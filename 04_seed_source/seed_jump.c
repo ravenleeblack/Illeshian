@@ -5,6 +5,8 @@
 /*here we have no byte size, so we just get the label, were jumping to*/
 void process_jump_instruction(enum scope_type current_scope) 
 {
+    struct phrase *src_index;
+
     switch(Token.token_rep)
     {
         case _jump:           jump(_jump, "jump");                               break;
@@ -20,8 +22,8 @@ void process_jump_instruction(enum scope_type current_scope)
     colon(_colon, ":");
 
     scan(&Token);
-    parse_ident(current_scope);
-    encode_jump_instruction(Text);
+    src_index = parse_ident(current_scope);
+    encode_jump_instruction(src_index);
 
     scan(&Token);
     semicolon(_semicolon, ";");

@@ -1,11 +1,22 @@
 section .data
-    format db "The result of %d + %d is: %d", 0
 section .bss
     num_1 resb 5
     num_2 resb 7
 section .text
 global _start
     extern printf
-    jmp main
+    jmp (null)
 main:
-    mov , 1
+    mov eax, 
+    add eax, 
+    mov , eax
+    push 
+    push 
+    push 
+    push 
+    call printf
+    add esp, 
+    mov eax, 
+    test ebx, ebx
+    int 80
+    call yield

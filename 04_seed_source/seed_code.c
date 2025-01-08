@@ -21,6 +21,26 @@ void process_code_section(enum scope_type current_scope)
             case _call:        process_call_instruction(current_scope );       break;
             case _pass_arg:    process_pass_arg_instruction(current_scope);    break;
 
+            case _add_den:   process_arith_instruction(current_scope); break;
+            case _add_bay:   process_arith_instruction(current_scope); break;
+            case _add_aisle: process_arith_instruction(current_scope); break;
+            case _add_zone:  process_arith_instruction(current_scope); break;
+    
+            case _sub_den:   process_arith_instruction(current_scope); break;
+            case _sub_bay:   process_arith_instruction(current_scope); break;
+            case _sub_aisle: process_arith_instruction(current_scope); break;
+            case _sub_zone:  process_arith_instruction(current_scope); break;
+
+            case _mul_den:   process_arith_instruction(current_scope); break;
+            case _mul_bay:   process_arith_instruction(current_scope); break;
+            case _mul_aisle: process_arith_instruction(current_scope); break;
+            case _mul_zone:  process_arith_instruction(current_scope); break;
+
+            case _div_den:   process_arith_instruction(current_scope); break;
+            case _div_bay:   process_arith_instruction(current_scope); break;
+            case _div_aisle: process_arith_instruction(current_scope); break;
+            case _div_zone:  process_arith_instruction(current_scope); break;
+
             /*push instructions by byte size*/
             case _push_den:    process_push_instruction(current_scope);  break;
             case _push_dens:   process_push_instruction(current_scope);  break;
@@ -57,6 +77,8 @@ void process_code_section(enum scope_type current_scope)
             case _jump_great:     process_jump_instruction(current_scope);  break;
             case _jump_equal:     process_jump_instruction(current_scope);  break;
             case _jump_not_equal: process_jump_instruction(current_scope);  break;
+
+            case _end_section: reject_token(&Token); return 0;
             default: return 0;  
             //break out of the loop since we do not have a known token for this section
         }

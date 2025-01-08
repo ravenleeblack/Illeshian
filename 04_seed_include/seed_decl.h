@@ -388,6 +388,39 @@ void pop_bays(int t, char *expected);
 void pop_aisles(int t, char *expected);
 void pop_zones(int t, char *expected);
 
+void add_den(int t, char *expected);
+void add_bay(int t, char *expected);
+void add_aisle(int t, char *expected);
+void add_zone(int t, char *expected);
+void sub_den(int t, char *expected);
+void sub_bay(int t, char *expected);
+void sub_aisle(int t, char *expected);
+void sub_zone(int t, char *expected);
+void mul_den(int t, char *expected);
+void mul_bay(int t, char *expected);
+void mul_aisle(int t, char *expected);
+void mul_zone(int t, char *expected);
+void div_den(int t, char *expected);
+void div_bay(int t, char *expected);
+void div_aisle(int t, char *expected);
+void div_zone(int t, char *expected);
+void add_dens(int t, char *expected);
+void add_bays(int t, char *expected);
+void add_aisles(int t, char *expected);
+void add_zones(int t, char *expected);
+void sub_dens(int t, char *expected);
+void sub_bays(int t, char *expected);
+void sub_aisles(int t, char *expected);
+void sub_zones(int t, char *expected);
+void mul_dens(int t, char *expected);
+void mul_bays(int t, char *expected);
+void mul_aisles(int t, char *expected);
+void mul_zones(int t, char *expected);
+void div_dens(int t, char *expected);
+void div_bays(int t, char *expected);
+void div_aisles(int t, char *expected);
+void div_zones(int t, char *expected);
+
 //============================================================================================================================
 // Section handling
 
@@ -431,9 +464,8 @@ void convert_label_pass_arg();
 
 
 
-void finalize_scope_section(FILE* output, enum scope_type scope);
-void copy_temp_file_contents(FILE* temp, FILE* output);
-void finalize_nasm_output(FILE* output);
+void write_nasm_sections(const char* output_filename);
+
 
 void encode_instruction(const char* instr, const char* dest, const char* src);
 
@@ -448,57 +480,41 @@ void output_literal_section_header();
 
 void output_declare_section_body(const char* ident, int byte_size, int type);
 void output_assign_section_body(const char* ident, int type);
-void encode_literal_section(const char* hold_name, const char* strand_value, int null_value);
+void encode_literal_section(struct phrase * hold_name, struct phrase *src, int null_value);
 
 void encode_file_section(const char* label_name, const char* label_strand, int length);
 
 void encode_register(const char* reg, char* nasm_reg);
 void encode_memory_reference(const char* base, const char* offset, char* nasm_ref);
 
-// Add these declarations
-void encode_push_instruction(const char* reg);
-void encode_pop_instruction(const char* reg);
+
 
 void encode_call_manager_instruction(const char* label);
 void encode_call_function_instruction(const char* label_one, const char* label_two);
-
-
-void encode_jump_instruction(const char* label);
-void encode_jump_less_instruction(const char* label);
-void encode_numeric_instruction(const char* value);
-void encode_pass_arg_instruction(const char* reg);
-void encode_set_flag_instruction(const char* reg1, const char* reg2);
-void encode_jump_neg_instruction(const char* label);
-
-
 void encode_test_instruction(const char* reg1, const char* reg2);
-
 void encode_lend_instruction(const char* reg1);
 void encode_fetch_reference(const char* dest, const char* src);
 
+
+
+/*functions that process the instructions in the code sections*/
 void process_compare_instruction(enum scope_type current_scope);
 void process_set_flag_instruction(enum scope_type current_scope);
-
 void process_jump_instruction(enum scope_type current_scope);
 void process_jump_less_instruction(enum scope_type current_scope);
-
-void process_jump_great_instruction();
-void process_jump_equal_instruction();
-void process_jump_not_equal_instruction();
-
 void process_jump_neg_instruction(enum scope_type current_scope);
 void process_test_instruction(enum scope_type current_scope);
-
-
-
 void process_file_section(enum scope_type current_scope);
 void process_literal_section(enum scope_type current_scope);
-
+void process_arith_instruction(enum scope_type current_scope);
 
 
 void convert_extern_label(const char* label_name);
-void open_temp_files_for_current_file(const char *filename);
+void open_temp_files();
 void close_temp_files();
+void reset_state();
+
+
 
 void clear_temp_files(void);
 int get_architecture(void);
@@ -512,20 +528,32 @@ extern int rootling_flag;
 
 int parse_type(enum scope_type current_scope);
 int get_byte_size(int declare_type);
-int  parse_address(enum scope_type current_scope);
-int parse_fetch(enum scope_type current_scope);
+
+struct phrase *parse_pointer(enum scope_type current_scope);
+struct phrase *parse_address(enum scope_type current_scope);
+struct phrase *parse_fetch(enum scope_type current_scope);
 
 
-int parse_ident(enum scope_type current_scope);
+/*functions that process the conversion to nasm ouput*/
+void encode_push_instruction(struct phrase *src);
+void encode_pop_instruction(struct phrase *src);
+int encode_move_instruction(const char* operation, struct phrase *dest, struct phrase *src);
+void encode_jump_instruction(struct phrase *src);
+void encode_compare_instruction(const char* operation, struct phrase *dest, struct phrase *src);
+void encode_arith_instruction(const char* operation, struct phrase *dest, struct phrase *src);
 
-int parse_first_phrase(enum scope_type current_scope, int get_reg_by_type);
-int parse_second_phrase(enum scope_type current_scope, int get_reg_by_type);
+
+/*functions that help process the instructions in the code sections*/
+struct phrase *parse_num_literal();
+struct phrase *parse_ident(enum scope_type current_scope);
+struct phrase *parse_first_phrase(enum scope_type current_scope, int get_reg_by_type);
+struct phrase *parse_second_phrase(enum scope_type current_scope, int get_reg_by_type);
 
 
-char* get_den_reg();   // 8-bit registers
-char* get_bay_reg();   // 16-bit registers
-char* get_aisle_reg(); // 32-bit registers
-char* get_zone_reg();  // 64-bit registers
+struct phrase *get_den_reg();   // 8-bit registers
+struct phrase *get_bay_reg();   // 16-bit registers
+struct phrase *get_aisle_reg(); // 32-bit registers
+struct phrase *get_zone_reg();  // 64-bit registers
 char* get_undetermined_reg();
 
 #endif // SEED_DECL_H

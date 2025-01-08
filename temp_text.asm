@@ -1,6 +1,18 @@
 section .text
 global _start
     extern printf
-    jmp main
+    jmp (null)
 main:
-    mov , 1
+    mov eax, 
+    add eax, 
+    mov , eax
+    push 
+    push 
+    push 
+    push 
+    call printf
+    add esp, 
+    mov eax, 
+    test ebx, ebx
+    int 80
+    call yield
