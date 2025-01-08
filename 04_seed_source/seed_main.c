@@ -47,7 +47,7 @@ int data_header_printed = 0;
 int bss_header_printed = 0;
 int text_header_printed = 0;
 
-void reset_header_flags();
+
 
 
 typedef struct
@@ -132,6 +132,9 @@ int main(int argc, char *argv[]) {
         }
     }
 
+     // pre-insert main managers entry point into the universal scope to ensure it can be search for when needing to jump to it
+    insert_universal_scope("main", tool_manager, type_none);
+
     // Process each file in the list
     for (int i = 0; i < file_list->count; i++) {
         seed_in = fopen(file_list->files[i], "r"); // Start parsing the source file
@@ -205,7 +208,8 @@ void write_nasm_sections(const char* output_filename)
     fclose(output);
 }
 
-void reset_state() {
+void reset_state() 
+{
     data_header_printed = 0;
     bss_header_printed = 0;
     text_header_printed = 0;

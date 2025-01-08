@@ -4,8 +4,9 @@
 
 void process_move_instruction(enum scope_type current_scope) 
 {
-    int src_index;
-    int dest_index;
+    struct phrase *dest_index;
+    struct phrase *src_index;
+
     int move_type = 0;
 
     /* or it can be said that we use den for 8 bit, bay for 16 bit, aisle for 32 bit, and zone fore for 64 bit*/
@@ -17,8 +18,8 @@ void process_move_instruction(enum scope_type current_scope)
         case _move_bays:   move_bays(_move_bays, "move_bays");       move_type = _get_bay_reg;     break;   // 2 signed byte
         case _move_aisle:  move_aisle(_move_aisle, "move_aisle");    move_type = _get_aisle_reg;   break;   // 4 unsigned byte
         case _move_aisles: move_aisles(_move_aisles, "move_aisles"); move_type = _get_aisle_reg;   break;   // 4 signed byte
-        case _move_zone:   move_zone(_move_zone, "move_zone");       move_type = _get_aisle_reg;   break;   // 8 unsigned byte
-        case _move_zones:  move_zones(_move_zones, "move_zones");    move_type = _get_aisle_reg;   break;   // 8 signed byte
+        case _move_zone:   move_zone(_move_zone, "move_zone");       move_type = _get_zone_reg;   break;   // 8 unsigned byte
+        case _move_zones:  move_zones(_move_zones, "move_zones");    move_type = _get_zone_reg;   break;   // 8 signed byte
         default: break;
     }
 
@@ -33,7 +34,7 @@ void process_move_instruction(enum scope_type current_scope)
 
     scan(&Token);
     src_index = parse_second_phrase(current_scope, move_type);          // Handle source operand or sorce phrase
-    encode_instruction("mov", dest, src);
+    encode_move_instruction("mov", dest_index, src_index);
 
     scan(&Token);
     semicolon(_semicolon, ";");     

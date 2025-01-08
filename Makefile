@@ -103,6 +103,7 @@ ILL_TARGET = $(BINDIR)/ill
 SEED_SRCS = $(SEED_SRCDIR)/seed_main.c \
             $(SEED_SRCDIR)/seed_arch.c \
             $(SEED_SRCDIR)/seed_assign.c \
+			$(SEED_SRCDIR)/seed_arith.c \
             $(SEED_SRCDIR)/seed_begin_prog.c \
             $(SEED_SRCDIR)/seed_code.c \
             $(SEED_SRCDIR)/seed_compare.c \

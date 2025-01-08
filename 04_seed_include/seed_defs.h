@@ -81,31 +81,36 @@ enum {
     _r8b, _r9b, _r10b, _r11b, _r12b, _r13b, _r14b, _r15b,
     _ah, _bh, _ch, _dh,
     // Basic instructions
-    _move, _push, _pop, _add, _sub, _mul, _div,                           // Core operations
+    _move, _push, _pop,                            // Core operations
     _and, _or, _xor, _not, _lshift, _rshift, _rotate_left, _rotate_right, // Logical/Shifts
     _inc, _dec, _compare, _test,                                          // Arithmetic/Compare
 
-    
-    _jump, _jump_equal, _jump_not_equal, _jump_great, _jump_less, _jump_neg,        // Jumps
+    _add, _sub, _mul, _div,
+
+    _add_den, _add_bay, _add_aisle, _add_zone,                             
+    _sub_den, _sub_bay, _sub_aisle, _sub_zone,
+    _mul_den, _mul_bay, _mul_aisle, _mul_zone,
+    _div_den, _div_bay, _div_aisle, _div_zone,
+
+    _add_dens, _add_bays, _add_aisles, _add_zones,                             
+    _sub_dens, _sub_bays, _sub_aisles, _sub_zones,
+    _mul_dens, _mul_bays, _mul_aisles, _mul_zones,
+    _div_dens, _div_bays, _div_aisles, _div_zones,
+
+    _jump,
+     _jump_equal, _jump_not_equal, _jump_great, _jump_less, _jump_neg,        // Jumps
     _call, _return, _nop, _yield, _pass_arg,                              // Flow control
 
     // Sized instructions
     _move_den, _move_bay, _move_aisle, _move_zone,                        // Move variants
     _move_dens, _move_bays, _move_aisles, _move_zones,
-    _add_den, _add_bay, _add_aisle, _add_zone,                           // Add variants
-    _add_dens, _add_bays, _add_aisles, _add_zones,
-    _sub_den, _sub_bay, _sub_aisle, _sub_zone,                          // Sub variants
-    _sub_dens, _sub_bays, _sub_aisles, _sub_zones,
-    _mul_den, _mul_bay, _mul_aisle, _mul_zone,                          // Mul variants
-    _mul_dens, _mul_bays, _mul_aisles, _mul_zones,
-    _div_den, _div_bay, _div_aisle, _div_zone,                          // Div variants
-    _div_dens, _div_bays, _div_aisles, _div_zones,
+
     _inc_den, _inc_bay, _inc_aisle, _inc_zone,                          // Inc variants
     _inc_dens, _inc_bays, _inc_aisles, _inc_zones,
+
     _dec_den, _dec_bay, _dec_aisle, _dec_zone,                          // Dec variants
     _dec_dens, _dec_bays, _dec_aisles, _dec_zones,
-    _push_radule, _pop_radule, _push_sadule, _pop_sadule,               // Stack variants
-    _push_dadule, _pop_dadule,
+
 
     _push_den,    // 1 unsigned byte
     _push_dens,   // 1 signed byte
@@ -152,6 +157,9 @@ struct token
     char *string_value; // For actual string literal values
     int reg_size;          
 };
+
+
+
 
 // data types 
 enum {
@@ -326,4 +334,15 @@ enum data_tool_type {
     tool_sibling = 400,
 
     tool_extern_flag = 0x1000,  // Use this as a bit flag with tool_extern
+};
+
+
+
+// phrase structure that will store the phrase type and value
+struct phrase
+{
+    int num_value;
+    char* ident_op;        // Use for storing identifiers if needed
+    char* strand_op;       // Use for storing strand if needed
+    char src_buffer[64];   // Use this to store temporary string data
 };

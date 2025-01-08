@@ -10,23 +10,24 @@ global main:
         hold aisle: num_1;
         hold aisle: num_2;
         hold aisle: result;
+        hold aisle: format; 
     .assign 
         assign: num_1 = 5;
         assign: num_2 = 7;                       
     .literal 
-        strand: format = "The result of %d + %d is: %d", 0;
+        assign: format = "The result of %d + %d is: %d", 0;
     .code
-        move_aisle: eax, fetch[num1];        
-        add: eax, fetch[num2];         
+        move_aisle: eax, fetch[num_1];        
+        add_aisle: eax, fetch[num_2];         
         move_aisle: aisle_ptr[result], eax;       
 
         push_aisle: aisle_ptr[result];    
-        push_aisle: fetch[num2];      
-        push_aisle: fetch[num1];       
-        push_aisle: format;  
+        push_aisle: fetch[num_2];      
+        push_aisle: fetch[num_1];       
+        push_aisle: fetch[format];  
                   
         call printf;            
-        add: esp, 16;            
+        add_aisle: esp, 16;            
 
         move_aisle: eax, 1;              
         test: ebx, ebx;            

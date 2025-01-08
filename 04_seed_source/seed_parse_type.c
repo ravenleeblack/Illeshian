@@ -14,11 +14,11 @@ int parse_type(enum scope_type current_scope)
     switch (Token.token_rep)
     {
         // Basic types
-        case _mark:       mark(_mark, "mark");           data_type = type_mark;       is_ptr = 0; break;
+        case _mark:       mark(_mark, "mark");          data_type = type_mark;       is_ptr = 0; break;
         case _num:        num(_num, "num");             data_type = type_num;        is_ptr = 0; break;
         case _deci:       deci(_deci, "deci");          data_type = type_deci;       is_ptr = 0; break;
         case _decii:      decii(_decii, "decii");       data_type = type_decii;      is_ptr = 0; break;
-        case _strand:     strand(_strand, "strand");     data_type = type_strand;     is_ptr = 0; break;
+        case _strand:     strand(_strand, "strand");    data_type = type_strand;     is_ptr = 0; break;
         
         // System types
         case _zone:       zone(_zone, "zone");          data_type = type_zone;       is_ptr = 0; break;
@@ -33,50 +33,9 @@ int parse_type(enum scope_type current_scope)
         // Container types
         case _log:        match_log(_log, "log");       data_type = type_log;        is_ptr = 0; break;
 
-        // Pointer types
-        case _num_ptr:    num_ptr(_num_ptr, "num_ptr");          data_type = type_num_ptr;     tool_type = tool_mark_ptr;   is_ptr = 1;  break;
-        case _mark_ptr:   mark_ptr(_mark_ptr, "mark_ptr");       data_type = type_mark_ptr;    tool_type = tool_mark_ptr;   is_ptr = 1;  break;
-        case _deci_ptr:   deci_ptr(_deci_ptr, "deci_ptr");       data_type = type_deci_ptr;    tool_type = tool_deci_ptr;   is_ptr = 1;  break;
-        case _decii_ptr:  decii_ptr(_decii_ptr, "decii_ptr");    data_type = type_decii_ptr;   tool_type = tool_decii_ptr;  is_ptr = 1;  break;
-
-        case _den_ptr:    den_ptr(_den_ptr, "den_ptr");          data_type = type_den_ptr;     tool_type = tool_den_ptr;    is_ptr = 1;  break;
-        case _bay_ptr:    bay_ptr(_bay_ptr, "bay_ptr");          data_type = type_bay_ptr;     tool_type = tool_bay_ptr;    is_ptr = 1;  break;
-        case _aisle_ptr:  aisle_ptr(_aisle_ptr, "aisle_ptr");    data_type = type_aisle_ptr;   tool_type = tool_aisle_ptr;  is_ptr = 1;  break;
-        case _zone_ptr:   zone_ptr(_zone_ptr, "zone_ptr");       data_type = type_zone_ptr;    tool_type = tool_zone_ptr;   is_ptr = 1;  break;
-      
-        case _dens_ptr:   dens_ptr(_dens_ptr, "dens_ptr");       data_type = type_dens_ptr;    tool_type = tool_dens_ptr;   is_ptr = 1;  break;
-        case _bays_ptr:   bays_ptr(_bays_ptr, "bays_ptr");       data_type = type_bays_ptr;    tool_type = tool_bays_ptr;   is_ptr = 1;  break;
-        case _aisles_ptr: aisles_ptr(_aisles_ptr, "aisles_ptr"); data_type = type_aisles_ptr;  tool_type = tool_aisles_ptr; is_ptr = 1;  break;
-        case _zones_ptr:  zones_ptr(_zones_ptr, "zones_ptr");    data_type = type_zones_ptr;   tool_type = tool_zones_ptr;  is_ptr = 1;  break;
         default:  data_type = 0;  tool_type =0;  is_ptr = 0; break;
     }
 
-    if (is_ptr == 1)
-    {
-        //nasm_state.is_pointer = true;
-        scan(&Token);
-        lbrace(_lbrace, "[");
-
-        scan(&Token);
-        ident(_ident, Text);
-        
-        switch(current_scope) {
-            case scope_universal:     insert_universal_scope(Text, tool_type, data_type);     break;  
-            case scope_global:        insert_global_scope(Text, tool_type, data_type);        break;
-            case scope_global_param:  insert_global_param_scope(Text, tool_type, data_type);  break;
-            case scope_global_block:  insert_global_block_scope(Text, tool_type, data_type);  break;
-            case scope_local:         insert_local_scope(Text, tool_type, data_type);         break;
-            case scope_local_param:   insert_local_param_scope(Text, tool_type, data_type);   break; 
-            case scope_local_block:   insert_local_block_scope(Text, tool_type, data_type);   break;
-            default:  error("seeding error: declare error: Invalid scope for declaration"); break;
-        }
-
-        scan(&Token);
-        rbrace(_rbrace, "]"); 
-    }
-    else {
-        //nasm_state.is_pointer = false;
-    }
     return data_type;
 }
 
@@ -93,29 +52,89 @@ int get_byte_size(int declare_type)
 
 }
 
-int parse_address(enum scope_type current_scope)
-{
-    char* current_placeholder;
 
+struct phrase *parse_pointer(enum scope_type current_scope)
+{
+    struct phrase *pointer_op = malloc(sizeof(struct phrase));  // Allocate memory for the phrase struct
+    
+    switch(Token.token_rep)
+    {
+        case _num_ptr:    num_ptr(_num_ptr, "num_ptr");          break;
+        case _mark_ptr:   mark_ptr(_mark_ptr, "mark_ptr");       break;
+        case _deci_ptr:   deci_ptr(_deci_ptr, "deci_ptr");       break;
+        case _decii_ptr:  decii_ptr(_decii_ptr, "decii_ptr");    break;
+
+        case _den_ptr:    den_ptr(_den_ptr, "den_ptr");          break;
+        case _bay_ptr:    bay_ptr(_bay_ptr, "bay_ptr");          break;
+        case _aisle_ptr:  aisle_ptr(_aisle_ptr, "aisle_ptr");    break;
+        case _zone_ptr:   zone_ptr(_zone_ptr, "zone_ptr");       break;
+      
+        case _dens_ptr:   dens_ptr(_dens_ptr, "dens_ptr");       break;
+        case _bays_ptr:   bays_ptr(_bays_ptr, "bays_ptr");       break;
+        case _aisles_ptr: aisles_ptr(_aisles_ptr, "aisles_ptr"); break;
+        case _zones_ptr:  zones_ptr(_zones_ptr, "zones_ptr");    break;
+    }
+
+    scan(&Token);
+    lbrace(_lbrace, "[");
+
+    scan(&Token);
+    ident(_ident, Text);
+
+    // Store the identifier with brackets in strand_op
+    pointer_op->strand_op = malloc(strlen(Text) + 3);  // +3 for the brackets
+    snprintf(pointer_op->strand_op, strlen(Text) + 3, "[%s]", Text);  // Add brackets around identifier
+
+    switch (current_scope)
+    {
+        case scope_universal:    pointer_op->ident_op = search_universal_scope(Text);    break;
+        case scope_global:       pointer_op->ident_op = search_global_scope(Text);       break;
+        case scope_global_block: pointer_op->ident_op = search_global_block_scope(Text); break;
+        case scope_local:        pointer_op->ident_op = search_local_scope(Text);        break;
+        case scope_local_block:  pointer_op->ident_op = search_local_block_scope(Text);  break;
+        default: error("ident error: invalid ident token"); break;
+    }
+
+    scan(&Token);
+    rbrace(_rbrace, "]");
+
+    return pointer_op;  // Return the populated pointer phrase
+}
+
+struct phrase *parse_address(enum scope_type current_scope)
+{
+    struct phrase *address_op = malloc(sizeof(struct phrase));  // Allocate memory for the phrase struct
     address(_address, "address");
 
     scan(&Token);
     lbrace(_lbrace, "[");
 
     scan(&Token);
-    current_placeholder = parse_ident(current_scope);
+    ident(_ident, Text);
+
+    // Store the identifier with brackets in strand_op
+    address_op->strand_op = malloc(strlen(Text) + 3);  // +3 for the brackets
+    snprintf(address_op->strand_op, strlen(Text) + 3, "[%s]", Text);  // Add brackets around identifier
+
+    switch (current_scope)
+    {
+        case scope_universal:    address_op->ident_op = search_universal_scope(Text);    break;
+        case scope_global:       address_op->ident_op = search_global_scope(Text);       break;
+        case scope_global_block: address_op->ident_op = search_global_block_scope(Text); break;
+        case scope_local:        address_op->ident_op = search_local_scope(Text);        break;
+        case scope_local_block:  address_op->ident_op = search_local_block_scope(Text);  break;
+        default: error("ident error: invalid ident token"); break;
+    }
 
     scan(&Token);
     rbrace(_rbrace, "]");
 
-    return current_placeholder; // Return the fetched scope index
+    return address_op;  // Return the populated address phrase
 }
 
-int parse_fetch(enum scope_type current_scope)
+struct phrase *parse_fetch(enum scope_type current_scope)
 {
-    char* current_placeholder;
-
-    int current_index = 0;
+    struct phrase *fetch_op = malloc(sizeof(struct phrase));  // Allocate memory for the phrase struct
 
     fetch(_fetch, "fetch");
 
@@ -123,10 +142,24 @@ int parse_fetch(enum scope_type current_scope)
     lbrace(_lbrace, "[");
 
     scan(&Token);
-    current_placeholder = parse_ident(current_scope);
+    ident(_ident, Text);
+
+    // Store the identifier with brackets in strand_op
+    fetch_op->strand_op = malloc(strlen(Text) + 3);  // +3 for the brackets
+    snprintf(fetch_op->strand_op, strlen(Text) + 3, "[%s]", Text);  // Add brackets around identifier
+
+    switch (current_scope)
+    {
+        case scope_universal:    fetch_op->ident_op = search_universal_scope(Text);    break;
+        case scope_global:       fetch_op->ident_op = search_global_scope(Text);       break;
+        case scope_global_block: fetch_op->ident_op = search_global_block_scope(Text); break;
+        case scope_local:        fetch_op->ident_op = search_local_scope(Text);        break;
+        case scope_local_block:  fetch_op->ident_op = search_local_block_scope(Text);  break;
+        default: error("ident error: invalid ident token"); break;
+    }
 
     scan(&Token);
     rbrace(_rbrace, "]");
 
-    return current_placeholder; // Return the fetched scope index
+    return fetch_op;  // Return the populated fetch phrase
 }

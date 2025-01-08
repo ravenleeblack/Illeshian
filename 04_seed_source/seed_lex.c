@@ -288,7 +288,15 @@ int keyword(char *s)
     switch (*s)
 	 {
         case 'a': 
-		    if (!strcmp(s, "add")) return _add;
+            if (!strcmp(s, "add_den"))        return _add_den;
+            if (!strcmp(s, "add_bay"))        return _add_bay;
+            if (!strcmp(s, "add_aisle"))      return _add_aisle;
+            if (!strcmp(s, "add_zone"))       return _add_zone;
+
+            if (!strcmp(s, "add_dens"))       return _add_dens;
+            if (!strcmp(s, "add_bays"))       return _add_bays;
+            if (!strcmp(s, "add_aisles"))     return _add_aisles;
+            if (!strcmp(s, "add_zones"))      return _add_zones;
 		    if (!strcmp(s, "and")) return _and; 
 		    if (!strcmp(s, "align")) return _align; 
 		    if (!strcmp(s, "assign")) return _assign;
@@ -320,8 +328,17 @@ int keyword(char *s)
 		    break;
         
         case 'd': 
+            if (!strcmp(s, "div_den"))        return _div_den;
+            if (!strcmp(s, "div_bay"))        return _div_bay;
+            if (!strcmp(s, "div_aisle"))      return _div_aisle;
+            if (!strcmp(s, "div_zone"))       return _div_zone;
+
+            if (!strcmp(s, "div_dens"))       return _div_dens;
+            if (!strcmp(s, "div_bays"))       return _div_bays;
+            if (!strcmp(s, "div_aisles"))     return _div_aisles;
+            if (!strcmp(s, "div_zones"))      return _div_zones;
+
 		    if (!strcmp(s, "dec"))         return _dec; 
-		    if (!strcmp(s, "div"))         return _div;
 			if (!strcmp(s, "den"))         return _den; 
 			if (!strcmp(s, "dl"))          return _dl;
             if (!strcmp(s, "dx"))          return _dx;
@@ -386,9 +403,16 @@ int keyword(char *s)
 		    break;
         
         case 'm': 
-            if (!strcmp(s, "mul"))           return _mul;
-            if (!strcmp(s, "mul_den"))       return _mul_den;
-            if (!strcmp(s, "mul_bay"))       return _mul_bay;
+            if (!strcmp(s, "move_den"))       return _move_den;
+            if (!strcmp(s, "move_bay"))       return _move_bay;
+            if (!strcmp(s, "move_aisle"))     return _move_aisle;
+            if (!strcmp(s, "move_zone"))      return _move_zone;
+
+            if (!strcmp(s, "move_dens"))      return _move_dens;
+            if (!strcmp(s, "move_bays"))      return _move_bays;
+            if (!strcmp(s, "move_aisles"))    return _move_aisles;
+            if (!strcmp(s, "move_zones"))     return _move_zones;
+            
 			if (!strcmp(s, "mark"))          return _mark;
 			if (!strcmp(s, "mark_ptr"))      return _mark_ptr;
 			if (!strcmp(s, "mark_literal"))  return _mark_literal;
@@ -496,8 +520,17 @@ int keyword(char *s)
             break;
 
         case 's':
-		    if (!strcmp(s, "scope"))           return _scope; 
-			if (!strcmp(s, "sub"))             return _sub; 
+            if (!strcmp(s, "sub_den"))        return _sub_den;
+            if (!strcmp(s, "sub_bay"))        return _sub_bay;
+            if (!strcmp(s, "sub_aisle"))      return _sub_aisle;
+            if (!strcmp(s, "sub_zone"))       return _sub_zone;
+
+            if (!strcmp(s, "sub_dens"))       return _sub_dens;
+            if (!strcmp(s, "sub_bays"))       return _sub_bays;
+            if (!strcmp(s, "sub_aisles"))     return _sub_aisles;
+            if (!strcmp(s, "sub_zones"))      return _sub_zones;
+
+		    if (!strcmp(s, "scope"))           return _scope;  
 			if (!strcmp(s, "sign"))            return _sign;
 		    if (!strcmp(s, "si"))              return _si;
             if (!strcmp(s, "sp"))              return _sp;

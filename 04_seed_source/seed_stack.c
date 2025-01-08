@@ -5,7 +5,7 @@
 
 void process_push_instruction(enum scope_type current_scope) 
 {
-    int src_index;
+    struct phrase *src_index;
     int push_type = 0;
 
     /* or it can be said that we use den for 8 bit, bay for 16 bit, aisle for 32 bit, and zone fore for 64 bit*/
@@ -24,7 +24,8 @@ void process_push_instruction(enum scope_type current_scope)
     scan(&Token);
     colon(_colon, ":");
 
-    src_index = parse_first_phrase(current_scope, push_type);           // Handle source operand or source phrase
+    scan(&Token);
+    src_index = parse_first_phrase(current_scope, push_type);           // Handle destination operand or destination phrase
     encode_push_instruction(src_index);
     
     scan(&Token);
@@ -33,7 +34,7 @@ void process_push_instruction(enum scope_type current_scope)
 
 void process_pop_instruction(enum scope_type current_scope) 
 {
-    int src_index;
+    struct phrase *src_index;
     int push_type = 0;
 
     /* or it can be said that we use den for 8 bit, bay for 16 bit, aisle for 32 bit, and zone for 64 bit */
@@ -54,11 +55,9 @@ void process_pop_instruction(enum scope_type current_scope)
     colon(_colon, ":");
 
     scan(&Token);
-    src_index = parse_first_phrase(current_scope, push_type);           // Handle source operand or source phrase
+    src_index = parse_first_phrase(current_scope, push_type);           // Handle destination operand or destination phrase
     encode_pop_instruction(src_index);
     
     scan(&Token);
     semicolon(_semicolon, ";");
 }
-
-

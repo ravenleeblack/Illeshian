@@ -2,6 +2,7 @@ section .data
 section .bss
 section .text
 yield:
-    mov , 1
-    set ebx, ebx
-    int num
+    mov eax, 
+    xor ebx, ebx
+    int 80
+    ret
