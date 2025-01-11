@@ -1,21 +1,32 @@
 universal start:
+    .start_section
     .file
         extern: printf;
+        extern: yield;
+    .end
     .code 
-        jump: main;
+        jump: main; .end
     .end_section
 
 global main:
+    .start_section
     .declare
         hold aisle: num_1;
         hold aisle: num_2;
         hold aisle: result;
-        hold aisle: format; 
+        hold den table: name;
+    .end
     .assign 
+        assign: name = 100;
         assign: num_1 = 5;
-        assign: num_2 = 7;                       
+        assign: num_2 = 7;
+    .end
+    .file
+        assign: file = "main.asm", 8;
+    .end                   
     .literal 
         assign: format = "The result of %d + %d is: %d", 0;
+    .end
     .code
         move_aisle: eax, fetch[num_1];        
         add_aisle: eax, fetch[num_2];         
@@ -27,11 +38,12 @@ global main:
         push_aisle: fetch[format];  
                   
         call printf;            
-        add_aisle: esp, 16;            
+        add_aisle: esp, 16 ;            
 
         move_aisle: eax, 1;              
         test: ebx, ebx;            
-        num: 0x80;
+        call_system;
 
         call yield;                                      // Yield to kernel
+    .end
     .end_section 

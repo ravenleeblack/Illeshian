@@ -35,6 +35,7 @@ FILE* seed_out = NULL;
 FILE* scope_table_out = NULL;
 FILE* nasm_out = NULL;
 FILE* root_out = NULL;
+ FILE* output = NULL;
 
 int entry_index = 0;
 char dest[64] = {0};
@@ -132,9 +133,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-     // pre-insert main managers entry point into the universal scope to ensure it can be search for when needing to jump to it
-    insert_universal_scope("main", tool_manager, type_none);
-
     // Process each file in the list
     for (int i = 0; i < file_list->count; i++) {
         seed_in = fopen(file_list->files[i], "r"); // Start parsing the source file
@@ -180,7 +178,7 @@ int main(int argc, char *argv[]) {
 // Function to write NASM sections to the final output file
 void write_nasm_sections(const char* output_filename)
 {
-    FILE* output = fopen(output_filename, "a");
+    output = fopen(output_filename, "a");
     if (!output) {
         fprintf(stderr, "Error: Unable to open output file %s: %s\n", output_filename, strerror(errno));
         return;

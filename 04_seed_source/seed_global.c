@@ -9,7 +9,7 @@ void process_global_label(void)
 
     scan(&Token);
     ident(_ident, Text);
-    global_id = insert_global_scope(Text, scope_tool_manager, scope_type_none);        // Add to scope table and save label
+    global_id = insert_global_scope(Text, scope_global_tool, scope_global_label);        // Add to scope table and save label
     convert_global_label(Text);
     
     // Set flag if this is main label
@@ -17,32 +17,15 @@ void process_global_label(void)
     {
         is_main_entry = 1;
     }
+    else{
+        
+    }
 
     scan(&Token);
     colon(_colon, ":");
 
-    while(1)
-    {
-        scan(&Token);
-
-        if(Token.token_rep == _end_section)
-        {
-            process_end_section();
-            if(!is_main_entry)
-            {
-                convert_label_pass_arg();   //output ret after the global section before the children
-            }
-
-            process_global_child_labels(global_id);
-            return;
-        }
-        if(Token.token_rep == _enfi)
-        {
-            return;
-        }
-
-        process_sections(scope_global);
-    }
+    scan(&Token);
+    process_sections(scope_global);
 }
 
 void process_global_child_labels(int parent_global_id)
@@ -61,7 +44,7 @@ void process_global_child_labels(int parent_global_id)
         if(Token.token_rep == _end_section || Token.token_rep == _enfi)
         {
             reject_token(&Token);
-            return;
+            return 0;
         }
     }
 }

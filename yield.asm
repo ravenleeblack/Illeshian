@@ -1,8 +1,9 @@
 section .data
 section .bss
 section .text
+global yield
+
 yield:
-    mov eax, 
+    mov eax, 1
     xor ebx, ebx
-    int 80
-    ret
+    int 0x80

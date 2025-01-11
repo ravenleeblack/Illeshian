@@ -12,9 +12,9 @@ void process_literal_section(enum scope_type current_scope)
     {
         scan(&Token);
 
-        if(Token.token_rep == _strand) 
+        if(Token.token_rep == _assign)
         {
-            strand(_strand, "strand");
+            assign(_assign, "assign");
 
             scan(&Token);
             colon(_colon, ":");
@@ -23,7 +23,7 @@ void process_literal_section(enum scope_type current_scope)
             ident(_ident, Text);
             strcpy(preserve_text, Text);   // Preserve the value of Text in the buffer so next scan doesnt over write it.
 
-            switch(current_scope)
+            switch(current_scope)      //this should be a placeholder already called in declare. SO we search, get it, then assign it a literal value.
             {
                 case scope_universal:    entry_index = search_universal_scope(Text);    break;  
                 case scope_global:       entry_index = search_global_scope(Text);       break;
@@ -38,14 +38,14 @@ void process_literal_section(enum scope_type current_scope)
 
             scan(&Token);
             strand_literal(_strand_literal, Token.string_value);
-                
-            // Insert into appropriate scope table
+            strcpy(literal_buffer, Token.string_value);
+
             switch(current_scope) {
-                case scope_universal:     insert_universal_scope(Text, tool_strand, type_strand);     break;
-                case scope_global:        insert_global_scope(Text, tool_strand, type_strand);        break;
-                case scope_global_block:  insert_global_block_scope(Text, tool_strand, type_strand);  break;
-                case scope_local:         insert_local_scope(Text, tool_strand, type_strand);         break;
-                case scope_local_block:   insert_local_block_scope(Text, tool_strand, type_strand);   break;
+                case scope_universal:     insert_universal_scope(literal_buffer, scope_strand_tool, scope_literal_data_type);     break;
+                case scope_global:        insert_global_scope(literal_buffer, scope_strand_tool, scope_literal_data_type);        break;
+                case scope_global_block:  insert_global_block_scope(literal_buffer, scope_strand_tool, scope_literal_data_type);  break;
+                case scope_local:         insert_local_scope(literal_buffer, scope_strand_tool, scope_literal_data_type);         break;
+                case scope_local_block:   insert_local_block_scope(literal_buffer, scope_strand_tool, scope_literal_data_type);   break;
                 default: error("seeding error: Invalid scope for strand literal"); break;
             }
             
@@ -54,15 +54,15 @@ void process_literal_section(enum scope_type current_scope)
 
             scan(&Token);
             num_literal(_num_literal, Token.num_value);
-            encode_literal_section(preserve_text, Token.string_value, Token.num_value);
+            encode_literal_section(preserve_text, literal_buffer, Token.num_value);
 
             scan(&Token);
             semicolon(_semicolon, ";");
         }
-        else
+       else if(Token.token_rep == _end)
         {
-            reject_token(&Token);  //we reject it so the next section can handle it then we break out of this loop.
-            break;
+            end(_end, ".end");
+            return 0;
         }
     }
 }

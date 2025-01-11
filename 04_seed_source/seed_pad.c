@@ -36,10 +36,35 @@ void process_pad_section()
         if(Token.token_rep == _sign)
         {
             sign(_sign, "sign");
+
             scan(&Token);
             colon(_colon, ":");
+          
             scan(&Token);
-            hex_literal(_hex_literal, Token.hex_value);
+            switch(current_architecture)
+            {
+                case 8:    
+                hex_literal(_hex_literal_08, Token.hex_value_08); 
+                //snprintf(lend_op.src_buffer, sizeof(lend_op.src_buffer), "%x", Token.hex_value_08);   // Convert Token.hex_value to a string
+                break;
+
+                case 16:   
+                hex_literal(_hex_literal_16, Token.hex_value_16);
+                //snprintf(lend_op.src_buffer, sizeof(lend_op.src_buffer), "%x", Token.hex_value_16);   // Convert Token.hex_value to a string
+                break;
+
+                case 32:   
+                hex_literal(_hex_literal_32, Token.hex_value_32); 
+                //snprintf(lend_op.src_buffer, sizeof(lend_op.src_buffer), "%x", Token.hex_value_32);   // Convert Token.hex_value to a string
+                break;
+
+                case 64:   
+                hex_literal(_hex_literal_64, Token.hex_value_64); 
+                //snprintf(lend_op.src_buffer, sizeof(lend_op.src_buffer), "%x", Token.hex_value_64);   // Convert Token.hex_value to a string
+                break;
+                default: break;
+            }
+            
             scan(&Token);
             semicolon(_semicolon, ";");
         }

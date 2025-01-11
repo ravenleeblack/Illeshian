@@ -12,14 +12,20 @@ void process_code_section(enum scope_type current_scope)
     {
         scan(&Token);
         
+        if(Token.token_rep == _end)
+        {
+            end(_end, ".end");
+            return 0;
+        }
         switch(Token.token_rep) 
         {
             case _compare:     process_compare_instruction(current_scope );    break;
             case _set_flag:    process_set_flag_instruction(current_scope);    break;
             case _test:        process_test_instruction(current_scope);        break;
-            case _num:         process_lend_instruction(current_scope);        break;
-            case _call:        process_call_instruction(current_scope );       break;
-            case _pass_arg:    process_pass_arg_instruction(current_scope);    break;
+
+            case _call:          process_call_instruction(current_scope );       break;
+            case _call_system:   process_lend_instruction(current_scope);        break;
+            case _pass_arg:      process_pass_arg_instruction(current_scope);    break;
 
             case _add_den:   process_arith_instruction(current_scope); break;
             case _add_bay:   process_arith_instruction(current_scope); break;
@@ -77,10 +83,7 @@ void process_code_section(enum scope_type current_scope)
             case _jump_great:     process_jump_instruction(current_scope);  break;
             case _jump_equal:     process_jump_instruction(current_scope);  break;
             case _jump_not_equal: process_jump_instruction(current_scope);  break;
-
-            case _end_section: reject_token(&Token); return 0;
-            default: return 0;  
-            //break out of the loop since we do not have a known token for this section
+            default: break; 
         }
     }
 }

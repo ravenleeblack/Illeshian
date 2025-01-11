@@ -9,7 +9,7 @@ void process_assign_section(enum scope_type current_scope)
     while(1)    // loop the .assign section body and get all the assigments
     {
         scan(&Token);
-
+        
         if(Token.token_rep == _assign)
         {
             assign(_assign, "assign");
@@ -19,14 +19,15 @@ void process_assign_section(enum scope_type current_scope)
 
             scan(&Token);
             ident(_ident, Text); 
-            
+            strcpy(assign_buffer, Text);
+
             switch(current_scope)
             {
-                case scope_universal:    entry_index = search_universal_scope(Text);    break;  
-                case scope_global:       entry_index = search_global_scope(Text);       break;
-                case scope_global_block: entry_index = search_global_block_scope(Text); break;
-                case scope_local:        entry_index = search_local_scope(Text);        break;
-                case scope_local_block:  entry_index = search_local_block_scope(Text);  break;
+                case scope_universal:    search_universal_scope(Text);    break;  
+                case scope_global:       search_global_scope(Text);       break;
+                case scope_global_block: search_global_block_scope(Text); break;
+                case scope_local:        search_local_scope(Text);        break;
+                case scope_local_block:  search_local_block_scope(Text);  break;
                 default: error("seeding error: assign error: Invalid scope");           break;
             }
 
@@ -35,15 +36,26 @@ void process_assign_section(enum scope_type current_scope)
 
             scan(&Token);  
             num_literal(_num_literal, Token.num_value);
-            output_declare_section_body(Text, byte_size, Token.num_value);
 
+            if(assign_flag == 1)
+            {
+               output_assign_table(assign_buffer, byte_size, Token.num_value);
+            }
+            else
+            {
+                output_assign_placeholder(assign_buffer, byte_size, Token.num_value);
+            }
+        
             scan(&Token);
             semicolon(_semicolon, ";");
+
+            assign_flag = 0;
         }
-        else
+        
+        else if(Token.token_rep == _end)
         {
-            reject_token(&Token);   //we reject it so the next section can handle it then we break out of this loop.
-            break;
+            end(_end, ".end");
+            return 0;
         }
     }
 }

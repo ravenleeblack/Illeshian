@@ -6,8 +6,8 @@
 
 void process_compare_instruction(enum scope_type current_scope) 
 {
-    struct phrase *dest_index;
-    struct phrase *src_index;
+    char *dest_index;
+    char *src_index;
 
     compare(_compare, "compare");
 

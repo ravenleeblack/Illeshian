@@ -10,32 +10,16 @@ void process_global_block_label(int parent_global_id)
 
     scan(&Token);
     ident(_ident, Text);
-    global_block_id = insert_global_block_scope(Text, scope_tool_none, scope_type_none);
+    global_block_id = insert_global_block_scope(Text, scope_global_block_tool, scope_global_block_label);
     convert_global_block_label(Text);
     
     scan(&Token);
     colon(_colon, ":");
 
-    while(1) 
-    {
-        scan(&Token);
-
-        if(Token.token_rep == _end_section) 
-        {
-            process_end_section();
-            convert_label_pass_arg();
-            
-            process_global_block_child_labels(global_block_id);
-            return;
-        }
-
-        if(Token.token_rep == _enfi)
-        {
-            return;
-        }
-
-        process_sections(scope_global_block);
-    }
+    scan(&Token);
+    process_sections(scope_global_block);
+  
+    process_global_block_child_labels(global_block_id);
 }
 
 
@@ -49,7 +33,7 @@ void process_global_block_child_labels(int parent_global_id)
         if(Token.token_rep == _local || Token.token_rep == _end_section || Token.token_rep == _enfi)
         {
             reject_token(&Token);
-            return;
+            return 0;
         }
 
         if(Token.token_rep == _global_block)

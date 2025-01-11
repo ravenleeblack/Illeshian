@@ -110,7 +110,6 @@ SEED_SRCS = $(SEED_SRCDIR)/seed_main.c \
 			$(SEED_SRCDIR)/seed_common.c \
             $(SEED_SRCDIR)/seed_call.c \
 			$(SEED_SRCDIR)/seed_nasm_encode.c \
-            $(SEED_SRCDIR)/seed_end_section.c \
             $(SEED_SRCDIR)/seed_error.c \
             $(SEED_SRCDIR)/seed_declare.c \
             $(SEED_SRCDIR)/seed_global_block.c \

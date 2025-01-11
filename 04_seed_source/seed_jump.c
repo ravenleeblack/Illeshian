@@ -5,8 +5,6 @@
 /*here we have no byte size, so we just get the label, were jumping to*/
 void process_jump_instruction(enum scope_type current_scope) 
 {
-    struct phrase *src_index;
-
     switch(Token.token_rep)
     {
         case _jump:           jump(_jump, "jump");                               break;
@@ -21,9 +19,22 @@ void process_jump_instruction(enum scope_type current_scope)
     scan(&Token);
     colon(_colon, ":");
 
+    //we use common parse_ident function when we need to search an ident. Since we want to insert we manually create it. With a jump data tool
+    //we normally wont know the label before hand, so we have to insert it into the scope table. WE cant use search for encode_jump_instruction()
+    //because the label we want to jump hasnt been inserted into the scope table yet. So using parse_ident() would return an empty ident for the 
+    //jump label in the nasm output.
     scan(&Token);
-    src_index = parse_ident(current_scope);
-    encode_jump_instruction(src_index);
+    ident(_ident, Text);    
+
+    switch(current_scope) {
+        case scope_universal:     insert_universal_scope(Text, scope_jump_tool, scope_jump_type);     break;
+        case scope_global:        insert_global_scope(Text, scope_jump_tool, scope_jump_type);        break;
+        case scope_global_block:  insert_global_block_scope(Text, scope_jump_tool, scope_jump_type);  break;
+        case scope_local:         insert_local_scope(Text, scope_jump_tool, scope_jump_type);         break;
+        case scope_local_block:   insert_local_block_scope(Text, scope_jump_tool, scope_jump_type);   break;
+        default: error("seeding error: Invalid scope for strand literal"); break;
+    }
+    encode_jump_instruction(Text);
 
     scan(&Token);
     semicolon(_semicolon, ";");

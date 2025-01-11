@@ -1,0 +1,35 @@
+SCOPE TABLE OUTPUT
+==================
+
+=== Universal Scope ===
+| Name                 | Tool Type       | Data Type       | Scope | Location | Flg |
+|----------------------|-----------------|-----------------|-------|------------|-----|
+| start                | tool_universal  | universal_label | 0  | R0:S0:E0 | 1 |
+| printf               | extern tool     | extern file     | 0  | R0:S0:E1 | 1 |
+| yield                | extern tool     | extern file     | 0  | R0:S0:E2 | 1 |
+| main                 | jump tool       | jump label      | 0  | R0:S0:E3 | 1 |
+
+=== Global Scope ===
+| Name                 | Tool Type       | Data Type       | Scope | Location | Flg |
+|----------------------|-----------------|-----------------|-------|------------|-----|
+| yield                | tool_global     | global_label    | 2  | R0:S0:E0 | 1 |
+| main                 | tool_global     | global_label    | 2  | R0:S0:E1 | 1 |
+| num_1                | hold data tool  | type_pare_ptr   | 2  | R0:S0:E2 | 1 |
+| num_2                | hold data tool  | type_pare_ptr   | 2  | R0:S0:E3 | 1 |
+| result               | hold data tool  | type_pare_ptr   | 2  | R0:S0:E4 | 1 |
+| name                 | hold data tool  | file type       | 2  | R0:S0:E5 | 1 |
+| file                 | file tool       | file type       | 2  | R0:S0:E6 | 1 |
+| main.asm             | file name literal tool | file name literal | 2  | R0:S0:E7 | 1 |
+| The result of %d + %d is: %d | strand data tool | strand literal  | 2  | R0:S0:E8 | 1 |
+
+=== Global Block Scope ===
+| Name                 | Tool Type       | Data Type       | Scope | Location | Flg |
+|----------------------|-----------------|-----------------|-------|------------|-----|
+
+=== Local Scope ===
+| Name                 | Tool Type       | Data Type       | Scope | Location | Flg |
+|----------------------|-----------------|-----------------|-------|------------|-----|
+
+=== Local Block Scope ===
+| Name                 | Tool Type       | Data Type       | Scope | Location | Flg |
+|----------------------|-----------------|-----------------|-------|------------|-----|
