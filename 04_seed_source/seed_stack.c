@@ -5,7 +5,7 @@
 
 void process_push_instruction(enum scope_type current_scope) 
 {
-    struct phrase *src_index;
+    char *src_index;
     int push_type = 0;
 
     /* or it can be said that we use den for 8 bit, bay for 16 bit, aisle for 32 bit, and zone fore for 64 bit*/
@@ -34,7 +34,7 @@ void process_push_instruction(enum scope_type current_scope)
 
 void process_pop_instruction(enum scope_type current_scope) 
 {
-    struct phrase *src_index;
+    char *src_index;
     int push_type = 0;
 
     /* or it can be said that we use den for 8 bit, bay for 16 bit, aisle for 32 bit, and zone for 64 bit */

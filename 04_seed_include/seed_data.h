@@ -8,7 +8,8 @@ FILE * seed_in;
 FILE * seed_out;                                 
 FILE* nasm_out;
 FILE* root_out;
-
+ FILE* output;
+ 
 FILE* temp_data;
 FILE* temp_bss;
 FILE* temp_text;
@@ -59,10 +60,25 @@ int local_block_id;
 
 int entry_index;
 
+
+
+
 char dest[64];
 char src[64];
-char reg_buffer[32]; // Shared buffer for all register retrieval functions
 
-extern int byte_size;
-extern int declare_type;
+char pass_buffer[64]; // Shared buffer for all pass_arg functions
+char reg_buffer[32]; // Shared buffer for all register retrieval functions
+char num_str[256]; // Buffer to hold the string representation of the number
+char literal_buffer[256]; // Buffer to hold the literal value
+char file_buffer[64]; // Buffer to hold the file name
+char declare_buffer[64]; // Buffer to hold the file name
+char assign_buffer[64]; // Buffer to hold the file name
+
+int byte_size_buffer[64]; // Buffer to hold the file name
+
+int declare_type;
+int byte_size;
+
+int assign_flag;
+int current_architecture; // Global variable to track the current architecture.
 

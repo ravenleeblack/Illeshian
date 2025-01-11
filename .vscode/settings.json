@@ -250,5 +250,11 @@
         }
       }
     ]
+  },
+  "files.associations": {
+    "\"*.extension\":": "\"c\"",
+    "ALINK.C": "cpp",
+    "OUTPUT.C": "cpp",
+    "LNK.C": "cpp"
   }
 }

@@ -135,12 +135,12 @@ int scanch(void)
 }
 
 // Scan and return a hexadecimal number
-int scanhex(void)
+int scanhex(int *size) 
 {
     int c, h, val = 0;
-    int digits = 0;  // Track number of digits processed
+    int digits = 0;
 
-    while (digits < 8)  // Limit to 32-bit hex numbers
+    while (1) 
     {
         c = next_ch();
 
@@ -152,11 +152,27 @@ int scanhex(void)
             h = c - 'A' + 10;
         else {
             return_char(c);
-            return val;
+            break;
         }
+
         val = (val << 4) | h;  // Use bitwise operations for hex
         digits++;
+
+        // Determine the size based on the number of digits
+        if (digits <= 2) 
+            *size = 8;   // 8-bit hex
+        else if (digits <= 4) 
+            *size = 16;  // 16-bit hex
+        else if (digits <= 8) 
+            *size = 32;  // 32-bit hex
+        else if (digits <= 16) 
+            *size = 64;  // 64-bit hex
+        else {
+            error("Hex value exceeds 64-bit size");
+            return 0;
+        }
     }
+
     return val;
 }
 
@@ -184,20 +200,40 @@ float scandeci(int c) {
     return val;
 }
 
-// Scan and return an integer literal
-// value from the input file.
-int scanint(int c)
- {
-	int k, val = 0;
 
-	// Convert each character into an int value
-	while ((k = chrpos("0123456789", c)) >= 0) {
-		val = val * 10 + k;
-		c = next_ch();
-	}
+// Scan and return an integer literal value from the input file
+// along with the string version of the integer.
+int scanint(int c, char *num_str) {
+    int k, val = 0;
+    int i = 0;
 
-	return_char(c);
-	return (val);
+    // Ensure the input is valid before processing
+    if (c < '0' || c > '9') {
+        // Return an error or handle invalid input appropriately
+        return -1; // Or some other error code
+    }
+
+    // Convert each character into an int value
+    while ((k = chrpos("0123456789", c)) >= 0) {
+        val = val * 10 + k;  // Update the numeric value
+
+        // Store the string version of the number
+        num_str[i++] = c;  // Add valid character to the string
+
+        if((c = next_ch()) == ';')
+        {
+           return_char(c);  //if its a semicolon return were problems with the semicolon after num literals
+        }
+        else if (c < '0' || c > '9') // Stop if the character is no longer a number
+        {
+            break;  // Exit the loop if a non-numeric character is encountered
+        }
+    }
+
+    // Null-terminate the string
+    num_str[i] = '\0';
+
+    return val;  // Return the integer value
 }
 
 // Function to copy contents of buf to strand_buffer
@@ -271,17 +307,21 @@ int keyword(char *s)
 {
 	    // Handle period-prefixed keywords first
     if (s[0] == '.') {
-		if (!strcmp(s, ".arch_16"))     return _arch_16_section; 
-		if (!strcmp(s, ".arch_32"))     return _arch_32_section; 	
-		if (!strcmp(s, ".arch_64"))     return _arch_64_section; 
-		if (!strcmp(s, ".pad"))         return _pad_section;
-        if (!strcmp(s, ".file"))        return _file_section;
-        if (!strcmp(s, ".declare"))     return _declare_section;
-        if (!strcmp(s, ".assign"))      return _assign_section;  // New token for .assign section
-        if (!strcmp(s, ".literal"))     return _literal_section;
-		if (!strcmp(s, ".log"))         return _log_section;
-        if (!strcmp(s, ".code"))        return _code_section;
-		if (!strcmp(s, ".end_section")) return _end_section;
+
+        if (!strcmp(s, ".end"))            return _end; 
+        if (!strcmp(s, ".arch_8"))         return _arch_8_section; 
+		if (!strcmp(s, ".arch_16"))        return _arch_16_section; 
+		if (!strcmp(s, ".arch_32"))        return _arch_32_section; 	
+		if (!strcmp(s, ".arch_64"))        return _arch_64_section; 
+		if (!strcmp(s, ".pad"))            return _pad_section;
+        if (!strcmp(s, ".file"))           return _file_section;
+        if (!strcmp(s, ".declare"))        return _declare_section;
+        if (!strcmp(s, ".assign"))         return _assign_section;  // New token for .assign section
+        if (!strcmp(s, ".literal"))        return _literal_section;
+		if (!strcmp(s, ".log"))            return _log_section;
+        if (!strcmp(s, ".code"))           return _code_section;
+		if (!strcmp(s, ".end_section"))    return _end_section;
+        if (!strcmp(s, ".start_section"))  return _start_section;
         return 0;
     }
 
@@ -321,10 +361,11 @@ int keyword(char *s)
 		    break;
         
         case 'c': 
-		    if (!strcmp(s, "call"))        return _call; 
+		    if (!strcmp(s, "call"))        return _call;
+            if (!strcmp(s, "call_system")) return _call_system; 
 		    if (!strcmp(s, "compare"))     return _compare;
 			if (!strcmp(s, "cl"))          return _cl;
-             if (!strcmp(s, "cx"))         return _cx;
+            if (!strcmp(s, "cx"))         return _cx;
 		    break;
         
         case 'd': 
@@ -639,20 +680,18 @@ int scan(struct token *t)
         break;
         default:
             // Handle numbers (both hex and decimal)
-            if (isdigit(c)) {
-                if (c == '0') {
-                    int c2 = next_ch();
-                    if (c2 == 'x' || c2 == 'X') {
-                        t->hex_value = scanhex();
-                        t->token_rep = _hex_literal;
-                        break;
-                    }
-                    // Not hex, put back the second character
-                    return_char(c2);
-                }
+            if (isdigit(c)) 
+            {
                 // Handle as regular number
-                t->num_value = scanint(c);
+                t->num_value = scanint(c, num_str);
                 t->token_rep = _num_literal;
+
+                // Store the string version of the number
+                t->string_value = strdup(num_str);
+                if (!t->string_value) {
+                    error("Failed to allocate memory for string version of number");
+                    return 0;
+                }
                 break;
             }
 

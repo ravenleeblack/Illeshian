@@ -5,8 +5,6 @@
 
 void process_file_section(enum scope_type current_scope)
 {
-    int file_type = 0;
-
     file_section(_file_section, ".file");
 
     while(1)
@@ -21,17 +19,28 @@ void process_file_section(enum scope_type current_scope)
             colon(_colon, ":");
 
             scan(&Token);
-            parse_ident(current_scope);
-            convert_extern_label(Text);
+            ident(_ident, Text);
+            strcpy(file_buffer, Text);
+
+            switch(current_scope) {
+                case scope_universal:     insert_universal_scope(file_buffer, scope_extern_file_tool, scope_extern_file_type);     break;
+                case scope_global:        insert_global_scope(file_buffer, scope_extern_file_tool, scope_extern_file_type);        break;
+                case scope_global_block:  insert_global_block_scope(file_buffer, scope_extern_file_tool, scope_extern_file_type);  break;
+                case scope_local:         insert_local_scope(file_buffer, scope_extern_file_tool, scope_extern_file_type);         break;
+                case scope_local_block:   insert_local_block_scope(file_buffer, scope_extern_file_tool, scope_extern_file_type);   break;
+                default: error("seeding error: Invalid scope for strand literal"); break;
+            }
+
+            convert_extern_label(file_buffer);
 
             scan(&Token);
             semicolon(_semicolon, ";");
         }
-        else if(Token.token_rep == _passage)
+        else if (Token.token_rep == _assign)
         {
             char preserve_file[60]; // Temporary buffer to store Text
 
-            passage(_passage, "passage");
+            assign(_assign, "assign");
 
             scan(&Token);
             colon(_colon, ":");
@@ -40,14 +49,13 @@ void process_file_section(enum scope_type current_scope)
             ident(_ident, Text);
             strcpy(preserve_file, Text);    // preserve the file name so that scan doesnt over it
 
-            switch(current_scope)
-            {
-                case scope_universal:    entry_index = search_universal_scope(Text);    break;  
-                case scope_global:       entry_index = search_global_scope(Text);       break;
-                case scope_global_block: entry_index = search_global_block_scope(Text); break;
-                case scope_local:        entry_index = search_local_scope(Text);        break;
-                case scope_local_block:  entry_index = search_local_block_scope(Text);  break;
-                default: error("seeding error: assign error: Invalid scope");           break;
+            switch(current_scope) {
+                case scope_universal:     insert_universal_scope(preserve_file, scope_file_tool, scope_file_type);     break;
+                case scope_global:        insert_global_scope(preserve_file, scope_file_tool, scope_file_type);        break;
+                case scope_global_block:  insert_global_block_scope(preserve_file, scope_file_tool, scope_file_type);  break;
+                case scope_local:         insert_local_scope(preserve_file, scope_file_tool, scope_file_type);         break;
+                case scope_local_block:   insert_local_block_scope(preserve_file, scope_file_tool, scope_file_type);   break;
+                default: error("seeding error: Invalid scope for strand literal"); break;
             }
 
             scan(&Token);
@@ -55,31 +63,31 @@ void process_file_section(enum scope_type current_scope)
 
             scan(&Token);
             strand_literal(_strand_literal, Token.string_value);
-                
-                
+            strcpy(literal_buffer, Token.string_value);
+
             switch(current_scope) {
-                case scope_universal:     insert_universal_scope(Text, tool_strand, type_strand);     break;
-                case scope_global:        insert_global_scope(Text, tool_strand, type_strand);        break;
-                case scope_global_block:  insert_global_block_scope(Text, tool_strand, type_strand);  break;
-                case scope_local:         insert_local_scope(Text, tool_strand, type_strand);         break;
-                case scope_local_block:   insert_local_block_scope(Text, tool_strand, type_strand);   break;
-                 default: error("seeding error: Invalid scope for strand literal"); break;
+                case scope_universal:     insert_universal_scope(literal_buffer, scope_file_name_literal_tool, scope_file_name_literal);     break;
+                case scope_global:        insert_global_scope(literal_buffer, scope_file_name_literal_tool, scope_file_name_literal);        break;
+                case scope_global_block:  insert_global_block_scope(literal_buffer, scope_file_name_literal_tool, scope_file_name_literal);  break;
+                case scope_local:         insert_local_scope(literal_buffer, scope_file_name_literal_tool, scope_file_name_literal);         break;
+                case scope_local_block:   insert_local_block_scope(literal_buffer, scope_file_name_literal_tool, scope_file_name_literal);   break;
+                default: error("seeding error: Invalid scope for strand literal"); break;
             }
-               
+                
             scan(&Token);
             comma(_comma, ",");
 
             scan(&Token);
             num_literal(_num_literal, Token.num_value);
-            encode_literal_section(preserve_file, Token.string_value, Token.num_value);
+            encode_literal_section(preserve_file, literal_buffer, Token.num_value);
 
             scan(&Token);
             semicolon(_semicolon, ";");
         }
-        else
+        else if(Token.token_rep == _end)
         {
-            reject_token(&Token);
-            break;
+            end(_end, ".end");
+            return 0;
         }
     }
 }

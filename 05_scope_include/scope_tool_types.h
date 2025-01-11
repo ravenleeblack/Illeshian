@@ -5,6 +5,31 @@
 enum scope_tool_type {
     scope_tool_none = 0,
     
+
+    scope_universal_tool,
+    scope_global_tool,
+    scope_global_block_tool,
+    scope_local_tool,
+    scope_local_block_tool,
+
+    scope_arch_08_tool,
+    scope_arch_16_tool,
+    scope_arch_32_tool,
+    scope_arch_64_tool,
+
+    // File tools
+    scope_file_tool,
+    scope_file_name_literal_tool, 
+    scope_extern_file_tool,
+    scope_intern_file_tool,
+    
+    scope_jump_tool,
+
+    scope_hold_data_tool,
+
+
+    scope_strand_tool,
+
     // Function tools
     scope_tool_manager,
     scope_tool_function,

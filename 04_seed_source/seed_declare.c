@@ -4,6 +4,9 @@
 
 int declare_type = 0;
 int byte_size = 0;
+int assign_flag = 0;
+
+
 
 void process_declare_section(enum scope_type current_scope)
 {
@@ -15,6 +18,8 @@ void process_declare_section(enum scope_type current_scope)
 
         if(Token.token_rep == _hold)
         {
+            
+
             hold(_hold, "hold");
 
             scan(&Token);  // Get type
@@ -22,30 +27,65 @@ void process_declare_section(enum scope_type current_scope)
             byte_size = get_byte_size(declare_type); // Get byte size
 
             scan(&Token);
-            colon(_colon, ":");
+            if(Token.token_rep == _colon)
+            {
+                colon(_colon, ":");
 
-            scan(&Token);
-            ident(_ident, Text);  // Variable name
+                scan(&Token);
+                ident(_ident, Text);  // Variable name
+                strcpy(declare_buffer, Text);
 
-            // Insert into current scope
-            switch(current_scope) {
-                case scope_universal:     insert_universal_scope(Text, tool_hold, declare_type);     break;  
-                case scope_global:        insert_global_scope(Text, tool_hold, declare_type);        break;
-                case scope_global_param:  insert_global_param_scope(Text, tool_hold, declare_type);  break;
-                case scope_global_block:  insert_global_block_scope(Text, tool_hold, declare_type);  break;
-                case scope_local:         insert_local_scope(Text, tool_hold, declare_type);         break;
-                case scope_local_param:   insert_local_param_scope(Text, tool_hold, declare_type);   break; 
-                case scope_local_block:   insert_local_block_scope(Text, tool_hold, declare_type);   break;
-                default:  error("seeding error: declare error: Invalid scope for declaration"); break;
-            }
+                    // Insert into current scope
+                switch(current_scope) {
+                    case scope_universal:     insert_universal_scope(Text, scope_hold_data_tool, declare_type);     break;  
+                    case scope_global:        insert_global_scope(Text, scope_hold_data_tool, declare_type);        break;
+                    case scope_global_param:  insert_global_param_scope(Text, scope_hold_data_tool, declare_type);  break;
+                    case scope_global_block:  insert_global_block_scope(Text, scope_hold_data_tool, declare_type);  break;
+                    case scope_local:         insert_local_scope(Text, scope_hold_data_tool, declare_type);         break;
+                    case scope_local_param:   insert_local_param_scope(Text, scope_hold_data_tool, declare_type);   break; 
+                    case scope_local_block:   insert_local_block_scope(Text, scope_hold_data_tool, declare_type);   break;
+                    default:  error("seeding error: declare error: Invalid scope for declaration"); break;
+                }
                 
+                output_declare_section_body(declare_buffer, byte_size, 1);
+            }
+            else if(Token.token_rep == _table)
+            {
+                 assign_flag = 1;  
+                 // Set a flag for a table array we have to handle it different. Since in seedling we do not iniialize the declare section 
+                 // we wait till the assign section to finish and output to nasm with uninialized and the right array elements needed
+
+                table(_table, "table");
+
+                scan(&Token);
+                colon(_colon, ":");
+
+                scan(&Token);
+                ident(_ident, Text);  // Variable name
+                strcpy(declare_buffer, Text);
+
+                    // Insert into current scope
+                switch(current_scope) {
+                    case scope_universal:     insert_universal_scope(Text, scope_hold_data_tool, declare_type);     break;  
+                    case scope_global:        insert_global_scope(Text, scope_hold_data_tool, declare_type);        break;
+                    case scope_global_param:  insert_global_param_scope(Text, scope_hold_data_tool, declare_type);  break;
+                    case scope_global_block:  insert_global_block_scope(Text, scope_hold_data_tool, declare_type);  break;
+                    case scope_local:         insert_local_scope(Text, scope_hold_data_tool, declare_type);         break;
+                    case scope_local_param:   insert_local_param_scope(Text, scope_hold_data_tool, declare_type);   break; 
+                    case scope_local_block:   insert_local_block_scope(Text, scope_hold_data_tool, declare_type);   break;
+                    default:  error("seeding error: declare error: Invalid scope for declaration"); break;
+                }
+            }
+
+
             scan(&Token);
             semicolon(_semicolon, ";");
-        }
-        else
+       }
+
+       else if(Token.token_rep == _end)
         {
-            reject_token(&Token);  //we reject it so the next section can handle it then we break out of this loop.
-            break;
+            end(_end, ".end");
+            return 0;
         }
     }
 }

@@ -8,10 +8,6 @@ int begin_prog(void)
     {
         scan(&Token);
 
-        if(Token.token_rep == _enfi)
-        {
-            break;
-        }
         if(Token.token_rep == _universal)
         {
             process_universal_label();  
@@ -20,9 +16,9 @@ int begin_prog(void)
         {
             process_global_label();
         }
-        else
+        else if(Token.token_rep == _enfi)
         {
-            fprintf(stderr, "Unknown token trying to become a scoped label: %d\n", Token.token_rep);
+            return 0;
         }
     }
 

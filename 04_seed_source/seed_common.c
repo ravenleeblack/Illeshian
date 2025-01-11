@@ -5,29 +5,31 @@
 /*We try to create re usuable functions as much as possible. So these are the more common function that will used
 thorughout the parsing of the problem.*/
 
-// Parses a numeric literal and returns a struct phrase containing the value.
-struct phrase *parse_num_literal()
-{
-    // Allocate memory for num_op
-    struct phrase *num_op = (struct phrase *)malloc(sizeof(struct phrase));
-    if (num_op == NULL)
-    {
-        return NULL; // Return NULL if allocation fails
-    }
 
+// Parses a numeric literal and returns a struct phrase containing the value.
+char *parse_num_literal() {
+    char *num_op;
+    
     // match the number literal
     num_literal(_num_literal, Token.num_value);
 
-    // Assign the number value to num_op->num_value
-    num_op->num_value = Token.num_value;
+    // Check if num_str has been populated with the correct value
+    num_op = Token.string_value; // This points to the number string in num_str buffer, could have used Token.string_value I think because it got put into token struct.
 
+    // Ensure the string is not empty or null before returning
+    if (num_op == NULL || *num_op == '\0') {
+        error("Number string is empty or null");
+        return NULL;  // Or handle error as appropriate
+    }
+
+    strcpy(pass_buffer, num_op);  // Copy the number string to the pass buffer
     // Return the allocated and populated struct
-    return num_op;
+    return pass_buffer;
 }
 
-struct phrase *parse_ident(enum scope_type current_scope)
+char *parse_ident(enum scope_type current_scope)
 {
-    struct phrase *ident_op;
+    char *ident_op;
 
     ident(_ident, Text);  // Token contains the identifier name in `Text`
 

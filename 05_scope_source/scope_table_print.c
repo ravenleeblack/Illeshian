@@ -8,6 +8,32 @@
 
 const char* get_tool_type_str(int type) {
     switch(type) {
+
+        // seedling label tools
+        case scope_universal_tool:    return "tool_universal";
+        case scope_global_tool:       return "tool_global";
+        case scope_global_block_tool: return "tool_global_block";
+        case scope_local_tool:        return "tool_local";
+        case scope_local_block_tool:  return "tool_local_block";
+
+        case scope_arch_08_tool:  return "arch_08";
+        case scope_arch_16_tool:  return "arch_16";
+        case scope_arch_32_tool:  return "arch_32";
+        case scope_arch_64_tool:  return "arch_64";
+
+
+        // File types
+        case scope_file_tool: return "file tool";
+        case scope_file_name_literal_tool: return "file name literal tool";
+        case scope_extern_file_tool: return "extern tool";
+        case scope_intern_file_tool: return "intern tool";
+
+        case scope_jump_tool: return "jump tool";
+
+        case scope_hold_data_tool: return "hold data tool";
+
+        case scope_strand_tool: return "strand data tool";
+
         // Function tools
         case scope_tool_none: return "tool_none";
         case scope_tool_manager: return "tool_manager";
@@ -78,6 +104,28 @@ const char* get_tool_type_str(int type) {
 
 const char* get_data_type_str(int data_type) {
     switch(data_type) {
+
+        // seedling label types
+        case scope_universal_label:    return "universal_label";
+        case scope_global_label:       return "global_label";
+        case scope_global_block_label: return "global_block_label";
+        case scope_local_label:        return "local_label";
+        case scope_local_block_label:  return "local_block_label";
+
+        case scope_arch_08_type:  return "arch_08";
+        case scope_arch_16_type:  return "arch_16";
+        case scope_arch_32_type:  return "arch_32";
+        case scope_arch_64_type:  return "arch_64";
+
+        case scope_file_type: return "file type";
+        case scope_file_name_literal: return "file name literal";
+        case scope_extern_file_type: return "extern file";
+        case scope_intern_file_type: return "intern file";
+
+        case scope_jump_type: return "jump label";
+
+        case scope_literal_data_type: return "strand literal";
+
         // Special type
         case scope_type_none: return "type_none";
         
@@ -123,7 +171,8 @@ const char* get_data_type_str(int data_type) {
         case scope_type_passage_ptr: return "type_passage_ptr";
         
         // File types
-        case scope_type_file: return "type_file";
+
+
         case scope_type_header: return "type_header";
         case scope_type_source: return "type_source";
         case scope_type_module: return "type_module";
@@ -199,10 +248,10 @@ void print_all_scope_tables(FILE *out)
     fprintf(out, "==================\n");
     
     print_scope_table(out, &universal_scope, "Universal Scope");
-    print_scope_table(out, &global_param_scope, "Global Parameter Scope");
+    //print_scope_table(out, &global_param_scope, "Global Parameter Scope");
     print_scope_table(out, &global_scope, "Global Scope");
     print_scope_table(out, &global_block_scope, "Global Block Scope");
-    print_scope_table(out, &local_param_scope, "Local Parameter Scope");
+   // print_scope_table(out, &local_param_scope, "Local Parameter Scope");
     print_scope_table(out, &local_scope, "Local Scope");
     print_scope_table(out, &local_block_scope, "Local Block Scope");
 }

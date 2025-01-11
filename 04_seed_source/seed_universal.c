@@ -8,23 +8,13 @@ void process_universal_label(void)
 
     scan(&Token);
     ident(_ident, Text);
-    universal_id = insert_universal_scope(Text, scope_tool_none, scope_type_none);
+    universal_id = insert_universal_scope(Text, scope_universal_tool, scope_universal_label);
     convert_universal_label(Text);
     
     scan(&Token);
     colon(_colon, ":");
 
-    while(1)
-    {
-        scan(&Token);
-        process_sections(scope_universal);
-
-        if(Token.token_rep == _end_section)
-        {
-            process_end_section();
-            return;
-        }
-    }
+    process_sections(scope_universal);
 }
 
 /* Here we match the universal scope keyword then scan for the label. We insert that label into

@@ -41,7 +41,7 @@ enum {
     _enfi, _ident, _colon, _comma, _semicolon, _period, _lbracket, _rbracket, _assigner, _lbrace, _rbrace,
 
     // Literals
-    _num_literal, _mark_literal, _strand_literal, _hex_literal, _binary_literal, _deci_literal, _decii_literal,
+    _num_literal, _mark_literal, _strand_literal, _hex_literal_08, _hex_literal_16, _hex_literal_32, _hex_literal_64, _binary_literal, _deci_literal, _decii_literal,
 
      _table, _table_ptr,
 
@@ -58,11 +58,13 @@ enum {
     _address, _fetch,
 
     // Sections
-    _log_section, _declare_section, _assign_section, _literal_section, _code_section, 
-    _arch_16_section, _arch_32_section, _arch_64_section, _pad_section, 
+    _start_section, _end_section, _log_section, _declare_section, _assign_section, _literal_section, _code_section, 
+    _arch_8_section, _arch_16_section, _arch_32_section, _arch_64_section, _pad_section, _end,
 
+    _call_system,
+    
     // Scope and structure
-    _scope, _end_scope, _end_section, _log, _assign, _hold,
+    _scope, _end_scope,  _log, _assign, _hold,
     _universal, _global, _local, _global_block, _local_block, _global_param, _local_param,
     _extern, _intern, _external, _internal, _label,
 
@@ -150,7 +152,10 @@ struct token
 {
     int token_rep;          
     int num_value;      // For decimal integers
-    unsigned int hex_value;  // For hex values
+    unsigned int hex_value_08;   // 8-bit hex values
+    unsigned int hex_value_16;  // 16-bit hex values
+    unsigned int hex_value_32;  // 32-bit hex values
+    unsigned int hex_value_64;  // 64-bit hex values
     float deci_value;   // For floats
     double decii_value; // For doubles
     char *token_str;    // For identifier names

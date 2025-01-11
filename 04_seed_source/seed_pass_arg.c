@@ -15,14 +15,6 @@ void process_pass_arg_instruction(enum scope_type current_scope)
 
     scan(&Token);
     semicolon(_semicolon, ";");
-
-    if (nasm_flag)
-    {
-        // Only generate ret for non-main functions
-        if (!is_main_entry) {
-           // fprintf(nasm_state.temp_text, "\tret\n");
-        }
-    }
 }
 
 

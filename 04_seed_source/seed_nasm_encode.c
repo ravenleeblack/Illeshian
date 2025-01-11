@@ -6,12 +6,15 @@
 // Function to convert universal scope label into nasm
 void convert_universal_label(const char* label_name)
 {
-    fprintf(temp_text, "global _%s\n", label_name);
+    fprintf(temp_text, "global _start\n\n", label_name);
+    fprintf(temp_text, "start:\n", label_name);
 }
 
 // Function to convert global scope label into nasm
 void convert_global_label(const char* label_name)
 {
+    fprintf(temp_text, "global %s\n\n", label_name);
+
     fprintf(temp_text, "%s:\n", label_name);
 }
 
@@ -34,6 +37,9 @@ void convert_local_block_label(const char* label_name)
 }
 
 
+
+
+
 // Function to add ret onto end of global scope label
 void convert_label_pass_arg()
 {
@@ -50,36 +56,34 @@ void convert_extern_label(const char* label_name)
 
 
 // Function to encode a Seedling instruction to NASM
-int encode_move_instruction(const char* operation, struct phrase *dest, struct phrase *src)
+void encode_move_instruction(const char* operation, char *dest, char *src)
 {
     // Ensure we print the appropriate strings
-    fprintf(temp_text, "    %s %s, %s\n", operation, dest->src_buffer, src->src_buffer);
-
-    return 0;
+    fprintf(temp_text, "    %s %s, %s\n", operation, dest, src);
 }
 
-void encode_arith_instruction(const char* operation, struct phrase *dest, struct phrase *src)
+void encode_arith_instruction(const char* operation, char *dest, char *src)
 {
     // Ensure we print the appropriate strings
-    fprintf(temp_text, "    %s %s, %s\n", operation, dest->src_buffer, src->src_buffer);
+    fprintf(temp_text, "    %s %s, %s\n", operation, dest, src);
 }
 
 // Function to encode a Seedling push instruction to NASM
-void encode_push_instruction(struct phrase *src)
+void encode_push_instruction(char *src)
 {
     fprintf(temp_text, "    push %s\n", src);
 }
 
 // Function to encode a Seedling pop instruction to NASM
-void encode_pop_instruction(struct phrase *src) 
+void encode_pop_instruction(char *src) 
 {
     fprintf(temp_text, "    pop %s\n", src);
 }
 
 // Function to encode a Seedling jump instruction to NASM
-void encode_jump_instruction(struct phrase *src)
+void encode_jump_instruction(const char* operation)
 {
-    fprintf(temp_text, "    jmp %s\n", src);
+    fprintf(temp_text, "    jmp %s\n", operation);
 }
 
 
@@ -100,14 +104,13 @@ void encode_call_manager_instruction(const char* label) {
 
 
 // Function to encode a Seedling lend instruction to NASM
-void encode_lend_instruction(const char* reg1)
+void encode_lend_instruction()
 {
-    fprintf(temp_text, "    int %s\n", reg1);
+   fprintf(temp_text, "    int 0x80\n");
 }
 
-
 // Function to encode a Seedling set flag instruction to NASM
-void encode_compare_instruction(const char* operation, struct phrase *dest, struct phrase *src)
+void encode_compare_instruction(const char* operation, char *dest, char *src)
 {
     fprintf(temp_text, "    cmp %s, %s\n", dest, src);
 }
@@ -139,12 +142,37 @@ void output_declare_section_body(const char* ident, int byte_size, int type)
         case 2:  fprintf(temp_bss, "    %s resw %d\n", ident, type); break;
         case 4:  fprintf(temp_bss, "    %s resd %d\n", ident, type); break;
         case 8:  fprintf(temp_bss, "    %s resq %d\n", ident, type); break;
-        default: fprintf(temp_bss, "    %s resb %d\n", ident, type); break;
+        default: break;
     }
 }
 
+void output_assign_placeholder(char *ident, int byte_size, int num_to_be_assigned)
+{
+    switch(byte_size)
+    {
+        case 1:  fprintf(temp_text, "    mov byte [%s], %d\n", ident, num_to_be_assigned); break;
+        case 2:  fprintf(temp_text, "    mov word [%s], %d\n", ident, num_to_be_assigned); break;
+        case 4:  fprintf(temp_text, "    mov dword [%s], %d\n", ident, num_to_be_assigned); break;
+        case 8:  fprintf(temp_text, "    mov qword [%s], %d\n", ident, num_to_be_assigned); break;
+        default: break;
+    }
+}
+
+void output_assign_table(char *ident, int byte_size, int num_to_be_assigned)
+{
+    switch(byte_size)
+    {
+        case 1:  fprintf(temp_bss, "    %s resb %d\n", ident, num_to_be_assigned); break;
+        case 2:  fprintf(temp_bss, "    %s resw %d\n", ident, num_to_be_assigned); break;
+        case 4:  fprintf(temp_bss, "    %s resd %d\n", ident, num_to_be_assigned); break;
+        case 8:  fprintf(temp_bss, "    %s resq %d\n", ident, num_to_be_assigned); break;
+        default: break;
+    }
+}
+
+
 // Function to encode a Seedling literal section to NASM
-void encode_literal_section(struct phrase * hold_name, struct phrase *src, int null_value)
+void encode_literal_section(char * hold_name, char *src, int null_value)
 {
     fprintf(temp_data, "    %s db \"%s\", %d\n", hold_name, src, null_value);
 }
@@ -153,6 +181,19 @@ void encode_literal_section(struct phrase * hold_name, struct phrase *src, int n
 void encode_file_section(const char* label_name, const char* label_strand, int length)
 {
     fprintf(temp_data, "    %s db \"%s\", %d\n", label_name, label_strand, length);
+}
+
+
+
+void encode_arch_instruction(int architecture)
+ {
+    switch (architecture) {
+        case 8:  fprintf(output, "[bit %d]\n", architecture);  break;
+        case 16: fprintf(output, "[bit %d]\n", architecture); break;
+        case 32: fprintf(output, "[bit %d]\n", architecture); break;
+        case 64: fprintf(output, "[bit %d]\n", architecture); break;
+        default: printf("Unknown architecture encoding\n"); break;
+    }
 }
 
 //=====================================================================================

@@ -7,6 +7,22 @@ enum scope_data_types
     // Special type
     scope_type_none = 0,
     
+    
+    scope_universal_label,
+    scope_global_label,
+    scope_global_block_label,
+    scope_local_label,
+    scope_local_block_label,
+    
+    scope_arch_08_type,
+    scope_arch_16_type,
+    scope_arch_32_type,
+    scope_arch_64_type,
+
+    scope_jump_type,
+
+    scope_literal_data_type,
+
     // Basic data types
     scope_type_hollow,    
     scope_type_mark,      
@@ -49,7 +65,10 @@ enum scope_data_types
     scope_type_passage_ptr,
     
     // File types
-    scope_type_file,     
+    scope_file_type,
+    scope_file_name_literal, 
+    scope_extern_file_type,
+    scope_intern_file_type,    
     scope_type_header,   
     scope_type_source,   
     scope_type_module,   
