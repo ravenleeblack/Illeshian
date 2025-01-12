@@ -5,8 +5,8 @@
 
 void process_arith_instruction(enum scope_type current_scope) 
 {
-    char *dest_index;
-    char *src_index;
+    phrase_retrievel dest_index;
+    phrase_retrievel src_index;
     
     int arith_reg_type = 0;
     int arith_label_type = 0;

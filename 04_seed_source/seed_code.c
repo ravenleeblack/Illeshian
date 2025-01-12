@@ -22,9 +22,18 @@ void process_code_section(enum scope_type current_scope)
             case _compare:     process_compare_instruction(current_scope );    break;
             case _set_flag:    process_set_flag_instruction(current_scope);    break;
             case _test:        process_test_instruction(current_scope);        break;
+            case _inc_den:      process_increment_instruction(current_scope);   break;
+            case _inc_dens:     process_increment_instruction(current_scope);   break;
+            case _inc_bay:      process_increment_instruction(current_scope);   break;
+            case _inc_bays:     process_increment_instruction(current_scope);   break;
+        
+            case _inc_aisle:     process_increment_instruction(current_scope);   break;
+            case _inc_aisles:    process_increment_instruction(current_scope);   break;
+            case _inc_zone:      process_increment_instruction(current_scope);   break;
+            case _inc_zones:     process_increment_instruction(current_scope);   break;
 
             case _call:          process_call_instruction(current_scope );       break;
-            case _call_system:   process_lend_instruction(current_scope);        break;
+            case _call_system:   process_system_instruction(current_scope);        break;
             case _pass_arg:      process_pass_arg_instruction(current_scope);    break;
 
             case _add_den:   process_arith_instruction(current_scope); break;

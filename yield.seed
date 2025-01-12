@@ -1,8 +1,8 @@
 global yield:
     .start_section
     .code
-        move_aisle: eax, 1 ;    // syscall 1 = exit
-        set_flag: ebx, ebx;    // Return code 0
-        call_system;
+        move_aisle: eax, 1;    // syscall 1 = exit
+        set_flag: ebx, ebx;     // Return code 0 
+        call_system;            // make the syscall
     .end
     .end_section

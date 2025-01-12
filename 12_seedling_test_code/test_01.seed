@@ -8,7 +8,7 @@ universal start:
 global main:
     .start_section         
     .literal 
-        assign: msg = "Hello, World!", 0;
+        assign: msg = "Hello, brave new world!", 0;
     .end
     .code
         move_aisle: edx, 13;                

@@ -11,7 +11,7 @@ void process_global_block_label(int parent_global_id)
     scan(&Token);
     ident(_ident, Text);
     global_block_id = insert_global_block_scope(Text, scope_global_block_tool, scope_global_block_label);
-    convert_global_block_label(Text);
+    encode_global_block_label(Text);
     
     scan(&Token);
     colon(_colon, ":");
