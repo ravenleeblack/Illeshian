@@ -10,7 +10,7 @@ void process_global_label(void)
     scan(&Token);
     ident(_ident, Text);
     global_id = insert_global_scope(Text, scope_global_tool, scope_global_label);        // Add to scope table and save label
-    convert_global_label(Text);
+    encode_global_label(Text);
     
     // Set flag if this is main label
     if((strcmp(Text, "main") == 0))
@@ -26,6 +26,8 @@ void process_global_label(void)
 
     scan(&Token);
     process_sections(scope_global);
+
+    process_global_child_labels(global_id);
 }
 
 void process_global_child_labels(int parent_global_id)

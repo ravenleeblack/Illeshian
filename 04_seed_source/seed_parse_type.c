@@ -57,10 +57,11 @@ int get_byte_size(int declare_type)
 }
 
 
-char *parse_pointer(enum scope_type current_scope)
+phrase_retrievel parse_pointer(enum scope_type current_scope)
 {
-    char *pointer_op;
-    
+    phrase_retrievel result;
+    result.type = phrase_pointer; // Set the operand type
+
     switch(Token.token_rep)
     {
         case _num_ptr:    num_ptr(_num_ptr, "num_ptr");          break;
@@ -84,7 +85,8 @@ char *parse_pointer(enum scope_type current_scope)
 
     scan(&Token);
     ident(_ident, Text);
-    pointer_op = Text;
+    strcpy(ptr_buffer, Text);
+    result.phrase = ptr_buffer;
 
     switch (current_scope)
     {
@@ -99,12 +101,14 @@ char *parse_pointer(enum scope_type current_scope)
     scan(&Token);
     rbrace(_rbrace, "]");
 
-    return pointer_op;  // Return the populated pointer phrase
+    return result;  // Return the populated pointer phrase
 }
 
-char *parse_address(enum scope_type current_scope)
+phrase_retrievel parse_address(enum scope_type current_scope)
 {
-    char *address_op;
+    phrase_retrievel result;
+    result.type = phrase_address; // Set the operand type
+
     address(_address, "address");
 
     scan(&Token);
@@ -112,7 +116,8 @@ char *parse_address(enum scope_type current_scope)
 
     scan(&Token);
     ident(_ident, Text);
-    address_op = Text;
+    strcpy(address_buffer, Text);
+    result.phrase = address_buffer;
 
     switch (current_scope)
     {
@@ -127,11 +132,14 @@ char *parse_address(enum scope_type current_scope)
     scan(&Token);
     rbrace(_rbrace, "]");
 
-    return address_op;  // Return the populated address phrase
+    return result;  // Return the populated address phrase
 }
 
-char *parse_fetch(enum scope_type current_scope)
+phrase_retrievel parse_fetch(enum scope_type current_scope)
 {
+    phrase_retrievel result;
+    result.type = phrase_fetch; // Set the operand type
+
     fetch(_fetch, "fetch");
 
     scan(&Token);
@@ -139,7 +147,8 @@ char *parse_fetch(enum scope_type current_scope)
 
     scan(&Token);
     ident(_ident, Text);
-    strcpy(pass_buffer, Text);
+    strcpy(fetch_buffer, Text);
+    result.phrase = fetch_buffer;
 
     switch (current_scope)
     {
@@ -154,5 +163,5 @@ char *parse_fetch(enum scope_type current_scope)
     scan(&Token);
     rbrace(_rbrace, "]");
 
-    return pass_buffer;  // Return the populated fetch phrase
+    return result;  // Return the populated fetch phrase
 }

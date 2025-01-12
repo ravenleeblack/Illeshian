@@ -9,7 +9,7 @@ void process_local_label(int parent_global_id)
     scan(&Token);
     ident(_ident, Text);
     local_id = insert_local_scope(Text, scope_local_tool, scope_local_label);
-    convert_local_label(Text);
+    encode_local_label(Text);
         
     scan(&Token);
     colon(_colon, ":");

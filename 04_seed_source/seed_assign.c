@@ -39,11 +39,11 @@ void process_assign_section(enum scope_type current_scope)
 
             if(assign_flag == 1)
             {
-               output_assign_table(assign_buffer, byte_size, Token.num_value);
+               encode_assign_table_instruction(assign_buffer, byte_size, Token.num_value);
             }
             else
             {
-                output_assign_placeholder(assign_buffer, byte_size, Token.num_value);
+                encode_assign_hold_instruction(assign_buffer, byte_size, Token.num_value);
             }
         
             scan(&Token);

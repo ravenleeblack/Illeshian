@@ -1,54 +1,46 @@
 #include "seed_defs.h"  
 #include "seed_data.h"   
 #include "seed_decl.h" 
-#include <errno.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
 
-int comp_line_pos = 0;
-int putback_char = '\n';
+void initialize()
+{
 
-int debug_flag = 0;
-int scope_table_flag = 0;
-int treemap_flag = 0;
-int output_flag = 0;
-int assembly_flag = 0;
+    comp_line_pos = 0;
+    putback_char = '\n';
 
-int nasm_flag = 0;
-int rootling_flag = 0;
+    debug_flag = 0;
+    scope_table_flag = 0;
+    treemap_flag = 0;
+    output_flag = 0;
+    assembly_flag = 0;
 
-int first_pass = 0;
-int second_pass = 0;
-int first_pass_flag = 0;
-int second_pass_flag = 0;
+    nasm_flag = 0;
+    rootling_flag = 0;
 
-int is_main_entry = 0;
+    first_pass = 0;
+    second_pass = 0;
+    first_pass_flag = 0;
+    second_pass_flag = 0;
 
-int global_id = 0;
-int local_id = 0;
-int global_block_id = 0;
-int local_block_id = 0;
+    is_main_entry = 0;
 
-FILE* seed_in = NULL;
-FILE* seed_out = NULL;
-FILE* scope_table_out = NULL;
-FILE* nasm_out = NULL;
-FILE* root_out = NULL;
- FILE* output = NULL;
+    global_id = 0;
+    local_id = 0;
+    global_block_id = 0;
+    local_block_id = 0;
 
-int entry_index = 0;
-char dest[64] = {0};
-char src[64] = {0};
+    seed_in = NULL;
+    seed_out = NULL;
+    scope_table_out = NULL;
+    nasm_out = NULL;
+    root_out = NULL;
+    output = NULL;
 
-char output_filename[256];
-
-// Flags to track if the section header has been printed
-int data_header_printed = 0;
-int bss_header_printed = 0;
-int text_header_printed = 0;
-
-
+    // Flags to track if the section header has been printed
+    data_header_printed = 0;
+    bss_header_printed = 0;
+    text_header_printed = 0;
+}
 
 
 typedef struct
@@ -93,13 +85,16 @@ void free_file_list(source_file_list* list) {
     free(list);
 }
 
-int main(int argc, char *argv[]) {
-    if (argc < 2) {
+int main(int argc, char *argv[]) 
+{
+    if (argc < 2) 
+    {
         fprintf(stderr, "Usage: %s <input file>\n", argv[0]);
         return 1;
     }
 
     int result = 0;
+    initialize();
 
     // Create the file list
     source_file_list* file_list = create_file_list(10); // Initial capacity of 10

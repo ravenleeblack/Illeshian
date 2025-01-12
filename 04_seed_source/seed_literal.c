@@ -5,6 +5,7 @@
 void process_literal_section(enum scope_type current_scope)
 {
     char preserve_text[60]; // Temporary buffer to store Text
+    int ending_type = 0;
 
     literal(_literal_section, ".literal");
 
@@ -53,9 +54,9 @@ void process_literal_section(enum scope_type current_scope)
             comma(_comma, ",");
 
             scan(&Token);
-            num_literal(_num_literal, Token.num_value);
-            encode_literal_section(preserve_text, literal_buffer, Token.num_value);
-
+            num_literal(_num_literal, Token.num_value); 
+            encode_literal_with_num_section(preserve_text, literal_buffer, Token.num_value);
+           
             scan(&Token);
             semicolon(_semicolon, ";");
         }

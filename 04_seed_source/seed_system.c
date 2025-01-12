@@ -4,10 +4,10 @@
 
 
 // Function to process the lend instruction
-void process_lend_instruction(enum scope_type current_scope) 
+void process_system_instruction(enum scope_type current_scope) 
 {
     call_system(_call_system, "call_system");
-    encode_lend_instruction();
+    encode_system_instruction();
 
     scan(&Token);
     semicolon(_semicolon, ";");

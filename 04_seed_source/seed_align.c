@@ -2,7 +2,7 @@
 #include "seed_data.h"
 #include "seed_decl.h"
 
-void process_move_instruction(enum scope_type current_scope) 
+void process_align_instruction(enum scope_type current_scope) 
 {
     phrase_retrievel dest_index;
     phrase_retrievel src_index;

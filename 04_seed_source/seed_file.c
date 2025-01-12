@@ -31,7 +31,7 @@ void process_file_section(enum scope_type current_scope)
                 default: error("seeding error: Invalid scope for strand literal"); break;
             }
 
-            convert_extern_label(file_buffer);
+            encode_extern_label(file_buffer);
 
             scan(&Token);
             semicolon(_semicolon, ";");
@@ -78,8 +78,8 @@ void process_file_section(enum scope_type current_scope)
             comma(_comma, ",");
 
             scan(&Token);
-            num_literal(_num_literal, Token.num_value);
-            encode_literal_section(preserve_file, literal_buffer, Token.num_value);
+            num_literal(_num_literal, Token.num_value); 
+            encode_literal_with_num_section(preserve_file, literal_buffer, Token.num_value);
 
             scan(&Token);
             semicolon(_semicolon, ";");

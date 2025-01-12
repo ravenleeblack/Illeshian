@@ -47,7 +47,7 @@ void process_declare_section(enum scope_type current_scope)
                     default:  error("seeding error: declare error: Invalid scope for declaration"); break;
                 }
                 
-                output_declare_section_body(declare_buffer, byte_size, 1);
+                encode_declare_instruction(declare_buffer, byte_size, 1);
             }
             else if(Token.token_rep == _table)
             {

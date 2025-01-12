@@ -141,6 +141,16 @@ void convert(int t, char *expected)        { if (Token.token_rep == t) { if (out
 void increment(int t, char *expected)      { if (Token.token_rep == t) { if (output_flag) {  dark_yellow();    printf(" %s\n", expected);  reset(); } } }
 void decrement(int t, char *expected)      { if (Token.token_rep == t) { if (output_flag) {  dark_yellow();    printf(" %s\n", expected);  reset(); } } }
 
+void inc_den(int t, char *expected)            { if (Token.token_rep == t) { if (output_flag) {  light_gray();  printf(" %s\n", expected);  reset(); } } }
+void inc_bay(int t, char *expected)            { if (Token.token_rep == t) { if (output_flag) {  light_gray();  printf(" %s\n", expected);  reset(); } } }
+void inc_aisle(int t, char *expected)          { if (Token.token_rep == t) { if (output_flag) {  light_gray();  printf(" %s\n", expected);  reset(); } } }
+void inc_zone(int t, char *expected)           { if (Token.token_rep == t) { if (output_flag) {  light_gray();  printf(" %s\n", expected);  reset(); } } }
+
+void inc_dens(int t, char *expected)            { if (Token.token_rep == t) { if (output_flag) {  light_gray();  printf(" %s\n", expected);  reset(); } } }
+void inc_bays(int t, char *expected)            { if (Token.token_rep == t) { if (output_flag) {  light_gray();  printf(" %s\n", expected);  reset(); } } }
+void inc_aisles(int t, char *expected)          { if (Token.token_rep == t) { if (output_flag) {  light_gray();  printf(" %s\n", expected);  reset(); } } }
+void inc_zones(int t, char *expected)           { if (Token.token_rep == t) { if (output_flag) {  light_gray();  printf(" %s\n", expected);  reset(); } } }
+
 
 
 void den(int t, char *expected)            { if (Token.token_rep == t) { if (output_flag) {  light_gray();  printf(" %s\n", expected);  reset(); } } }
@@ -200,22 +210,38 @@ void sub(int t, char *expected)            { if (Token.token_rep == t) { if (out
 void mul(int t, char *expected)            { if (Token.token_rep == t) { if (output_flag) {  black();          printf(" %s\n", expected);  reset(); } } }
 void division(int t, char *expected)       { if (Token.token_rep == t) { if (output_flag) {  black();          printf(" %s\n", expected);  reset(); } } }
 
+
+void align_den(int t, char *expected)        { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
+void align_bay(int t, char *expected)        { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
+void align_aisle(int t, char *expected)      { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
+void align_zone(int t, char *expected)       { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
+
+void align_dens(int t, char *expected)        { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
+void align_bays(int t, char *expected)        { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
+void align_aisles(int t, char *expected)      { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
+void align_zones(int t, char *expected)       { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
+
+
 void add_den(int t, char *expected)        { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void add_bay(int t, char *expected)        { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void add_aisle(int t, char *expected)      { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void add_zone(int t, char *expected)       { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
+
 void sub_den(int t, char *expected)        { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void sub_bay(int t, char *expected)        { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void sub_aisle(int t, char *expected)      { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void sub_zone(int t, char *expected)       { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
+
 void mul_den(int t, char *expected)        { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void mul_bay(int t, char *expected)        { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void mul_aisle(int t, char *expected)      { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void mul_zone(int t, char *expected)       { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
+
 void div_den(int t, char *expected)        { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void div_bay(int t, char *expected)        { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void div_aisle(int t, char *expected)      { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void div_zone(int t, char *expected)       { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
+
 void add_dens(int t, char *expected)       { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void add_bays(int t, char *expected)       { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }
 void add_aisles(int t, char *expected)     { if (Token.token_rep == t) { if (output_flag) { black(); printf(" %s\n", expected); reset(); } } }

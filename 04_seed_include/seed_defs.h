@@ -113,6 +113,8 @@ enum {
     _dec_den, _dec_bay, _dec_aisle, _dec_zone,                          // Dec variants
     _dec_dens, _dec_bays, _dec_aisles, _dec_zones,
 
+    _align_den, _align_bay, _align_aisle, _align_zone,                          // Dec variants
+    _align_dens, _align_bays, _align_aisles, _align_zones,
 
     _push_den,    // 1 unsigned byte
     _push_dens,   // 1 signed byte
@@ -131,6 +133,8 @@ enum {
     _pop_aisles, // 4 signed byte
     _pop_zone,   // 8 unsigned byte
     _pop_zones,   // 8 signed byte
+
+    
     // Addressing and directives
     _ptr, _offset, _rel, _align, _org, _bits, _equ, _times,
 
@@ -343,11 +347,20 @@ enum data_tool_type {
 
 
 
-// phrase structure that will store the phrase type and value
-struct phrase
+enum phrase_type
 {
-    int num_value;
-    char* ident_op;        // Use for storing identifiers if needed
-    char* strand_op;       // Use for storing strand if needed
-    char src_buffer[64];   // Use this to store temporary string data
+    phrase_ident,
+    phrase_number,
+    phrase_hex,
+    phrase_pointer,
+    phrase_address,
+    phrase_fetch,
+    phrase_register,
+
 };
+
+typedef struct {
+    int phrase_value;
+    char *phrase;
+    enum phrase_type type;
+} phrase_retrievel;

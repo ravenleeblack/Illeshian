@@ -9,7 +9,7 @@ void process_universal_label(void)
     scan(&Token);
     ident(_ident, Text);
     universal_id = insert_universal_scope(Text, scope_universal_tool, scope_universal_label);
-    convert_universal_label(Text);
+    encode_universal_label(Text);
     
     scan(&Token);
     colon(_colon, ":");

@@ -101,6 +101,7 @@ ILL_TARGET = $(BINDIR)/ill
 
 # Add Seedling source files
 SEED_SRCS = $(SEED_SRCDIR)/seed_main.c \
+            $(SEED_SRCDIR)/seed_align.c \
             $(SEED_SRCDIR)/seed_arch.c \
             $(SEED_SRCDIR)/seed_assign.c \
 			$(SEED_SRCDIR)/seed_arith.c \
@@ -115,7 +116,6 @@ SEED_SRCS = $(SEED_SRCDIR)/seed_main.c \
             $(SEED_SRCDIR)/seed_global_block.c \
             $(SEED_SRCDIR)/seed_global.c \
             $(SEED_SRCDIR)/seed_lex.c \
-			$(SEED_SRCDIR)/seed_lend.c \
             $(SEED_SRCDIR)/seed_literal.c \
             $(SEED_SRCDIR)/seed_local_block.c \
             $(SEED_SRCDIR)/seed_local.c \
@@ -125,14 +125,15 @@ SEED_SRCS = $(SEED_SRCDIR)/seed_main.c \
 			$(SEED_SRCDIR)/seed_pad.c \
 			$(SEED_SRCDIR)/seed_phrases.c \
             $(SEED_SRCDIR)/seed_parse_type.c \
+			$(SEED_SRCDIR)/seed_push.c \
 			$(SEED_SRCDIR)/seed_registers.c \
             $(SEED_SRCDIR)/seed_section.c \
+			$(SEED_SRCDIR)/seed_system.c \
             $(SEED_SRCDIR)/seed_universal.c \
 			$(SEED_SRCDIR)/seed_move.c \
 			$(SEED_SRCDIR)/seed_jump.c \
 			$(SEED_SRCDIR)/seed_pass_arg.c \
 			$(SEED_SRCDIR)/seed_set_flag.c \
-			$(SEED_SRCDIR)/seed_stack.c \
             $(SEED_SRCDIR)/color.c
 
 # Add Seedling object files

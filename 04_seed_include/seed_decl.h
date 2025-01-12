@@ -2,112 +2,10 @@
 #define SEED_DECL_H
 
 
-int begin_prog(void);
-
-
-void process_universal_label(void);
-
-void process_global_label(void);
-void process_global_block_label(int parent_global_id);
-
-void process_local_label(int parent_global_id);
-void process_local_block_label(int parent_global_id);
-
-
-
-
-void process_sections(enum scope_type current_scope);
-void process_log_section(enum scope_type current_scope);
-void process_declare_section(enum scope_type current_scope);
-void process_assign_section(enum scope_type current_scope);
-void process_literal_section(enum scope_type current_scope);
-void process_code_section(enum scope_type current_scope);
-void process_end_section(void);
-void process_arch_16_section();
-void process_arch_32_section();
-void process_arch_64_section();
-void process_pad_section();
-
-
-void process_global_child_labels(int parent_global_id);
-void process_local_child_labels(int parent_global_id);
-void process_global_block_child_labels(int parent_global_id);
-
-// Register phrase processing
-void process_left_phrase(enum scope_type current_scope);
-void process_right_phrase(enum scope_type current_scope);
-
-
-void process_one_phrase(int instruction, enum scope_type current_scope);
-void process_two_phrase(int instruction, enum scope_type current_scope);
-void process_three_phrase(int instruction, enum scope_type current_scope);
-
-
-
-
-
-
-
-
-// Move instructions
-void move(int t, char *expected);
-void process_move_den(void);
-void process_move_dens(void);
-void process_move_bay(void);
-void process_move_bays(void);
-void process_move_aisle(void);
-void process_move_aisles(void);
-void process_move_zone(void);
-void process_move_zones(void);
-
-// Jump instructions
-void process_jump(void);
-void process_jump_equal(void);
-void process_jump_not_equal(void);
-void process_jump_less(void);
-void process_jump_great(void);
-
-
-
-
-// Call instructions
-
-
-// Arithmetic instructions
-void process_add_instruction(void);
-void process_sub_instruction(void);
-void process_mul_instruction(void);
-void process_div_instruction(void);
-
-void process_move_instruction(enum scope_type current_scope);
-
-void process_jump_instruction(enum scope_type current_scope);
-void process_jump_less_instruction(enum scope_type current_scope) ;
-
-void process_push_radule_instruction(enum scope_type current_scope);
-void process_pop_radule_instruction(enum scope_type current_scope);
-
-// Stack instructions
-void process_push_instruction(enum scope_type current_scope);
-void process_pop_instruction(enum scope_type current_scope);
-
-void process_pass_arg_instruction(enum scope_type current_scope);
-
-void process_set_flag_instruction(enum scope_type current_scope);
-
-void process_compare_instruction(enum scope_type current_scope);
-
-void process_lend_instruction(enum scope_type current_scope);
-
-
-
-
 //============================================================================================================================
-//MATCH FUNCTIONS
+//matching functions for the parser and its output flag
 
 void arch_08(int t, char *expected);
-
-// Scope prototypes
 void universal_scoper(int t, char *expected);
 void file_scoper(int t, char *expected);
 void global_scoper(int t, char *expected);
@@ -116,8 +14,6 @@ void global_block_scoper(int t, char *expected);
 void local_scoper(int t, char *expected);
 void local_param_scoper(int t, char *expected);
 void local_block_scoper(int t, char *expected);
-
-// Core language prototypes
 void ident(int t, char *expected);
 void use(int t, char *expected);
 void replace(int t, char *expected);
@@ -126,8 +22,6 @@ void out(int t, char *expected);
 void transfer(int t, char *expected);
 void type_check(int t, char *expected);
 void collect(int t, char *expected);
-
-// Data type prototypes
 void hollow(int t, char *expected);
 void num(int t, char *expected);
 void mark(int t, char *expected);
@@ -136,8 +30,6 @@ void deci(int t, char *expected);
 void decii(int t, char *expected);
 void deciv(int t, char *expected);
 void decviii(int t, char *expected);
-
-// Data operation prototypes
 void size(int t, char *expected);
 void length(int t, char *expected);
 void hold(int t, char *expected);
@@ -145,8 +37,6 @@ void list(int t, char *expected);
 void table(int t, char *expected);
 void pare(int t, char *expected);
 void tripare(int t, char *expected);
-
-// Control flow prototypes
 void check(int t, char *expected);
 void elser(int t, char *expected);
 void loop(int t, char *expected);
@@ -154,13 +44,9 @@ void set_loop(int t, char *expected);
 void compare(int t, char *expected);
 void line(int t, char *expected);
 void otherwise(int t, char *expected);
-
-// Function prototypes
 void manager(int t, char *expected);
 void function(int t, char *expected);
 void loop_func(int t, char *expected);
-
-// Logic prototypes
 void logic_or(int t, char *expected);
 void logic_and(int t, char *expected);
 void logic_nor(int t, char *expected);
@@ -171,8 +57,6 @@ void less_then(int t, char *expected);
 void great_then(int t, char *expected);
 void equal(int t, char *expected);
 void not_equal(int t, char *expected);
-
-// Literal prototypes
 void num_literal(int t, int expected);
 void strand_literal(int t, char *expected);
 void mark_literal(int t, int expected);
@@ -181,8 +65,6 @@ void decii_literal(int t, int expected);
 void hex_literal(int t, int expected);
 void true_literal(int t, int expected);
 void false_literal(int t, int expected);
-
-// Syntax prototypes
 void colon(int t, char *expected);
 void ender(int t, const char *expected);
 void period(int t, char *expected);
@@ -196,30 +78,23 @@ void lbracket(int t, char *expected);
 void rbracket(int t, char *expected);
 void larrow(int t, char *expected);
 void rarrow(int t, char *expected);
-
-// Pointer prototypes
 void hollow_ptr(int t, char *expected);
 void num_ptr(int t, char *expected);
 void mark_ptr(int t, char *expected);
 void deci_ptr(int t, char *expected);
 void decii_ptr(int t, char *expected);
-
 void strand_ptr(int t, char *expected);
 void table_ptr(int t, char *expected);
 void mana_ptr_(int t, char *expected);
 void func_ptr_(int t, char *expected);
 void log_ptr_(int t, char *expected);
 void list_ptr_(int t, char *expected);
-
-// Memory operation prototypes
 void address(int t, char *expected);
 void fetch(int t, char *expected);
 void retrieve(int t, char *expected);
 void convert(int t, char *expected);
 void increment(int t, char *expected);
 void decrement(int t, char *expected);
-
-// System type prototypes
 void zone(int t, char *expected);
 void aisle(int t, char *expected);
 void bay(int t, char *expected);
@@ -228,8 +103,6 @@ void zones(int t, char *expected);
 void aisles(int t, char *expected);
 void bays(int t, char *expected);
 void dens(int t, char *expected);
-
-// System pointer prototypes
 void zone_ptr(int t, char *expected);
 void aisle_ptr(int t, char *expected);
 void bay_ptr(int t, char *expected);
@@ -238,8 +111,6 @@ void zones_ptr(int t, char *expected);
 void aisles_ptr(int t, char *expected);
 void bays_ptr(int t, char *expected);
 void dens_ptr(int t, char *expected);
-
-// System operation prototypes
 void passage(int t, char *expected);
 void assigner(int t, char *expected);
 void internal(int t, char *expected);
@@ -247,8 +118,6 @@ void external(int t, char *expected);
 void proto(int t, char *expected);
 void vine(int t, char *expected);
 void port_hub(int t, char *expected);
-
-// Register prototypes (64-bit)
 void rax(int t, char *expected);
 void rbx(int t, char *expected);
 void rcx(int t, char *expected);
@@ -265,8 +134,6 @@ void r12(int t, char *expected);
 void r13(int t, char *expected);
 void r14(int t, char *expected);
 void r15(int t, char *expected);
-
-// Register prototypes (32-bit)
 void eax(int t, char *expected);
 void ebx(int t, char *expected);
 void ecx(int t, char *expected);
@@ -283,8 +150,6 @@ void r12d(int t, char *expected);
 void r13d(int t, char *expected);
 void r14d(int t, char *expected);
 void r15d(int t, char *expected);
-
-// Register prototypes (16-bit)
 void ax(int t, char *expected);
 void bx(int t, char *expected);
 void cx(int t, char *expected);
@@ -301,8 +166,6 @@ void r12w(int t, char *expected);
 void r13w(int t, char *expected);
 void r14w(int t, char *expected);
 void r15w(int t, char *expected);
-
-// Register prototypes (8-bit)
 void al(int t, char *expected);
 void bl(int t, char *expected);
 void cl(int t, char *expected);
@@ -319,12 +182,8 @@ void r12b(int t, char *expected);
 void r13b(int t, char *expected);
 void r14b(int t, char *expected);
 void r15b(int t, char *expected);
-
-// Special operation prototypes
 void push_radule(int t, char *expected);
 void pop_radule(int t, char *expected);
-
-// Section prototypes
 void universal(int t, char *expected);
 void global(int t, char *expected);
 void local(int t, char *expected);
@@ -356,39 +215,28 @@ void end_link(int t, char *expected);
 void end_log(int t, char *expected);
 void scope(int t, char *expected);
 void end_scope(int t, char *expected);
-
-
 void move_aisle(int t, char *expected);
 void jump(int t, char *expected);
-
 void set_flag(int t, char *expected);
-
 void jump_neg(int t, char *expected);
-
-
 void test(int t, char *expected);
 void file_section(int t, char *expected);
-
 void push_den(int t, char *expected);
 void push_bay(int t, char *expected);
 void push_aisle(int t, char *expected);
 void push_zone(int t, char *expected);
-
 void push_dens(int t, char *expected);
 void push_bays(int t, char *expected);
 void push_aisles(int t, char *expected);
 void push_zones(int t, char *expected);
-
 void pop_den(int t, char *expected);
 void pop_bay(int t, char *expected);
 void pop_aisle(int t, char *expected);
 void pop_zone(int t, char *expected);
-
 void pop_dens(int t, char *expected);
 void pop_bays(int t, char *expected);
 void pop_aisles(int t, char *expected);
 void pop_zones(int t, char *expected);
-
 void add_den(int t, char *expected);
 void add_bay(int t, char *expected);
 void add_aisle(int t, char *expected);
@@ -421,93 +269,154 @@ void div_dens(int t, char *expected);
 void div_bays(int t, char *expected);
 void div_aisles(int t, char *expected);
 void div_zones(int t, char *expected);
-
 void start_section(int t, char *expected);
 void end(int t, char *expected);
-
-
 void call_system(int t, char *expected);
+void align_den(int t, char *expected);
+void align_bay(int t, char *expected);
+void align_aisle(int t, char *expected);
+void align_zone(int t, char *expected);
+void align_dens(int t, char *expected);
+void align_bays(int t, char *expected);
+void align_aisles(int t, char *expected);
+void align_zones(int t, char *expected);
+void inc_den(int t, char *expected);
+void inc_bay(int t, char *expected);
+void inc_aisle(int t, char *expected);
+void inc_zone(int t, char *expected);
+void inc_dens(int t, char *expected);
+void inc_bays(int t, char *expected);
+void inc_aisles(int t, char *expected);
+void inc_zones(int t, char *expected);
+
+
+
 
 //============================================================================================================================
-// Section handling
-
-
-
-
+//Begin the program
+void initialize();
+int begin_prog(void);
+void write_nasm_sections(const char* output_filename);
+void open_temp_files();
+void close_temp_files();
+void reset_state();
 
 //============================================================================================================================
-// SUPPORT FUNCTIONS
+//These functions are in the seed_encode file but they go with these file handling functions so I keep them close in header
+void output_declare_section_header();
+void output_assign_section_header();
+void output_code_section_header();
+void output_literal_section_header();
 
-
-int get_match_num_flag(int expected);
-int get_match_strand_flag(const char *expected);
-
+//============================================================================================================================
+//lexer functions
 int scanhex(int *size);
 float scandeci(int c);
 int scan(struct token *t);
 void error(const char *message);
 void reject_token(struct token *t);
 
-
-
-void process_call_instruction(enum scope_type scope);
-
+//============================================================================================================================
+//error handling functions that I dont really use yet when I should
 void error_handler(int error_code);
 void error(const char *message);
 void errors(const char *message, const char *s);
 void errorc(const char *message, int c);
 
+//============================================================================================================================
+//Process the scope label header
+void process_universal_label(void);
+void process_global_label(void);
+void process_global_block_label(int parent_global_id);
+void process_local_label(int parent_global_id);
+void process_local_block_label(int parent_global_id);
+
+void process_global_child_labels(int parent_global_id);
+void process_local_child_labels(int parent_global_id);
+void process_global_block_child_labels(int parent_global_id);
 
 //============================================================================================================================
-// Conversion functions
+//Process the sections under the scope label header, so we process the body
+void process_sections(enum scope_type current_scope);
+void process_arch_section(enum scope_type current_scope);
 
-void convert_universal_label(const char* label);
-void convert_global_label(const char* label_name);
-void convert_global_block_label(const char* label);
-void convert_local_label(const char* label_name);
-void convert_local_block_label(const char* label_name);
-
-void convert_label_pass_arg();
-
-
-
-void write_nasm_sections(const char* output_filename);
-
-
-void encode_instruction(const char* instr, const char* dest, const char* src);
-
-const char* get_current_filename(void);
-void set_current_filename(const char* filename);
+void process_log_section(enum scope_type current_scope);
+void process_declare_section(enum scope_type current_scope);
+void process_assign_section(enum scope_type current_scope);
+void process_literal_section(enum scope_type current_scope);
+void process_code_section(enum scope_type current_scope);
+void process_end_section(void);
+void process_origin();
+void process_pad_section();
 
 
-void output_declare_section_header();
-void output_assign_section_header();
-void output_code_section_header();
-void output_literal_section_header();
+//============================================================================================================================
+//Process the move instructions from under the code section
+void process_move_instruction(enum scope_type current_scope);
 
-void output_declare_section_body(const char* ident, int byte_size, int type);
-void output_assign_placeholder(char *ident, int byte_size, int num_to_be_assigned);
-void output_assign_table(char *ident, int byte_size, int num_to_be_assigned);
+//============================================================================================================================
+//Process the jump instructions from under the code section
+void process_jump_instruction(enum scope_type current_scope);
 
 
-void encode_literal_section(char * hold_name, char *src, int null_value);
+//============================================================================================================================
+//Process the push and pop instructions from under the code section
+void process_push_instruction(enum scope_type current_scope);
+void process_pop_instruction(enum scope_type current_scope);
 
+//============================================================================================================================
+//Process the relational instructions
+void process_set_flag_instruction(enum scope_type current_scope);
+void process_compare_instruction(enum scope_type current_scope);
+
+
+
+//============================================================================================================================
+//Process the function related instructions
+void process_call_instruction(enum scope_type scope);
+void process_pass_arg_instruction(enum scope_type current_scope);
+void process_system_instruction(enum scope_type current_scope);
+
+//============================================================================================================================
+//Process the alignment function
+void process_align_instruction(enum scope_type current_scope);
+
+
+
+
+
+//============================================================================================================================
+//Process the functions that convert or translate seedling into nasm
+void encode_universal_label(const char* label);
+void encode_global_label(const char* label_name);
+void encode_global_block_label(const char* label);
+void encode_local_label(const char* label_name);
+void encode_local_block_label(const char* label_name);
+
+void encode_pass_arg_label();
+void encode_extern_label(const char* label_name);
+
+
+void encode_align_instruction(int architecture);
+void encode_assign_hold_instruction(char *ident, int byte_size, int num_to_be_assigned);
+void encode_assign_table_instruction(char *ident, int byte_size, int num_to_be_assigned);
+void encode_arch_instruction(int architecture);
+void encode_arith_instruction(const char* operation, phrase_retrievel dest, phrase_retrievel src);
+
+
+
+
+void process_increment_instruction(enum scope_type current_scope);
+void encode_declare_instruction(const char* ident, int byte_size, int type);
+void encode_literal_with_num_section(char * hold_name, char *src, int null_value);
+void encode_literal_with_hex_section(char *hold_name, char *src, unsigned int hex_value);
 void encode_file_section(const char* label_name, const char* label_strand, int length);
-
 void encode_register(const char* reg, char* nasm_reg);
-void encode_memory_reference(const char* base, const char* offset, char* nasm_ref);
-
-
-
 void encode_call_manager_instruction(const char* label);
 void encode_call_function_instruction(const char* label_one, const char* label_two);
 void encode_test_instruction(const char* reg1, const char* reg2);
-void encode_lend_instruction();
+void encode_system_instruction();
 void encode_fetch_reference(const char* dest, const char* src);
-
-void process_arch_section(enum scope_type current_scope);
-void encode_arch_instruction(int architecture);
-void process_origin();
 
 
 /*functions that process the instructions in the code sections*/
@@ -523,45 +432,39 @@ void process_literal_section(enum scope_type current_scope);
 void process_arith_instruction(enum scope_type current_scope);
 
 
-void convert_extern_label(const char* label_name);
-void open_temp_files();
-void close_temp_files();
-void reset_state();
 
-
-
-void clear_temp_files(void);
-int get_architecture(void);
-void set_architecture(int bits);
-
-// External flags
-extern int nasm_flag;
-extern int rootling_flag;
-
-
-
+//============================================================================================================================
 int parse_type(enum scope_type current_scope);
 int get_byte_size(int declare_type);
 
-char *parse_pointer(enum scope_type current_scope);
-char *parse_address(enum scope_type current_scope);
-char *parse_fetch(enum scope_type current_scope);
+
+
+phrase_retrievel parse_pointer(enum scope_type current_scope);
+phrase_retrievel parse_address(enum scope_type current_scope);
+phrase_retrievel parse_fetch(enum scope_type current_scope);
+
+/*functions that help process the instructions in the code sections*/
+phrase_retrievel parse_num_literal();
+phrase_retrievel parse_hex_literal(int current_architecture);
+phrase_retrievel parse_ident(enum scope_type current_scope);
+
+phrase_retrievel parse_first_phrase(enum scope_type current_scope, int current_architecture);
+phrase_retrievel parse_second_phrase(enum scope_type current_scope, int current_architecture);
+
+//============================================================================================================================
+//Process the functions that convert or translate seedling into nasm
+
 
 
 /*functions that process the conversion to nasm ouput*/
-void encode_push_instruction(char *src);
-void encode_pop_instruction(char *src);
-void encode_move_instruction(const char* operation, char *dest, char *src);
+void encode_push_instruction(int byte_size, phrase_retrievel src);
+void encode_pop_instruction(phrase_retrievel src);
+
+void encode_move_instruction(const char* operation, int byte_size, phrase_retrievel dest, phrase_retrievel src);
 void encode_jump_instruction(const char* operation);
-void encode_compare_instruction(const char* operation, char *dest, char *src);
-void encode_arith_instruction(const char* operation, char *dest, char *src);
+void encode_compare_instruction(const char* operation,  phrase_retrievel dest,  phrase_retrievel src);
+void encode_arith_instruction(const char* operation,phrase_retrievel dest, phrase_retrievel src);
 
-
-/*functions that help process the instructions in the code sections*/
-char *parse_num_literal();
-char *parse_ident(enum scope_type current_scope);
-char *parse_first_phrase(enum scope_type current_scope, int get_reg_by_type);
-char *parse_second_phrase(enum scope_type current_scope, int get_reg_by_type);
 
 
 char *get_den_reg();   // 8-bit registers

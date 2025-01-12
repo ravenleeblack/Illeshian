@@ -1,3 +1,2 @@
 section .data
-    file db "main.asm", 8
-    format db "The result of %d + %d is: %d", 0
+    msg db "Hello, World!", 0

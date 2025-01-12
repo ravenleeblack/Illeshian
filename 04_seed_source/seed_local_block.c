@@ -11,7 +11,7 @@ void process_local_block_label(int parent_global_id)
     scan(&Token);
     ident(_ident, Text);
     local_block_id = insert_local_block_scope(Text, scope_local_block_tool, scope_local_block_label);
-    convert_local_block_label(Text);
+    encode_local_block_label(Text);
 
 
     scan(&Token);

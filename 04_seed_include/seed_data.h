@@ -2,18 +2,16 @@
 #define MAX_FILES 250
 #define MAX_EXTERNS 64
 
-
-
 FILE * seed_in;                                  
 FILE * seed_out;                                 
 FILE* nasm_out;
 FILE* root_out;
- FILE* output;
- 
+FILE* output;
 FILE* temp_data;
 FILE* temp_bss;
 FILE* temp_text;
 FILE* temp_rodata;
+FILE* scope_table_out;
 
 struct token Token;		                         
 char Text[text_length + 1];		                
@@ -23,7 +21,6 @@ int data_header_printed;
 int bss_header_printed;
 int text_header_printed;
 int rodata_header_printed;
-// Command-comp_line_pos flags
 
 // Core parsing variables
 int comp_line_pos;                                       // Current comp_line_pos number
@@ -60,9 +57,6 @@ int local_block_id;
 
 int entry_index;
 
-
-
-
 char dest[64];
 char src[64];
 
@@ -74,6 +68,10 @@ char file_buffer[64]; // Buffer to hold the file name
 char declare_buffer[64]; // Buffer to hold the file name
 char assign_buffer[64]; // Buffer to hold the file name
 
+char ptr_buffer[64]; // Shared buffer for all pass_arg functions
+char address_buffer[64]; // Shared buffer for all pass_arg functions
+char fetch_buffer[64]; // Shared buffer for all pass_arg functions
+
 int byte_size_buffer[64]; // Buffer to hold the file name
 
 int declare_type;
@@ -81,4 +79,7 @@ int byte_size;
 
 int assign_flag;
 int current_architecture; // Global variable to track the current architecture.
+
+char output_filename[256];
+
 

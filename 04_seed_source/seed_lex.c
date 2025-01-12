@@ -203,9 +203,16 @@ float scandeci(int c) {
 
 // Scan and return an integer literal value from the input file
 // along with the string version of the integer.
-int scanint(int c, char *num_str) {
+int scanint(int c, char *num_str)
+{
     int k, val = 0;
     int i = 0;
+
+    if (c == '0') {
+       num_str[i++] = '0';
+       num_str[i] = '\0';
+    return 0; // Return value as 0
+}
 
     // Ensure the input is valid before processing
     if (c < '0' || c > '9') {
@@ -224,7 +231,7 @@ int scanint(int c, char *num_str) {
         {
            return_char(c);  //if its a semicolon return were problems with the semicolon after num literals
         }
-        else if (c < '0' || c > '9') // Stop if the character is no longer a number
+        if (c < '0' || c > '9') // Stop if the character is no longer a number
         {
             break;  // Exit the loop if a non-numeric character is encountered
         }
@@ -337,6 +344,17 @@ int keyword(char *s)
             if (!strcmp(s, "add_bays"))       return _add_bays;
             if (!strcmp(s, "add_aisles"))     return _add_aisles;
             if (!strcmp(s, "add_zones"))      return _add_zones;
+
+            if (!strcmp(s, "align_den"))        return _align_den;
+            if (!strcmp(s, "align_bay"))        return _align_bay;
+            if (!strcmp(s, "align_aisle"))      return _align_aisle;
+            if (!strcmp(s, "align_zone"))       return _align_zone;
+
+            if (!strcmp(s, "align_dens"))       return _align_dens;
+            if (!strcmp(s, "align_bays"))       return _align_bays;
+            if (!strcmp(s, "align_aisles"))     return _align_aisles;
+            if (!strcmp(s, "align_zones"))      return _align_zones;
+
 		    if (!strcmp(s, "and")) return _and; 
 		    if (!strcmp(s, "align")) return _align; 
 		    if (!strcmp(s, "assign")) return _assign;
@@ -682,6 +700,43 @@ int scan(struct token *t)
             // Handle numbers (both hex and decimal)
             if (isdigit(c)) 
             {
+                // Check if it's a hexadecimal number (starts with '0x' or '0X')
+                if (c == '0') {
+                    int next = next_ch();
+
+                    if (next == 'x' || next == 'X') {
+                        // Parse hexadecimal number
+                        int hex_size = 0;
+                        int hex_value = scanhex(&hex_size);
+
+                        // Store the parsed value and its size in the token
+                        t->token_rep = hex_size; // _hex_literal_08, _hex_literal_16, etc.
+                        t->num_value = hex_value;
+
+                        // Store specific hex values in the corresponding fields
+                        switch (hex_size) {
+                            case _hex_literal_08:
+                                t->hex_value_08 = (unsigned int)(hex_value & 0xFF);
+                                break;
+                            case _hex_literal_16:
+                                t->hex_value_16 = (unsigned int)(hex_value & 0xFFFF);
+                                break;
+                            case _hex_literal_32:
+                                t->hex_value_32 = (unsigned int)(hex_value & 0xFFFFFFFF);
+                                break;
+                            case _hex_literal_64:
+                                t->hex_value_64 = (unsigned int)hex_value; // Ensure storage fits
+                                break;
+                        }
+
+                        return 1;
+                    } 
+                    else 
+                    {
+                        // Not hexadecimal, handle as regular decimal (put the character back)
+                        return_char(next);
+                    }
+                }
                 // Handle as regular number
                 t->num_value = scanint(c, num_str);
                 t->token_rep = _num_literal;
