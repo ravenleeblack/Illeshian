@@ -1,11 +1,9 @@
 # Illeshian is a series of programs.
-
 ```
-[Illeshian Driver              ] (https://github.com/ravenleeblack/Illeshian/wiki)
-[Illeshian Runtime Preprocessor] (https://github.com/ravenleeblack/Illeshian/wiki)
-[Illeshian Compiler            ] (https://github.com/ravenleeblack/Illeshian/wiki)
-[Seedling Assembler            ] (https://github.com/ravenleeblack/Illeshian/wiki)
+The Illeshian Driver - ill
+The Illeshian Runtime Preprocessor - irp
+The Illeshian Compiler - comp
+The Seedling assembler - seed
+The Rootling linker - hasnt been started yet - root
 ```
-
-You can also find out more in the wiki:
-[Wiki](https://github.com/ravenleeblack/Illeshian/wiki) !!
+If you want to know more then check out the [Wiki](https://github.com/ravenleeblack/Illeshian/wiki) !!
