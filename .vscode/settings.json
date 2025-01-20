@@ -255,6 +255,7 @@
     "\"*.extension\":": "\"c\"",
     "ALINK.C": "cpp",
     "OUTPUT.C": "cpp",
-    "LNK.C": "cpp"
+    "LNK.C": "cpp",
+    "ALIB.C": "cpp"
   }
 }

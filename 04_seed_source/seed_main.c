@@ -35,11 +35,6 @@ void initialize()
     nasm_out = NULL;
     root_out = NULL;
     output = NULL;
-
-    // Flags to track if the section header has been printed
-    data_header_printed = 0;
-    bss_header_printed = 0;
-    text_header_printed = 0;
 }
 
 
@@ -141,8 +136,8 @@ int main(int argc, char *argv[])
 
         result = begin_prog(); // Start parsing the seedling source code
 
+        close_temp_files();      //close the temp folders we shouldnt need to append anymore. We also do after write_nasm_sections so that our sections get put int right.
         fclose(seed_in); // We are done parsing the file, so close it
-        close_temp_files();      //close the temp folders we shouldnt need to append anymore
 
         if (nasm_flag) {
             // Generate output filename based on the current source file
@@ -153,9 +148,6 @@ int main(int argc, char *argv[])
 
             // Write NASM sections to the output file
             write_nasm_sections(output_filename);
-
-            // Reset state for the next file
-            reset_state();
         }
     }
 
@@ -173,7 +165,7 @@ int main(int argc, char *argv[])
 // Function to write NASM sections to the final output file
 void write_nasm_sections(const char* output_filename)
 {
-    output = fopen(output_filename, "a");
+    FILE* output = fopen(output_filename, "a");
     if (!output) {
         fprintf(stderr, "Error: Unable to open output file %s: %s\n", output_filename, strerror(errno));
         return;
@@ -182,18 +174,53 @@ void write_nasm_sections(const char* output_filename)
     const char* sections[] = {"temp_data.asm", "temp_bss.asm", "temp_text.asm"};
     for (size_t i = 0; i < sizeof(sections) / sizeof(sections[0]); i++) {
         FILE* section = fopen(sections[i], "r");
-        if (section)
-        {
+
+        if (section) {
+            fseek(section, 0, SEEK_END);  // Move the file pointer to the end
+            long file_size = ftell(section); // Get the file size
+
+            if (file_size == 0) { // Check if the file is empty
+                fclose(section);
+                continue; // Skip this section if the file is empty
+            }
+
+            fseek(section, 0, SEEK_SET); // Reset file pointer to the beginning
+
             char buffer[256];
 
-            while (fgets(buffer, sizeof(buffer), section)) 
-            {
-                fputs(buffer, output);
+            // Check for data section and output header if the counter is greater than 0
+            if (strcmp(sections[i], "temp_data.asm") == 0) {
+                fprintf(output, "section .data\n");
+
+                // Read and write the contents of the section to the output file
+                while (fgets(buffer, sizeof(buffer), section)) {
+                    fputs(buffer, output);
+                }
+                fclose(section);
             }
-            fclose(section);
-        } 
-        else 
-        {
+
+            // Check for BSS section and output header if the counter is greater than 0
+            if (strcmp(sections[i], "temp_bss.asm") == 0) {
+                fprintf(output, "\nsection .bss\n");
+
+                // Read and write the contents of the section to the output file
+                while (fgets(buffer, sizeof(buffer), section)) {
+                    fputs(buffer, output);
+                }
+                fclose(section);
+            }
+
+            // Check for text section and output header if the counter is greater than 0
+            if (strcmp(sections[i], "temp_text.asm") == 0) {
+                fprintf(output, "\nsection .text\n");
+
+                // Read and write the contents of the section to the output file
+                while (fgets(buffer, sizeof(buffer), section)) {
+                    fputs(buffer, output);
+                }
+                fclose(section);
+            }
+        } else {
             fprintf(stderr, "Warning: Failed to open section file %s: %s\n", sections[i], strerror(errno));
         }
     }
@@ -201,12 +228,6 @@ void write_nasm_sections(const char* output_filename)
     fclose(output);
 }
 
-void reset_state() 
-{
-    data_header_printed = 0;
-    bss_header_printed = 0;
-    text_header_printed = 0;
-}
 
 void open_temp_files()
 {
@@ -215,22 +236,20 @@ void open_temp_files()
         fprintf(stderr, "Error: Unable to open temp_data.asm\n");
         return;
     }
-    output_assign_section_header();
 
     temp_bss = fopen("temp_bss.asm", "w");
     if (!temp_bss) {
         fprintf(stderr, "Error: Unable to open temp_bss.asm\n");
         return;
     }
-    output_declare_section_header();
 
     temp_text = fopen("temp_text.asm", "w");
     if (!temp_text) {
         fprintf(stderr, "Error: Unable to open temp_text.asm\n");
-         return;
+        return;
     }
-    output_code_section_header();
 }
+
 
 void close_temp_files()
 {

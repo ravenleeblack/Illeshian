@@ -137,44 +137,39 @@ int scanch(void)
 // Scan and return a hexadecimal number
 int scanhex(int *size) 
 {
-    int c, h, val = 0;
+    int c, hex_char, val = 0;
     int digits = 0;
 
     while (1) 
     {
-        c = next_ch();
+        c = next_ch();  // Read next character
 
-        if (c >= '0' && c <= '9')
-            h = c - '0';
-        else if (c >= 'a' && c <= 'f')
-            h = c - 'a' + 10;
-        else if (c >= 'A' && c <= 'F')
-            h = c - 'A' + 10;
-        else {
-            return_char(c);
+        if (c >= '0' && c <= '9')        hex_char = c - '0';
+        else if (c >= 'a' && c <= 'f')   hex_char = c - 'a' + 10;
+        else if (c >= 'A' && c <= 'F')   hex_char = c - 'A' + 10;
+        else 
+        {
+            return_char(c);  // Return invalid character to input buffer
             break;
         }
 
-        val = (val << 4) | h;  // Use bitwise operations for hex
+        val = (val << 4) | hex_char;  // Accumulate hex value
         digits++;
+    }
 
-        // Determine the size based on the number of digits
-        if (digits <= 2) 
-            *size = 8;   // 8-bit hex
-        else if (digits <= 4) 
-            *size = 16;  // 16-bit hex
-        else if (digits <= 8) 
-            *size = 32;  // 32-bit hex
-        else if (digits <= 16) 
-            *size = 64;  // 64-bit hex
-        else {
-            error("Hex value exceeds 64-bit size");
-            return 0;
-        }
+    // Set size based on number of digits
+    if (digits <= 2)        *size = 8;   // 8-bit hex
+    else if (digits <= 4)   *size = 16;  // 16-bit hex
+    else if (digits <= 8)   *size = 32;  // 32-bit hex
+    else if (digits <= 16)  *size = 64;  // 64-bit hex
+    else {
+        *size = 0; // If too many digits, set size to invalid state
+        return 0; // Return zero for invalid input
     }
 
     return val;
 }
+
 
 float scandeci(int c) {
     float val = 0;
@@ -203,16 +198,9 @@ float scandeci(int c) {
 
 // Scan and return an integer literal value from the input file
 // along with the string version of the integer.
-int scanint(int c, char *num_str)
+int scanint(int c)
 {
     int k, val = 0;
-    int i = 0;
-
-    if (c == '0') {
-       num_str[i++] = '0';
-       num_str[i] = '\0';
-    return 0; // Return value as 0
-}
 
     // Ensure the input is valid before processing
     if (c < '0' || c > '9') {
@@ -221,24 +209,22 @@ int scanint(int c, char *num_str)
     }
 
     // Convert each character into an int value
-    while ((k = chrpos("0123456789", c)) >= 0) {
+    while ((k = chrpos("0123456789", c)) >= 0) 
+    {
         val = val * 10 + k;  // Update the numeric value
 
-        // Store the string version of the number
-        num_str[i++] = c;  // Add valid character to the string
+        // Move to the next character here
+        c = next_ch(); // This function should read the next character
 
-        if((c = next_ch()) == ';')
-        {
-           return_char(c);  //if its a semicolon return were problems with the semicolon after num literals
+        if (c == ';' || c == ']') {
+            return_char(c);  // Return the character if it's a semicolon or closing bracket
+            break;  // Exit the loop after handling the character
         }
-        if (c < '0' || c > '9') // Stop if the character is no longer a number
-        {
+
+        if (c < '0' || c > '9') { // Stop if the character is no longer a number
             break;  // Exit the loop if a non-numeric character is encountered
         }
     }
-
-    // Null-terminate the string
-    num_str[i] = '\0';
 
     return val;  // Return the integer value
 }
@@ -303,7 +289,7 @@ int scanident(int c, char *buf, int lim)
         }
         c = next_ch();
     }
-
+        
     return_char(c);
     buf[i] = '\0';
     return (i);
@@ -367,7 +353,9 @@ int keyword(char *s)
 			if (!strcmp(s, "aisles_ptr")) return _aisles_ptr;
 		    break;
         
-        case 'b': 
+        case 'b':
+        	if (!strcmp(s, "bin"))         return _bin;
+            if (!strcmp(s, "bin_value"))         return _bin_value;
 		    if (!strcmp(s, "bits"))        return _bits; 
 			if (!strcmp(s, "bay"))         return _bay; 
             if (!strcmp(s, "bl"))          return _bl;
@@ -380,8 +368,13 @@ int keyword(char *s)
         
         case 'c': 
 		    if (!strcmp(s, "call"))        return _call;
-            if (!strcmp(s, "call_system")) return _call_system; 
-		    if (!strcmp(s, "compare"))     return _compare;
+            if (!strcmp(s, "call_system"))    return _call_system;
+
+		    if (!strcmp(s, "comp_den"))       return _comp_den;
+            if (!strcmp(s, "comp_bay"))       return _comp_bay;
+            if (!strcmp(s, "comp_aisle"))     return _comp_aisle;
+            if (!strcmp(s, "comp_zone"))      return _comp_zone;
+
 			if (!strcmp(s, "cl"))          return _cl;
             if (!strcmp(s, "cx"))         return _cx;
 		    break;
@@ -434,21 +427,31 @@ int keyword(char *s)
 		    break;
 		 
         case 'h':
-		    if (!strcmp(s, "hold")) return _hold; 
+		    if (!strcmp(s, "hold")) return _hold;
+            if (!strcmp(s, "hex"))  return _hex; 
+            if (!strcmp(s, "hex_value"))  return _hex_value; 
 		    break;
 
         case 'i':
-		    if (!strcmp(s, "inc")) return _inc;
+		    if (!strcmp(s, "inc_den")) return _inc_den;
+            if (!strcmp(s, "inc_dens")) return _inc_dens;
+		    if (!strcmp(s, "inc_bay")) return _inc_bay;
+            if (!strcmp(s, "inc_bays")) return _inc_bays;
+		    if (!strcmp(s, "inc_aisle")) return _inc_aisle;
+            if (!strcmp(s, "inc_aisles")) return _inc_aisles;
+		    if (!strcmp(s, "inc_zone")) return _inc_zone;
+            if (!strcmp(s, "inc_zones")) return _inc_zones;
 			if (!strcmp(s, "intern")) return _intern;
 		    break;
         
         case 'j': 
             if (!strcmp(s, "jump")) return _jump;
+            if (!strcmp(s, "jump_zero")) return _jump_zero;
+            if (!strcmp(s, "jump_neg")) return _jump_neg;
             if (!strcmp(s, "jump_equal")) return _jump_equal;
             if (!strcmp(s, "jump_not_equal")) return _jump_not_equal;
             if (!strcmp(s, "jump_greater")) return _jump_great;
             if (!strcmp(s, "jump_less")) return _jump_less;
-            if (!strcmp(s, "jump_neg")) return _jump_neg;
             break;
         
         case 'l': 
@@ -491,12 +494,15 @@ int keyword(char *s)
 		    if (!strcmp(s, "nop"))          return _nop; 
 		    if (!strcmp(s, "not"))          return _not;
 			if (!strcmp(s, "num"))          return _num;
+			if (!strcmp(s, "num_value"))    return _num_value;
 			if (!strcmp(s, "num_ptr"))      return _num_ptr;
 			if (!strcmp(s, "num_literal"))  return _num_literal;
 		    break;
         
         case 'o':
-		    if (!strcmp(s, "or")) return _or;
+            if (!strcmp(s, "oct"))    return _oct;
+            if (!strcmp(s, "oct_value"))    return _oct_value;
+		    if (!strcmp(s, "or"))     return _or;
 		    if (!strcmp(s, "offset")) return _offset; 
 			if (!strcmp(s, "origin")) return _origin; 
 			break;
@@ -637,7 +643,7 @@ void reject_token(struct token *t)
     RejTokens[RejCount++] = *t;
 }
 
-// Modified scan to handle multiple rejected tokens
+
 int scan(struct token *t) 
 {
     if (RejCount > 0)
@@ -701,52 +707,35 @@ int scan(struct token *t)
             if (isdigit(c)) 
             {
                 // Check if it's a hexadecimal number (starts with '0x' or '0X')
-                if (c == '0') {
-                    int next = next_ch();
+                if (c == '0') 
+                {
+                    int current_char = next_ch();
 
-                    if (next == 'x' || next == 'X') {
+                    if (current_char == 'x' || current_char == 'X') 
+                    {
                         // Parse hexadecimal number
                         int hex_size = 0;
                         int hex_value = scanhex(&hex_size);
 
-                        // Store the parsed value and its size in the token
-                        t->token_rep = hex_size; // _hex_literal_08, _hex_literal_16, etc.
                         t->num_value = hex_value;
 
-                        // Store specific hex values in the corresponding fields
-                        switch (hex_size) {
-                            case _hex_literal_08:
-                                t->hex_value_08 = (unsigned int)(hex_value & 0xFF);
-                                break;
-                            case _hex_literal_16:
-                                t->hex_value_16 = (unsigned int)(hex_value & 0xFFFF);
-                                break;
-                            case _hex_literal_32:
-                                t->hex_value_32 = (unsigned int)(hex_value & 0xFFFFFFFF);
-                                break;
-                            case _hex_literal_64:
-                                t->hex_value_64 = (unsigned int)hex_value; // Ensure storage fits
-                                break;
+                        switch (hex_size)  // scanhex should have return us a hex_size
+                        {
+                            case 8:   t->token_rep = _hex_literal_08; t->hex_value_08 = (unsigned int)(hex_value & 0xFF);           break;
+                            case 16:  t->token_rep = _hex_literal_08; t->hex_value_16 = (unsigned int)(hex_value & 0xFFFF);         break;
+                            case 32:  t->token_rep = _hex_literal_08; t->hex_value_32 = (unsigned int)(hex_value & 0xFFFFFFFF);     break;
+                            case 64:  t->token_rep = _hex_literal_08; t->hex_value_64 = (unsigned int)hex_value;                    break;
                         }
-
-                        return 1;
+                        return 0;
                     } 
                     else 
                     {
-                        // Not hexadecimal, handle as regular decimal (put the character back)
-                        return_char(next);
+                        return_char(current_char);    // Not hexadecimal, handle as regular decimal (put the character back)
                     }
                 }
                 // Handle as regular number
-                t->num_value = scanint(c, num_str);
+                t->num_value = scanint(c);
                 t->token_rep = _num_literal;
-
-                // Store the string version of the number
-                t->string_value = strdup(num_str);
-                if (!t->string_value) {
-                    error("Failed to allocate memory for string version of number");
-                    return 0;
-                }
                 break;
             }
 
@@ -755,15 +744,18 @@ int scan(struct token *t)
             {
                 scanident(c, Text, text_length);
                 int tokentype = keyword(Text);
-                if (tokentype) {
+                if (tokentype) 
+                {
                     t->token_rep = tokentype;
-                } else {
+                } 
+                else 
+                {
                     t->token_rep = _ident;
                 }
                 break;
             }
             
-            errorc("Unrecognized character", c);
+            errorc(" lexer error: Unrecognized character", c);
             return 0;
     }
 

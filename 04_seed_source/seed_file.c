@@ -5,12 +5,19 @@
 
 void process_file_section(enum scope_type current_scope)
 {
+    phrase_retrievel src_index;
+
     file_section(_file_section, ".file");
 
     while(1)
     {
         scan(&Token);
 
+        if(Token.token_rep == _end)
+        {
+            end(_end, ".end");
+            return 0;
+        }
         if(Token.token_rep == _extern)
         {
             external(_extern, "extern");
@@ -78,16 +85,19 @@ void process_file_section(enum scope_type current_scope)
             comma(_comma, ",");
 
             scan(&Token);
-            num_literal(_num_literal, Token.num_value); 
-            encode_literal_with_num_section(preserve_file, literal_buffer, Token.num_value);
+            if(Token.token_rep == _num_value)
+            {
+               src_index = parse_num_literal(current_scope); 
+               encode_literal_with_num_section(preserve_file, literal_buffer, src_index);
+            }
+            else if(Token.token_rep == _hex_value)
+            {
+               src_index = parse_hex_literal(current_scope, global_architecture);
+               encode_literal_with_hex_section(preserve_file, literal_buffer, src_index);
+            }
 
             scan(&Token);
             semicolon(_semicolon, ";");
-        }
-        else if(Token.token_rep == _end)
-        {
-            end(_end, ".end");
-            return 0;
         }
     }
 }

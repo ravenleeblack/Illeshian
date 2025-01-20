@@ -9,7 +9,8 @@ FILE *symbol_out;                               // Output source file
 FILE *scope_table_out;
 FILE *treemap_out;
 
-FILE* asm_out;
+FILE* nasm_out;
+FILE* seed_out;
 
 // Buffers and text storage
 char Text[text_length + 1];                     // Last identifier scanned

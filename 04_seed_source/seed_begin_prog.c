@@ -8,6 +8,10 @@ int begin_prog(void)
     {
         scan(&Token);
 
+        if(Token.token_rep == _enfi)
+        {
+            return 0;
+        }
         if(Token.token_rep == _universal)
         {
             process_universal_label();  
@@ -16,12 +20,7 @@ int begin_prog(void)
         {
             process_global_label();
         }
-        else if(Token.token_rep == _enfi)
-        {
-            return 0;
-        }
     }
-
     return 0;
 }
 

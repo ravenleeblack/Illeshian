@@ -3,63 +3,63 @@
 #include "comp_decl.h" 
 
 // File handle for output assembly
-FILE* asm_out = NULL;
+FILE* nasm_out = NULL;
 
 // Basic section generation
 void generate_section_data(void)
 {
-    fprintf(asm_out, "section .data\n");
+    fprintf(nasm_out, "section .data\n");
     // Add any universal scope data (logs/lists) here
 }
 
 void generate_section_bss(void)
 {
-    fprintf(asm_out, "section .bss\n");
+    fprintf(nasm_out, "section .bss\n");
     // Add any uninitialized data here
 }
 
 void generate_section_text(void)
 {
-    fprintf(asm_out, "section .text\n");
-    fprintf(asm_out, "global _start\n");  // NASM entry point
+    fprintf(nasm_out, "section .text\n");
+    fprintf(nasm_out, "global _start\n");  // NASM entry point
     
     // Generate _start that calls main
-    fprintf(asm_out, "_start:\n");
-    fprintf(asm_out, "    call main\n");
-    fprintf(asm_out, "    mov rdi, rax\n");  // Exit code from main
-    fprintf(asm_out, "    mov rax, 60\n");   // sys_exit
-    fprintf(asm_out, "    syscall\n\n");
+    fprintf(nasm_out, "_start:\n");
+    fprintf(nasm_out, "    call main\n");
+    fprintf(nasm_out, "    mov rdi, rax\n");  // Exit code from main
+    fprintf(nasm_out, "    mov rax, 60\n");   // sys_exit
+    fprintf(nasm_out, "    syscall\n\n");
 }
 
 // Manager/Function prologue and epilogue
 void generate_manager_prologue(const char* name)
 {
-    fprintf(asm_out, "%s:\n", name);
-    fprintf(asm_out, "    push rbp\n");
-    fprintf(asm_out, "    mov rbp, rsp\n");
+    fprintf(nasm_out, "%s:\n", name);
+    fprintf(nasm_out, "    push rbp\n");
+    fprintf(nasm_out, "    mov rbp, rsp\n");
 }
 
 void generate_manager_epilogue(void)
 {
-    fprintf(asm_out, "    mov rsp, rbp\n");
-    fprintf(asm_out, "    pop rbp\n");
-    fprintf(asm_out, "    ret\n");
+    fprintf(nasm_out, "    mov rsp, rbp\n");
+    fprintf(nasm_out, "    pop rbp\n");
+    fprintf(nasm_out, "    ret\n");
 }
 
 // Initialize code generation
 int init_code_gen(const char* output_file)
 {
-    asm_out = fopen(output_file, "w");
-    if (!asm_out) return 0;
+    nasm_out = fopen(output_file, "w");
+    if (!nasm_out) return 0;
     return 1;
 }
 
 // Close code generation
 void close_code_gen(void)
 {
-    if (asm_out) {
-        fclose(asm_out);
-        asm_out = NULL;
+    if (nasm_out) {
+        fclose(nasm_out);
+        nasm_out = NULL;
     }
 }
 
@@ -93,8 +93,8 @@ void generate_universal_scope(void)
 void generate_log(struct scope_table_entry* entry)
 {
     // Generate struct in data section
-    fprintf(asm_out, "; Log: %s\n", entry->scope_table_name);
-    fprintf(asm_out, "struc %s\n", entry->scope_table_name);
+    fprintf(nasm_out, "; Log: %s\n", entry->scope_table_name);
+    fprintf(nasm_out, "struc %s\n", entry->scope_table_name);
     
     // Process log members from universal scope
     for (int i = 0; i < scope_total_entries; i++) {
@@ -104,26 +104,26 @@ void generate_log(struct scope_table_entry* entry)
             
             switch(universal_scope.entries[i].scope_table_data_type) {
                 case type_num:
-                    fprintf(asm_out, "    .%s: resd 1\n", 
+                    fprintf(nasm_out, "    .%s: resd 1\n", 
                             universal_scope.entries[i].scope_table_name);
                     break;
                 case type_mark:
-                    fprintf(asm_out, "    .%s: resb 1\n",
+                    fprintf(nasm_out, "    .%s: resb 1\n",
                             universal_scope.entries[i].scope_table_name);
                     break;
                 // Add other types as needed
             }
         }
     }
-    fprintf(asm_out, "endstruc\n\n");
+    fprintf(nasm_out, "endstruc\n\n");
 }
 
 // Generate assembly for list data tool
 void generate_list(struct scope_table_entry* entry)
 {
     // Generate enum values
-    fprintf(asm_out, "; List: %s\n", entry->scope_table_name);
-    fprintf(asm_out, "%%define enum_%s_start 0\n", entry->scope_table_name);
+    fprintf(nasm_out, "; List: %s\n", entry->scope_table_name);
+    fprintf(nasm_out, "%%define enum_%s_start 0\n", entry->scope_table_name);
     
     int enum_value = 0;
     // Process list items from universal scope
@@ -132,13 +132,13 @@ void generate_list(struct scope_table_entry* entry)
             universal_scope.entries[i].scope_table_tool_type == scope_tool_list &&
             strcmp(universal_scope.entries[i].manager_name, entry->scope_table_name) == 0) {
             
-            fprintf(asm_out, "%%define %s_%s %d\n",
+            fprintf(nasm_out, "%%define %s_%s %d\n",
                     entry->scope_table_name,
                     universal_scope.entries[i].scope_table_name,
                     enum_value++);
         }
     }
-    fprintf(asm_out, "%%define enum_%s_end %d\n\n", 
+    fprintf(nasm_out, "%%define enum_%s_end %d\n\n", 
             entry->scope_table_name, enum_value);
 }
 
@@ -146,29 +146,29 @@ void generate_list(struct scope_table_entry* entry)
 void generate_hold(struct scope_table_entry* entry)
 {
     // TODO: Implement hold generation
-    fprintf(asm_out, "; Generating hold: %s\n", entry->scope_table_name);
+    fprintf(nasm_out, "; Generating hold: %s\n", entry->scope_table_name);
 }
 
 // Generate assembly for assign data tool
 void generate_assign(struct scope_table_entry* entry)
 {
     // TODO: Implement assign generation
-    fprintf(asm_out, "; Generating assign: %s\n", entry->scope_table_name);
+    fprintf(nasm_out, "; Generating assign: %s\n", entry->scope_table_name);
 }
 
 // Generate assembly for function
 void generate_function(struct scope_table_entry* entry)
 {
     // Local labels in NASM start with .
-    fprintf(asm_out, ".%s:\n", entry->scope_table_name);
-    fprintf(asm_out, "    push rbp\n");
-    fprintf(asm_out, "    mov rbp, rsp\n");
+    fprintf(nasm_out, ".%s:\n", entry->scope_table_name);
+    fprintf(nasm_out, "    push rbp\n");
+    fprintf(nasm_out, "    mov rbp, rsp\n");
     
     // Function body generation here
     
-    fprintf(asm_out, "    mov rsp, rbp\n");
-    fprintf(asm_out, "    pop rbp\n");
-    fprintf(asm_out, "    ret\n");
+    fprintf(nasm_out, "    mov rsp, rbp\n");
+    fprintf(nasm_out, "    pop rbp\n");
+    fprintf(nasm_out, "    ret\n");
 }
 
 

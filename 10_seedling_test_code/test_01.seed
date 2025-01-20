@@ -1,0 +1,27 @@
+universal start:
+{
+    .arch_32  
+    .end
+    .code 
+        jump: main; 
+    .end
+};
+
+global main:
+{
+    .literal 
+        assign: msg = "Hello World!", hex_value[0x0A];
+    .end
+    .code
+        move_aisle: edx, num_value[13];                
+        move_aisle: ecx, msg;
+        
+        move_aisle: ebx, num_value[1];
+        move_aisle: eax, num_value[4];
+        call_system;
+
+        move_aisle: ebx, num_value[0];
+        move_aisle: eax, num_value[1];
+        call_system;
+    .end
+};

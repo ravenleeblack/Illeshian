@@ -2,7 +2,7 @@
 #include "seed_data.h"
 #include "seed_decl.h"
 
-void process_universal_label(void)
+int process_universal_label(void)
 {
     universal(_universal, "universal");
 
@@ -14,8 +14,18 @@ void process_universal_label(void)
     scan(&Token);
     colon(_colon, ":");
 
-    process_sections(scope_universal);
+    if((strcmp(Text, "start") == 0))
+    {
+        is_entry_point = 1;
+
+        process_sections(scope_universal);
+    }
+
+    return 0;
 }
+
+// Set flag if this is the entry point. We also do not want more then one universal label in a project. A universal _start
+// is in the main file and handles all universals. It wouldnt work if we had other universal label names.
 
 /* Here we match the universal scope keyword then scan for the label. We insert that label into
 the scope table, we also use the ident, as the entry point seedling and the nasm output. We then

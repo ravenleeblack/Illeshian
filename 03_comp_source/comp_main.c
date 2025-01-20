@@ -26,6 +26,9 @@ int output_flag = 0;
 int assembly_flag = 0;
 int preprocess_flag = 0;
 
+int seedling_flag = 0;
+int nasm_flag = 0;
+
 int first_pass = 0;
 int second_pass = 0;
 int first_pass_flag = 0;
@@ -62,6 +65,12 @@ int main(int argc, char *argv[])
             } 
             if (strcmp(argv[i], "-p") == 0) {
                 preprocess_flag = 1;
+            } 
+            if (strcmp(argv[i], "-s") == 0) {
+                seedling_flag = 1;
+            } 
+            if (strcmp(argv[i], "-n") == 0) {
+                nasm_flag = 1;
             } 
             else if (strcmp(argv[i], "-t") == 0) {
                 scope_table_flag = 1;
@@ -162,11 +171,30 @@ int main(int argc, char *argv[])
                 break;
             }
         }
+
+        if(seedling_flag == 1)   //still working on getting these right 
+        {
+            seed_out = fopen("seed.fm", "a");
+            if (!seed_out) {
+            printf("Failed to open %s: %s\n", "seed.fm", strerror(errno));
+                    
+            }
+        }
+        if(nasm_flag == 1)    //still working on getting these right 
+        {
+            nasm_out = fopen("seed.fm", "a");
+            if (!nasm_out) {
+            printf("Failed to open %s: %s\n", "seed.fm", strerror(errno));
+                    
+            }
+        }
     }
 
     // Safe cleanup
     if (comp_out) fclose(comp_out);
     if (scope_table_out) fclose(scope_table_out);
+    if (seedling_flag) fclose(seed_out);
+    if (nasm_flag) fclose(nasm_out);
 
     cleanup_scope_table_system();
     return result;

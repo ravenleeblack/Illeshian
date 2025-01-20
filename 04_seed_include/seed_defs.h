@@ -46,10 +46,14 @@ enum {
      _table, _table_ptr,
 
     // Data types
-    _num, _mark, _deci, _decii, _strand,                                     // Regular types
+    _num, _mark, _deci, _decii, _strand, _hex, _oct, _bin,                                    // Regular types
     _den, _bay, _aisle, _zone, _dens, _bays, _aisles, _zones,              // System types
     _vine, _passage,                                                        // Stream types
 
+    _num_value,
+    _hex_value,
+    _oct_value,
+    _bin_value,
     // Pointers
     _num_ptr, _mark_ptr, _deci_ptr, _decii_ptr, _strand_ptr,               // Regular pointers
     _den_ptr, _bay_ptr, _aisle_ptr, _zone_ptr,                             // System pointers
@@ -87,6 +91,11 @@ enum {
     _and, _or, _xor, _not, _lshift, _rshift, _rotate_left, _rotate_right, // Logical/Shifts
     _inc, _dec, _compare, _test,                                          // Arithmetic/Compare
 
+    _comp_den,
+    _comp_bay,
+    _comp_aisle,
+    _comp_zone,
+
     _add, _sub, _mul, _div,
 
     _add_den, _add_bay, _add_aisle, _add_zone,                             
@@ -99,7 +108,7 @@ enum {
     _mul_dens, _mul_bays, _mul_aisles, _mul_zones,
     _div_dens, _div_bays, _div_aisles, _div_zones,
 
-    _jump,
+    _jump, _jump_zero, 
      _jump_equal, _jump_not_equal, _jump_great, _jump_less, _jump_neg,        // Jumps
     _call, _return, _nop, _yield, _pass_arg,                              // Flow control
 
@@ -162,8 +171,11 @@ struct token
     unsigned int hex_value_64;  // 64-bit hex values
     float deci_value;   // For floats
     double decii_value; // For doubles
-    char *token_str;    // For identifier names
     char *string_value; // For actual string literal values
+
+    char *token_str;    // For identifier names
+    char *keyword_str;
+    char *ident_str;
     int reg_size;          
 };
 
@@ -349,18 +361,29 @@ enum data_tool_type {
 
 enum phrase_type
 {
-    phrase_ident,
-    phrase_number,
+    phrase_none = 0,
+    phrase_num,
     phrase_hex,
+    phrase_oct,
+    phrase_bin,
+
     phrase_pointer,
     phrase_address,
     phrase_fetch,
     phrase_register,
 
+    phrase_ident,
 };
 
-typedef struct {
-    int phrase_value;
-    char *phrase;
+typedef struct 
+{
     enum phrase_type type;
+
+    int phrase_num_value;
+    int phrase_hex_value;
+    int phrase_oct_value;
+    int phrase_bin_value;
+
+    char *phrase;
+    char *phrase_reg_value;
 } phrase_retrievel;

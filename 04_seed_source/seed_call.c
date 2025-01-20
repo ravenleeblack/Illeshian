@@ -10,8 +10,18 @@ void process_call_instruction(enum scope_type current_scope)
     call(_call, "call");
     
     scan(&Token);
-    parse_ident(current_scope);
+    ident(_ident, Text);
     strcpy(dest, Text);
+
+    switch (current_scope)
+    {
+        case scope_universal:    search_universal_scope(Text);    break;
+        case scope_global:       search_global_scope(Text);       break;
+        case scope_global_block: search_global_block_scope(Text); break;
+        case scope_local:        search_local_scope(Text);        break;
+        case scope_local_block:  search_local_block_scope(Text);  break;
+        default: error("ident error: invalid ident token"); break;
+    }
 
     scan(&Token);
     if(Token.token_rep == _period)
@@ -19,8 +29,19 @@ void process_call_instruction(enum scope_type current_scope)
         period(_period, ".");
 
         scan(&Token);
-        parse_ident(current_scope);
+        ident(_ident, Text);
         strcpy(src, Text);
+
+        switch (current_scope)
+        {
+            case scope_universal:    search_universal_scope(Text);    break;
+            case scope_global:       search_global_scope(Text);       break;
+            case scope_global_block: search_global_block_scope(Text); break;
+            case scope_local:        search_local_scope(Text);        break;
+            case scope_local_block:  search_local_block_scope(Text);  break;
+            default: error("ident error: invalid ident token"); break;
+        }
+
         encode_call_function_instruction(dest, src);
     }
     else
