@@ -17,11 +17,6 @@ struct token Token;
 char Text[text_length + 1];		                
 char strand_buffer[text_length + 1];
 
-int data_header_printed;
-int bss_header_printed;
-int text_header_printed;
-int rodata_header_printed;
-
 // Core parsing variables
 int comp_line_pos;                                       // Current comp_line_pos number
 int putback_char;                               // Character put back by scanner
@@ -47,7 +42,9 @@ int first_pass_flag;
 int second_pass_flag;
 
 
+int is_entry_point;
 int is_main_entry;
+
 
 int universal_id;
 int global_id;
@@ -55,7 +52,6 @@ int local_id;
 int global_block_id;
 int local_block_id;
 
-int entry_index;
 
 char dest[64];
 char src[64];
@@ -72,12 +68,15 @@ char ptr_buffer[64]; // Shared buffer for all pass_arg functions
 char address_buffer[64]; // Shared buffer for all pass_arg functions
 char fetch_buffer[64]; // Shared buffer for all pass_arg functions
 
+char ident_buffer[64];
+
 int byte_size_buffer[64]; // Buffer to hold the file name
 
 int declare_type;
 int byte_size;
 
 int assign_flag;
+int global_architecture;
 int current_architecture; // Global variable to track the current architecture.
 
 char output_filename[256];

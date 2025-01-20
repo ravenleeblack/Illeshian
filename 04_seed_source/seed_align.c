@@ -35,6 +35,4 @@ void process_align_instruction(enum scope_type current_scope)
 
     scan(&Token);
     semicolon(_semicolon, ";");
-
-    encode_move_instruction("mov", current_architecture, dest_index, src_index);
 }

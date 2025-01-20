@@ -42,21 +42,21 @@ void process_arith_instruction(enum scope_type current_scope)
 
     scan(&Token);        
     dest_index = parse_first_phrase(current_scope, current_architecture);           // Handle destination operand or destination phrase
-    
+    switch(arith_label_type)
+    {
+        case 1: encode_arith_dest_instruction("add", dest_index); break;
+        case 2: encode_arith_dest_instruction("sub", dest_index); break;
+        case 3: encode_arith_dest_instruction("mul", dest_index); break;
+        case 4: encode_arith_dest_instruction("div", dest_index); break;
+        default: break;
+    }  
+
     scan(&Token);
     comma(_comma, ",");
 
     scan(&Token);
     src_index = parse_second_phrase(current_scope, current_architecture);          // Handle source operand or sorce phrase
-
-    switch(arith_label_type)
-    {
-        case 1: encode_arith_instruction("add", dest_index, src_index); break;
-        case 2: encode_arith_instruction("sub", dest_index, src_index); break;
-        case 3: encode_arith_instruction("mul", dest_index, src_index); break;
-        case 4: encode_arith_instruction("div", dest_index, src_index); break;
-        default: break;
-    }  
+    encode_arith_src_instruction(src_index);
     
     scan(&Token);
     semicolon(_semicolon, ";"); 

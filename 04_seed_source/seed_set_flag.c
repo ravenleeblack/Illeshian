@@ -4,8 +4,8 @@
 
 void process_set_flag_instruction(enum scope_type current_scope) 
 {
-    char* src_entry;
-    char* dest_entry;
+    phrase_retrievel dest_index;
+    phrase_retrievel src_index;
 
     set_flag(_set_flag, "set_flag");
 
@@ -13,14 +13,14 @@ void process_set_flag_instruction(enum scope_type current_scope)
     colon(_colon, ":");
 
     scan(&Token);
-    dest_entry = get_undetermined_reg();
+    dest_index = get_undetermined_reg();
 
     scan(&Token);
     comma(_comma, ",");
 
     scan(&Token);  
-    src_entry = get_undetermined_reg();
-    encode_set_flag_instruction(dest_entry, src_entry);
+    src_index = get_undetermined_reg();
+    encode_set_flag_instruction(dest_index, src_index);
 
     scan(&Token);
     semicolon(_semicolon, ";");
@@ -28,8 +28,8 @@ void process_set_flag_instruction(enum scope_type current_scope)
 
 void process_test_instruction(enum scope_type current_scope) 
 {
-    char* src_entry;
-    char* dest_entry;
+    phrase_retrievel dest_index;
+    phrase_retrievel src_index;
 
     test(_test, "test");
 
@@ -37,22 +37,30 @@ void process_test_instruction(enum scope_type current_scope)
     colon(_colon, ":");
 
     scan(&Token);  
-    dest_entry = get_undetermined_reg();  
+    dest_index = get_undetermined_reg();  
 
     scan(&Token);
     comma(_comma, ",");
 
     scan(&Token);  
-    src_entry = get_undetermined_reg();
-    encode_test_instruction(dest_entry, src_entry);
+    src_index = get_undetermined_reg();
+    encode_test_instruction(dest_index, src_index);
 
     scan(&Token);
     semicolon(_semicolon, ";");
 }
 
-char* get_undetermined_reg() 
+phrase_retrievel get_undetermined_reg() 
 {
-    switch(Token.token_rep) { 
+    phrase_retrievel result;
+    result.phrase = get_a_reg();
+
+    return result;
+}
+char * get_a_reg() 
+{
+    switch(Token.token_rep)
+     { 
         case _al: strcpy(reg_buffer, "al"); al(_al, "al"); break;
         case _bl: strcpy(reg_buffer, "bl"); bl(_bl, "bl"); break;
         case _cl: strcpy(reg_buffer, "cl"); cl(_cl, "cl"); break;
@@ -93,7 +101,7 @@ char* get_undetermined_reg()
         case _r13: strcpy(reg_buffer, "r13"); r13(_r13, "r13"); break;
         case _r14: strcpy(reg_buffer, "r14"); r14(_r14, "r14"); break;
         case _r15: strcpy(reg_buffer, "r15"); r15(_r15, "r15"); break;
-        default: reg_buffer[0] = '\0'; break; // Clear buffer if no valid case is found break;
+        default: reg_buffer[0] = '\0'; break; // Clear buffer if no valid case 
     }
 
     return reg_buffer;

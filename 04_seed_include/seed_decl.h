@@ -62,7 +62,8 @@ void strand_literal(int t, char *expected);
 void mark_literal(int t, int expected);
 void deci_literal(int t, int expected);
 void decii_literal(int t, int expected);
-void hex_literal(int t, int expected);
+
+void hex_literal(int t, int expected, int arch);
 void true_literal(int t, int expected);
 void false_literal(int t, int expected);
 void colon(int t, char *expected);
@@ -288,7 +289,16 @@ void inc_dens(int t, char *expected);
 void inc_bays(int t, char *expected);
 void inc_aisles(int t, char *expected);
 void inc_zones(int t, char *expected);
+void jump_zero(int t, char *expected);
 
+void hex(int t, char *expected);
+void oct(int t, char *expected);
+void bin(int t, char *expected);
+
+void num_value(int t, char *expected);
+void hex_value(int t, char *expected);
+void oct_value(int t, char *expected);
+void bin_value(int t, char *expected);
 
 
 
@@ -311,6 +321,8 @@ void output_literal_section_header();
 //============================================================================================================================
 //lexer functions
 int scanhex(int *size);
+int scanint(int c);
+
 float scandeci(int c);
 int scan(struct token *t);
 void error(const char *message);
@@ -325,7 +337,7 @@ void errorc(const char *message, int c);
 
 //============================================================================================================================
 //Process the scope label header
-void process_universal_label(void);
+int process_universal_label(void);
 void process_global_label(void);
 void process_global_block_label(int parent_global_id);
 void process_local_label(int parent_global_id);
@@ -338,7 +350,9 @@ void process_global_block_child_labels(int parent_global_id);
 //============================================================================================================================
 //Process the sections under the scope label header, so we process the body
 void process_sections(enum scope_type current_scope);
-void process_arch_section(enum scope_type current_scope);
+
+
+int process_arch_section(enum scope_type current_scope);
 
 void process_log_section(enum scope_type current_scope);
 void process_declare_section(enum scope_type current_scope);
@@ -349,6 +363,10 @@ void process_end_section(void);
 void process_origin();
 void process_pad_section();
 
+void comp_den(int t, char *expected);
+void comp_bay(int t, char *expected);
+void comp_aisle(int t, char *expected);
+void comp_zone(int t, char *expected);
 
 //============================================================================================================================
 //Process the move instructions from under the code section
@@ -381,8 +399,45 @@ void process_system_instruction(enum scope_type current_scope);
 //Process the alignment function
 void process_align_instruction(enum scope_type current_scope);
 
+phrase_retrievel process_hex_instruction(enum scope_type current_scope, int current_architecture);
+
+/*functions that process the instructions in the code sections*/
+void process_compare_instruction(enum scope_type current_scope);
+void process_set_flag_instruction(enum scope_type current_scope);
+void process_jump_instruction(enum scope_type current_scope);
+void process_jump_less_instruction(enum scope_type current_scope);
+void process_jump_neg_instruction(enum scope_type current_scope);
+void process_test_instruction(enum scope_type current_scope);
+void process_file_section(enum scope_type current_scope);
+
+void process_literal_section(enum scope_type current_scope);
+void process_arith_instruction(enum scope_type current_scope);
+
+void process_increment_instruction(enum scope_type current_scope);
+
+//============================================================================================================================
+int parse_type(enum scope_type current_scope);
+int get_byte_size(int declare_type);
 
 
+
+phrase_retrievel parse_pointer(enum scope_type current_scope);
+phrase_retrievel parse_address(enum scope_type current_scope, int current_arch);
+phrase_retrievel parse_fetch(enum scope_type current_scope);
+
+/*functions that help process the instructions in the code sections*/
+phrase_retrievel parse_num_literal();
+phrase_retrievel parse_hex_literal(enum scope_type current_scope, int current_architecture);
+phrase_retrievel parse_search_ident(enum scope_type current_scope);
+
+phrase_retrievel parse_first_phrase(enum scope_type current_scope, int current_architecture);
+phrase_retrievel parse_second_phrase(enum scope_type current_scope, int current_architecture);
+
+//============================================================================================================================
+//Process the functions that convert or translate seedling into nasm
+
+void encode_destination_phrase(int byte_size, phrase_retrievel dest);
+void encode_source_phrase(int byte_size, phrase_retrievel src);
 
 
 //============================================================================================================================
@@ -404,74 +459,50 @@ void encode_arch_instruction(int architecture);
 void encode_arith_instruction(const char* operation, phrase_retrievel dest, phrase_retrievel src);
 
 
-
-
-void process_increment_instruction(enum scope_type current_scope);
 void encode_declare_instruction(const char* ident, int byte_size, int type);
-void encode_literal_with_num_section(char * hold_name, char *src, int null_value);
-void encode_literal_with_hex_section(char *hold_name, char *src, unsigned int hex_value);
+
+void encode_literal_with_num_section(char * hold_name, char *src, phrase_retrievel num_value);
+void encode_literal_with_hex_section(char *hold_name, char *src, phrase_retrievel hex_value);
+
 void encode_file_section(const char* label_name, const char* label_strand, int length);
 void encode_register(const char* reg, char* nasm_reg);
 void encode_call_manager_instruction(const char* label);
 void encode_call_function_instruction(const char* label_one, const char* label_two);
-void encode_test_instruction(const char* reg1, const char* reg2);
+
+void encode_set_flag_instruction(phrase_retrievel dest, phrase_retrievel src);
+void encode_test_instruction(phrase_retrievel dest, phrase_retrievel src);
 void encode_system_instruction();
 void encode_fetch_reference(const char* dest, const char* src);
-
-
-/*functions that process the instructions in the code sections*/
-void process_compare_instruction(enum scope_type current_scope);
-void process_set_flag_instruction(enum scope_type current_scope);
-void process_jump_instruction(enum scope_type current_scope);
-void process_jump_less_instruction(enum scope_type current_scope);
-void process_jump_neg_instruction(enum scope_type current_scope);
-void process_test_instruction(enum scope_type current_scope);
-void process_file_section(enum scope_type current_scope);
-
-void process_literal_section(enum scope_type current_scope);
-void process_arith_instruction(enum scope_type current_scope);
-
-
-
-//============================================================================================================================
-int parse_type(enum scope_type current_scope);
-int get_byte_size(int declare_type);
-
-
-
-phrase_retrievel parse_pointer(enum scope_type current_scope);
-phrase_retrievel parse_address(enum scope_type current_scope);
-phrase_retrievel parse_fetch(enum scope_type current_scope);
-
-/*functions that help process the instructions in the code sections*/
-phrase_retrievel parse_num_literal();
-phrase_retrievel parse_hex_literal(int current_architecture);
-phrase_retrievel parse_ident(enum scope_type current_scope);
-
-phrase_retrievel parse_first_phrase(enum scope_type current_scope, int current_architecture);
-phrase_retrievel parse_second_phrase(enum scope_type current_scope, int current_architecture);
-
-//============================================================================================================================
-//Process the functions that convert or translate seedling into nasm
-
-
 
 /*functions that process the conversion to nasm ouput*/
 void encode_push_instruction(int byte_size, phrase_retrievel src);
 void encode_pop_instruction(phrase_retrievel src);
 
-void encode_move_instruction(const char* operation, int byte_size, phrase_retrievel dest, phrase_retrievel src);
-void encode_jump_instruction(const char* operation);
-void encode_compare_instruction(const char* operation,  phrase_retrievel dest,  phrase_retrievel src);
-void encode_arith_instruction(const char* operation,phrase_retrievel dest, phrase_retrievel src);
+//void encode_move_instruction(int byte_size, phrase_retrievel dest, phrase_retrievel src);
+void encode_move_dest_instruction(int byte_size, phrase_retrievel dest);
+void encode_move_src_instruction(int byte_size, phrase_retrievel src);
 
+void encode_jump_instruction(int jump_value, const char* operation);
+
+void encode_compare_instruction(int byte_size,  phrase_retrievel dest,  phrase_retrievel src);
+void encode_register_instruction(phrase_retrievel src);
+
+
+//void encode_arith_instruction(const char* operation,phrase_retrievel dest, phrase_retrievel src);
+void encode_arith_dest_instruction(const char *operation, phrase_retrievel dest);
+void encode_arith_src_instruction(phrase_retrievel src);
+
+
+void encode_increment_instruction(phrase_retrievel src);
 
 
 char *get_den_reg();   // 8-bit registers
 char *get_bay_reg();   // 16-bit registers
 char *get_aisle_reg(); // 32-bit registers
 char *get_zone_reg();  // 64-bit registers
-char* get_undetermined_reg();
+phrase_retrievel get_undetermined_reg();
+char * get_a_reg();
+
 
 #endif // SEED_DECL_H
 

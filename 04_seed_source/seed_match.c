@@ -67,8 +67,8 @@ void equal(int t, char *expected)          { if (Token.token_rep == t) { if (out
 void not_equal(int t, char *expected)      { if (Token.token_rep == t) { if (output_flag) {  dark_yellow();    printf(" %s\n", expected);  reset(); } } }
 
 
-void num_literal(int t, int expected)      { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %d\n", expected);  reset(); } } }
-void strand_literal(int t, char *expected) { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %s\n", expected);  reset(); } } }
+void num_literal(int t, int expected)      { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %d\n", Token.num_value);  reset(); } } }
+void strand_literal(int t, char *expected) { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" \"%s\"\n", expected);  reset(); } } }
 void mark_literal(int t, int expected)     { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %c\n", expected);  reset(); } } }
 void deci_literal(int t, int expected)     { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %f\n", expected);  reset(); } } }
 void decii_literal(int t, int expected)    { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %lf\n", expected); reset(); } } }
@@ -76,19 +76,19 @@ void decii_literal(int t, int expected)    { if (Token.token_rep == t) { if (out
 
 /*we also want to make the hex output color to the same as the right size registers so 64 bit to 64 bit. guess all registers the same
 right now for console output? That should be right. red for 64, light blue for 32, */
-void hex_literal(int t, int expected) 
+void hex_literal(int t, int expected, int arch) 
 {
     if (Token.token_rep == t) 
     {
         if (output_flag) 
         {
             light_blue();
-            switch (t) 
+            switch (arch) 
             {
-                case _hex_literal_08:  light_red(); printf(" 0x%02X\n", Token.hex_value_08);                   break;
-                case _hex_literal_16:  light_red(); printf(" 0x%04X\n", Token.hex_value_16);                  break;
-                case _hex_literal_32:  light_red(); printf(" 0x%08X\n", Token.hex_value_32);                  break;
-                case _hex_literal_64:  light_red(); printf(" 0x%016lX\n", (unsigned long)Token.hex_value_64); break;
+                case 8:   light_red(); printf(" 0x%02X\n",   Token.hex_value_08);  break;
+                case 16:  light_red(); printf(" 0x%04X\n",   Token.hex_value_16);  break;
+                case 32:  light_red(); printf(" 0x%08X\n",   Token.hex_value_32);  break;
+                case 64:  light_red(); printf(" 0x%016lX\n", Token.hex_value_64);  break;
                 default:
                     printf(" Unknown hex type\n");
             }
@@ -96,6 +96,17 @@ void hex_literal(int t, int expected)
         }
     }
 }
+
+void hex(int t, char *expected)     { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %s\n", expected);  reset(); } } }
+void oct(int t, char *expected)     { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %s\n", expected);  reset(); } } }
+void bin(int t, char *expected)    { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %s\n", expected); reset(); } } }
+
+void num_value(int t, char *expected)     { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %s\n", expected);  reset(); } } }
+void hex_value(int t, char *expected)     { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %s\n", expected);  reset(); } } }
+void oct_value(int t, char *expected)     { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %s\n", expected);  reset(); } } }
+void bin_value(int t, char *expected)    { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %s\n", expected); reset(); } } }
+
+
 
 void true_literal(int t, int expected)     { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %s\n", expected ? "true" : "false");  reset(); } } }
 void false_literal(int t, int expected)    { if (Token.token_rep == t) { if (output_flag) {  light_blue();      printf(" %s\n", expected ? "true" : "false");  reset(); } } }
@@ -194,6 +205,11 @@ void change_global(int t, char *expected)  { if (Token.token_rep == t) { if (out
 void change_local(int t, char *expected)   { if (Token.token_rep == t) { if (output_flag) {  dark_yellow();    printf(" %s\n", expected);  reset(); } } }
 
 
+void comp_den(int t, char *expected)       { if (Token.token_rep == t) { if (output_flag) {  light_gray();     printf(" %s\n", expected);  reset(); } } }
+void comp_bay(int t, char *expected)       { if (Token.token_rep == t) { if (output_flag) {  light_gray();     printf(" %s\n", expected);  reset(); } } }
+void comp_aisle(int t, char *expected)     { if (Token.token_rep == t) { if (output_flag) {  light_gray();     printf(" %s\n", expected);  reset(); } } }
+void comp_zone(int t, char *expected)      { if (Token.token_rep == t) { if (output_flag) {  light_gray();     printf(" %s\n", expected);  reset(); } } }
+
 void move(int t, char *expected)           { if (Token.token_rep == t) { if (output_flag) {  light_gray();     printf(" %s\n", expected);  reset(); } } }
 void move_den(int t, char *expected)       { if (Token.token_rep == t) { if (output_flag) {  light_gray();     printf(" %s\n", expected);  reset(); } } }
 void move_bay(int t, char *expected)       { if (Token.token_rep == t) { if (output_flag) {  light_gray();     printf(" %s\n", expected);  reset(); } } }
@@ -261,11 +277,13 @@ void div_zones(int t, char *expected)      { if (Token.token_rep == t) { if (out
 
 
 void jump(int t, char *expected)           { if (Token.token_rep == t) { if (output_flag) {  light_yellow();     printf(" %s\n", expected);  reset(); } } }
+void jump_zero(int t, char *expected)     { if (Token.token_rep == t) { if (output_flag) {  light_yellow();     printf(" %s\n", expected);  reset(); } } }
+void jump_neg(int t, char *expected)     { if (Token.token_rep == t) { if (output_flag) {  light_yellow();     printf(" %s\n", expected);  reset(); } } }
 void jump_equal(int t, char *expected)     { if (Token.token_rep == t) { if (output_flag) {  light_yellow();     printf(" %s\n", expected);  reset(); } } }
 void jump_not_equal(int t, char *expected) { if (Token.token_rep == t) { if (output_flag) {  light_yellow();     printf(" %s\n", expected);  reset(); } } }
 void jump_less(int t, char *expected)      { if (Token.token_rep == t) { if (output_flag) {  light_yellow();     printf(" %s\n", expected);  reset(); } } }
 void jump_great(int t, char *expected)     { if (Token.token_rep == t) { if (output_flag) {  light_yellow();     printf(" %s\n", expected);  reset(); } } }
-void jump_neg(int t, char *expected)     { if (Token.token_rep == t) { if (output_flag) {  light_yellow();     printf(" %s\n", expected);  reset(); } } }
+
 
 void test(int t, char *expected)     { if (Token.token_rep == t) { if (output_flag) {  light_yellow();     printf(" %s\n", expected);  reset(); } } }
 

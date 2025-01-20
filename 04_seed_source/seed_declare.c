@@ -16,9 +16,15 @@ void process_declare_section(enum scope_type current_scope)
     {
         scan(&Token);
 
+        if(Token.token_rep == _end)
+        {
+            end(_end, ".end");
+            return 0;
+        }
+
         if(Token.token_rep == _hold)
         {
-            
+            phrase_retrievel result;
 
             hold(_hold, "hold");
 
@@ -32,7 +38,7 @@ void process_declare_section(enum scope_type current_scope)
                 colon(_colon, ":");
 
                 scan(&Token);
-                ident(_ident, Text);  // Variable name
+                ident(_ident, Text);                        // Variable name
                 strcpy(declare_buffer, Text);
 
                     // Insert into current scope
@@ -47,7 +53,7 @@ void process_declare_section(enum scope_type current_scope)
                     default:  error("seeding error: declare error: Invalid scope for declaration"); break;
                 }
                 
-                encode_declare_instruction(declare_buffer, byte_size, 1);
+                //maekencode_declare_instruction(declare_buffer, byte_size, 1);
             }
             else if(Token.token_rep == _table)
             {
@@ -77,15 +83,8 @@ void process_declare_section(enum scope_type current_scope)
                 }
             }
 
-
             scan(&Token);
             semicolon(_semicolon, ";");
-       }
-
-       else if(Token.token_rep == _end)
-        {
-            end(_end, ".end");
-            return 0;
         }
     }
 }

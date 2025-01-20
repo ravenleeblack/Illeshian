@@ -10,8 +10,15 @@ void process_assign_section(enum scope_type current_scope)
     {
         scan(&Token);
         
+        if(Token.token_rep == _end)
+        {
+            end(_end, ".end");
+            return 0;
+        }
         if(Token.token_rep == _assign)
         {
+            phrase_retrievel result;
+
             assign(_assign, "assign");
 
             scan(&Token);
@@ -36,6 +43,8 @@ void process_assign_section(enum scope_type current_scope)
 
             scan(&Token);  
             num_literal(_num_literal, Token.num_value);
+            result.phrase_num_value = Token.num_value;
+            result.type = phrase_num;
 
             if(assign_flag == 1)
             {
@@ -50,12 +59,6 @@ void process_assign_section(enum scope_type current_scope)
             semicolon(_semicolon, ";");
 
             assign_flag = 0;
-        }
-        
-        else if(Token.token_rep == _end)
-        {
-            end(_end, ".end");
-            return 0;
         }
     }
 }

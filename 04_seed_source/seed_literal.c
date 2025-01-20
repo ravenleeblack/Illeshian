@@ -4,15 +4,22 @@
 
 void process_literal_section(enum scope_type current_scope)
 {
+    phrase_retrievel src_index;
+
     char preserve_text[60]; // Temporary buffer to store Text
-    int ending_type = 0;
 
     literal(_literal_section, ".literal");
+
 
     while(1) 
     {
         scan(&Token);
 
+        if(Token.token_rep == _end)
+        {
+            end(_end, ".end");
+            return 0;
+        }
         if(Token.token_rep == _assign)
         {
             assign(_assign, "assign");
@@ -26,11 +33,11 @@ void process_literal_section(enum scope_type current_scope)
 
             switch(current_scope)      //this should be a placeholder already called in declare. SO we search, get it, then assign it a literal value.
             {
-                case scope_universal:    entry_index = search_universal_scope(Text);    break;  
-                case scope_global:       entry_index = search_global_scope(Text);       break;
-                case scope_global_block: entry_index = search_global_block_scope(Text); break;
-                case scope_local:        entry_index = search_local_scope(Text);        break;
-                case scope_local_block:  entry_index = search_local_block_scope(Text);  break;
+                case scope_universal:    search_universal_scope(Text);    break;  
+                case scope_global:       search_global_scope(Text);       break;
+                case scope_global_block: search_global_block_scope(Text); break;
+                case scope_local:        search_local_scope(Text);        break;
+                case scope_local_block:  search_local_block_scope(Text);  break;
                 default: error("seeding error: assign error: Invalid scope");           break;
             }
 
@@ -54,16 +61,19 @@ void process_literal_section(enum scope_type current_scope)
             comma(_comma, ",");
 
             scan(&Token);
-            num_literal(_num_literal, Token.num_value); 
-            encode_literal_with_num_section(preserve_text, literal_buffer, Token.num_value);
-           
+            if(Token.token_rep == _num_value)
+            {
+               src_index = parse_num_literal(current_scope); 
+               encode_literal_with_num_section(preserve_text, literal_buffer, src_index);
+            }
+            if(Token.token_rep == _hex_value)
+            {
+               src_index = parse_hex_literal(current_scope, 8);    //the end of literals are in 8 bit format I think??
+               encode_literal_with_hex_section(preserve_text, literal_buffer, src_index);
+            }
+
             scan(&Token);
             semicolon(_semicolon, ";");
-        }
-       else if(Token.token_rep == _end)
-        {
-            end(_end, ".end");
-            return 0;
         }
     }
 }

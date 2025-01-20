@@ -26,15 +26,15 @@ void process_move_instruction(enum scope_type current_scope)
   
     scan(&Token);
     dest_index = parse_first_phrase(current_scope, current_architecture);           // Handle destination operand or destination phrase
+    encode_move_dest_instruction(current_architecture, dest_index);
 
     scan(&Token);
     comma(_comma, ",");
 
     scan(&Token);
     src_index = parse_second_phrase(current_scope, current_architecture);           // Handle destination operand or destination phrase
+    encode_move_src_instruction(current_architecture, src_index);
 
     scan(&Token);
     semicolon(_semicolon, ";");
-
-    encode_move_instruction("mov", current_architecture, dest_index, src_index);
 }

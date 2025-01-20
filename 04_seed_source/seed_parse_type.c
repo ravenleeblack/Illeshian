@@ -104,7 +104,7 @@ phrase_retrievel parse_pointer(enum scope_type current_scope)
     return result;  // Return the populated pointer phrase
 }
 
-phrase_retrievel parse_address(enum scope_type current_scope)
+phrase_retrievel parse_address(enum scope_type current_scope, int current_arch)
 {
     phrase_retrievel result;
     result.type = phrase_address; // Set the operand type
@@ -115,19 +115,34 @@ phrase_retrievel parse_address(enum scope_type current_scope)
     lbrace(_lbrace, "[");
 
     scan(&Token);
-    ident(_ident, Text);
-    strcpy(address_buffer, Text);
-    result.phrase = address_buffer;
-
-    switch (current_scope)
+    if(Token.token_rep == _ident)
     {
-        case scope_universal:    search_universal_scope(Text);    break;
-        case scope_global:       search_global_scope(Text);       break;
-        case scope_global_block: search_global_block_scope(Text); break;
-        case scope_local:        search_local_scope(Text);        break;
-        case scope_local_block:  search_local_block_scope(Text);  break;
-        default: error("ident error: invalid ident token"); break;
+        ident(_ident, Text);
+        strcpy(address_buffer, Text);
+        result.phrase = address_buffer;
+
+        switch (current_scope)
+        {
+            case scope_universal:    search_universal_scope(Text);    break;
+            case scope_global:       search_global_scope(Text);       break;
+            case scope_global_block: search_global_block_scope(Text); break;
+            case scope_local:        search_local_scope(Text);        break;
+            case scope_local_block:  search_local_block_scope(Text);  break;
+            default: error("ident error: invalid ident token"); break;
+        }
     }
+    else
+    {
+        switch(current_arch)
+        {
+            case 8:    result.phrase = get_den_reg();    break;
+            case 16:   result.phrase = get_bay_reg();    break;
+            case 32:   result.phrase = get_aisle_reg();  break;
+            case 64:   result.phrase = get_zone_reg();   break;
+            default:   break;
+        } 
+    }
+
 
     scan(&Token);
     rbrace(_rbrace, "]");

@@ -1,13 +1,14 @@
 #include "seed_defs.h"
 #include "seed_data.h"
 #include "seed_decl.h"
-#include "scope_table.h"
-#include <stdio.h>
+
 
 void process_code_section(enum scope_type current_scope) 
 {
     code(_code_section, ".code");
-   
+    
+    int move_counter = 0;
+
     while(1) 
     {
         scan(&Token);
@@ -19,9 +20,14 @@ void process_code_section(enum scope_type current_scope)
         }
         switch(Token.token_rep) 
         {
-            case _compare:     process_compare_instruction(current_scope );    break;
+            case _comp_den:     process_compare_instruction(current_scope );    break;
+            case _comp_bay:     process_compare_instruction(current_scope );    break;
+            case _comp_aisle:     process_compare_instruction(current_scope );    break;
+            case _comp_zone:     process_compare_instruction(current_scope );    break;
+
             case _set_flag:    process_set_flag_instruction(current_scope);    break;
             case _test:        process_test_instruction(current_scope);        break;
+            
             case _inc_den:      process_increment_instruction(current_scope);   break;
             case _inc_dens:     process_increment_instruction(current_scope);   break;
             case _inc_bay:      process_increment_instruction(current_scope);   break;
@@ -34,7 +40,6 @@ void process_code_section(enum scope_type current_scope)
 
             case _call:          process_call_instruction(current_scope );       break;
             case _call_system:   process_system_instruction(current_scope);        break;
-            case _pass_arg:      process_pass_arg_instruction(current_scope);    break;
 
             case _add_den:   process_arith_instruction(current_scope); break;
             case _add_bay:   process_arith_instruction(current_scope); break;
@@ -87,6 +92,7 @@ void process_code_section(enum scope_type current_scope)
 
             /*push instructions by byte size*/
             case _jump:           process_jump_instruction(current_scope);  break;
+            case _jump_zero:      process_jump_instruction(current_scope);  break;
             case _jump_less:      process_jump_instruction(current_scope);  break;
             case _jump_neg:       process_jump_instruction(current_scope);  break;
             case _jump_great:     process_jump_instruction(current_scope);  break;

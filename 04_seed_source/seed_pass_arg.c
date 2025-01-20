@@ -12,6 +12,7 @@ void process_pass_arg_instruction(enum scope_type current_scope)
 
     scan(&Token);
     eax(_eax, "eax");
+    encode_pass_arg_label();
 
     scan(&Token);
     semicolon(_semicolon, ";");

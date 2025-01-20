@@ -1,0 +1,18 @@
+nasm -f elf32 -o main.o main.asm
+nasm -f elf32 -o yield.o yield.asm
+ld -m elf_i386 -o seed2 main.o yield.o -lc -dynamic-linker /lib/ld-linux.so.2
+./seed2
+
+nasm -f elf32 -o main.o main.asm
+ld -m elf_i386 main.o -o seed2 -strip-all
+./seed2
+
+
+nasm -f elf32 -o test_01.o test_01.asm
+ld -m elf_i386 test_01.o -o seed2 -strip-all
+./seed2
+
+
+nasm -f elf32 -o test_02.o test_02.asm
+ld -m elf_i386 test_02.o -o seed2 -strip-all
+./seed2

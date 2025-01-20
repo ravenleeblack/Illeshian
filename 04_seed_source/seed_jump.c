@@ -5,14 +5,17 @@
 /*here we have no byte size, so we just get the label, were jumping to*/
 void process_jump_instruction(enum scope_type current_scope) 
 {
+    int jump_type = 0;
+
     switch(Token.token_rep)
     {
-        case _jump:           jump(_jump, "jump");                               break;
-        case _jump_less:      jump_less(_jump_less, "jump_less");                break;
-        case _jump_neg:       jump_neg(_jump_neg, "jump_neg");                   break;
-        case _jump_great:     jump_great(_jump_great, "jump_great");             break;
-        case _jump_equal:     jump_equal(_jump_equal, "jump_equal");             break;
-        case _jump_not_equal: jump_not_equal(_jump_not_equal, "jump_not_equal"); break;
+        case _jump:           jump(_jump, "jump");                               jump_type = 1; break;
+        case _jump_zero:      jump_zero(_jump_zero, "jump_zero");                jump_type = 2; break;
+        case _jump_less:      jump_less(_jump_less, "jump_less");                jump_type = 3; break;
+        case _jump_neg:       jump_neg(_jump_neg, "jump_neg");                   jump_type = 4; break;
+        case _jump_great:     jump_great(_jump_great, "jump_great");             jump_type = 5; break;
+        case _jump_equal:     jump_equal(_jump_equal, "jump_equal");             jump_type = 6; break;
+        case _jump_not_equal: jump_not_equal(_jump_not_equal, "jump_not_equal"); jump_type = 7; break;
         default: break;
     }
 
@@ -34,7 +37,7 @@ void process_jump_instruction(enum scope_type current_scope)
         case scope_local_block:   insert_local_block_scope(Text, scope_jump_tool, scope_jump_type);   break;
         default: error("seeding error: Invalid scope for strand literal"); break;
     }
-    encode_jump_instruction(Text);
+    encode_jump_instruction(jump_type, Text);
 
     scan(&Token);
     semicolon(_semicolon, ";");

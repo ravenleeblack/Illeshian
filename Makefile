@@ -46,13 +46,14 @@ COMP_SRCS = $(COMP_SRCDIR)/assign.c \
     $(COMP_SRCDIR)/color.c \
     $(COMP_SRCDIR)/compare.c \
     $(COMP_SRCDIR)/comp_main.c \
+	$(COMP_SRCDIR)/comp_nasm_code_gen.c \
+	$(COMP_SRCDIR)/comp_seed_code_gen.c \
     $(COMP_SRCDIR)/convert.c \
     $(COMP_SRCDIR)/data_types.c \
     $(COMP_SRCDIR)/error.c \
     $(COMP_SRCDIR)/external.c \
     $(COMP_SRCDIR)/function.c \
     $(COMP_SRCDIR)/generate.c \
-    $(COMP_SRCDIR)/generate_code_gen.c \
     $(COMP_SRCDIR)/global_compound.c \
     $(COMP_SRCDIR)/hold.c \
     $(COMP_SRCDIR)/internal.c \
@@ -122,6 +123,7 @@ SEED_SRCS = $(SEED_SRCDIR)/seed_main.c \
             $(SEED_SRCDIR)/seed_log.c \
 			$(SEED_SRCDIR)/seed_file.c \
             $(SEED_SRCDIR)/seed_match.c \
+			$(SEED_SRCDIR)/seed_opcode.c \
 			$(SEED_SRCDIR)/seed_pad.c \
 			$(SEED_SRCDIR)/seed_phrases.c \
             $(SEED_SRCDIR)/seed_parse_type.c \

@@ -12,19 +12,15 @@ void process_global_label(void)
     global_id = insert_global_scope(Text, scope_global_tool, scope_global_label);        // Add to scope table and save label
     encode_global_label(Text);
     
-    // Set flag if this is main label
+        // Set flag if this is main label
     if((strcmp(Text, "main") == 0))
     {
         is_main_entry = 1;
-    }
-    else{
-        
     }
 
     scan(&Token);
     colon(_colon, ":");
 
-    scan(&Token);
     process_sections(scope_global);
 
     process_global_child_labels(global_id);

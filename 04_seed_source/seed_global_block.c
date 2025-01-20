@@ -16,9 +16,8 @@ void process_global_block_label(int parent_global_id)
     scan(&Token);
     colon(_colon, ":");
 
-    scan(&Token);
     process_sections(scope_global_block);
-  
+
     process_global_block_child_labels(global_block_id);
 }
 
