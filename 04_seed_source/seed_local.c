@@ -8,6 +8,7 @@ void process_local_label(int parent_global_id)
 
     scan(&Token);
     ident(_ident, Text);
+    strcpy(local_to_local_block_buffer, Text);
     local_id = insert_local_scope(Text, scope_local_tool, scope_local_label);
     encode_local_label(Text);
         

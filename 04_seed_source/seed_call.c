@@ -11,7 +11,7 @@ void process_call_instruction(enum scope_type current_scope)
     
     scan(&Token);
     ident(_ident, Text);
-    strcpy(dest, Text);
+    strcpy(manager_call_buffer, Text);
 
     switch (current_scope)
     {
@@ -30,7 +30,7 @@ void process_call_instruction(enum scope_type current_scope)
 
         scan(&Token);
         ident(_ident, Text);
-        strcpy(src, Text);
+        strcpy(function_call_buffer, Text);
 
         switch (current_scope)
         {
@@ -42,11 +42,11 @@ void process_call_instruction(enum scope_type current_scope)
             default: error("ident error: invalid ident token"); break;
         }
 
-        encode_call_function_instruction(dest, src);
+        encode_call_function_instruction(function_call_buffer);
     }
-    else
+    else if(Token.token_rep != _period)
     {
-        encode_call_manager_instruction(dest);
+        encode_call_manager_instruction(manager_call_buffer);
         reject_token(&Token);                     //If it was not a period then we reject it.
     }
 

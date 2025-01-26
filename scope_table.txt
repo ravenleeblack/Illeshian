@@ -1,0 +1,31 @@
+SCOPE TABLE OUTPUT
+==================
+
+=== Universal Scope ===
+| Name                 | Tool Type       | Data Type       | Scope | Location | Flg |
+|----------------------|-----------------|-----------------|-------|------------|-----|
+| start                | tool_universal  | universal_label | 0  | R0:S0:E0 | 1 |
+
+=== Global Scope ===
+| Name                 | Tool Type       | Data Type       | Scope | Location | Flg |
+|----------------------|-----------------|-----------------|-------|------------|-----|
+| main                 | tool_global     | global_label    | 2  | R0:S0:E0 | 1 |
+| msg                  | hold data tool  | type_pare_ptr   | 2  | R0:S0:E1 | 1 |
+| Hello, World. Testing strand! | strand data tool | strand literal  | 2  | R0:S0:E2 | 1 |
+
+=== Global Block Scope ===
+| Name                 | Tool Type       | Data Type       | Scope | Location | Flg |
+|----------------------|-----------------|-----------------|-------|------------|-----|
+
+=== Local Scope ===
+| Name                 | Tool Type       | Data Type       | Scope | Location | Flg |
+|----------------------|-----------------|-----------------|-------|------------|-----|
+| strlen               | tool_local      | local_label     | 5  | R0:S0:E0 | 1 |
+
+=== Local Block Scope ===
+| Name                 | Tool Type       | Data Type       | Scope | Location | Flg |
+|----------------------|-----------------|-----------------|-------|------------|-----|
+| next_char            | tool_local_block | local_block_label | 6  | R0:S0:E0 | 1 |
+| finished             | jump tool       | jump label      | 6  | R0:S0:E1 | 1 |
+| next_char            | jump tool       | jump label      | 6  | R0:S1:E0 | 1 |
+| finished             | tool_local_block | local_block_label | 6  | R0:S1:E1 | 1 |

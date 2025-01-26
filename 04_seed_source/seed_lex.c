@@ -272,19 +272,15 @@ int scanident(int c, char *buf, int lim)
 {
     int i = 0;
 
-    // Handle period prefix first if present
-    if (c == '.') {
-        buf[i++] = c;
-        c = next_ch();
-    }
-
     // Allow digits, alpha, underscores
-    while (isalpha(c) || isdigit(c) || c == '_' || c == '.') 
+    while (isalpha(c) || isdigit(c) || c == '_') 
     {
         if (lim - 1 == i) {
             error("Identifier too long");
         }
-        else if (i < lim - 1) {
+        else if (i < lim - 1)
+        {
+            
             buf[i++] = c;
         }
         c = next_ch();
@@ -298,7 +294,8 @@ int scanident(int c, char *buf, int lim)
 // Given a word from the input, return the matching keyword token number or 0 if it's not a keyword.
 int keyword(char *s)
 {
-	    // Handle period-prefixed keywords first
+    /*
+    	    // Handle period-prefixed keywords first
     if (s[0] == '.') {
 
         if (!strcmp(s, ".end"))            return _end; 
@@ -315,12 +312,20 @@ int keyword(char *s)
         if (!strcmp(s, ".code"))           return _code_section;
 		if (!strcmp(s, ".end_section"))    return _end_section;
         if (!strcmp(s, ".start_section"))  return _start_section;
+
+        
         return 0;
     }
+    */
+
 
     switch (*s)
 	 {
         case 'a': 
+            if (!strcmp(s, "arch_8"))         return _arch_8_section; 
+		    if (!strcmp(s, "arch_16"))        return _arch_16_section; 
+		    if (!strcmp(s, "arch_32"))        return _arch_32_section; 	
+		    if (!strcmp(s, "arch_64"))        return _arch_64_section; 
             if (!strcmp(s, "add_den"))        return _add_den;
             if (!strcmp(s, "add_bay"))        return _add_bay;
             if (!strcmp(s, "add_aisle"))      return _add_aisle;
@@ -377,9 +382,11 @@ int keyword(char *s)
 
 			if (!strcmp(s, "cl"))          return _cl;
             if (!strcmp(s, "cx"))         return _cx;
+            if (!strcmp(s, "code"))           return _code_section;
 		    break;
         
         case 'd': 
+            if (!strcmp(s, "declare"))        return _declare_section;
             if (!strcmp(s, "div_den"))        return _div_den;
             if (!strcmp(s, "div_bay"))        return _div_bay;
             if (!strcmp(s, "div_aisle"))      return _div_aisle;
@@ -416,6 +423,7 @@ int keyword(char *s)
             if (!strcmp(s, "edi"))         return _edi;
             if (!strcmp(s, "ebp"))         return _ebp;
             if (!strcmp(s, "esp"))         return _esp;
+            if (!strcmp(s, "end"))            return _end; 
 		    break;
         case 'f':
 		 	if (!strcmp(s, "fetch")) return _fetch;	
@@ -455,7 +463,8 @@ int keyword(char *s)
             break;
         
         case 'l': 
-		    if (!strcmp(s, "log"))         return _log;
+            if (!strcmp(s, "literal"))     return _literal_section;
+		    if (!strcmp(s, "log"))         return _log_section;
 		    if (!strcmp(s, "lshift"))      return _lshift;
 			if (!strcmp(s, "local"))       return _local;
 			if (!strcmp(s, "local_block")) return _local_block;
@@ -670,6 +679,8 @@ int scan(struct token *t)
         case ';':  t->token_rep = _semicolon;  break;
         case ',':  t->token_rep = _comma;      break;
         case '=':  t->token_rep = _assigner;   break;
+        case '.':  t->token_rep = _period;   break;
+
         case EOF:  t->token_rep = _enfi;       return 0;
        
         case '"':  // Handle string literals
@@ -740,7 +751,7 @@ int scan(struct token *t)
             }
 
             // Handle identifiers and keywords
-            if (isalpha(c) || c == '_' || c == '.') 
+            if (isalpha(c) || c == '_') 
             {
                 scanident(c, Text, text_length);
                 int tokentype = keyword(Text);
@@ -750,7 +761,7 @@ int scan(struct token *t)
                 } 
                 else 
                 {
-                    t->token_rep = _ident;
+                     t->token_rep = _ident;
                 }
                 break;
             }

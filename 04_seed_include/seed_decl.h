@@ -466,8 +466,14 @@ void encode_literal_with_hex_section(char *hold_name, char *src, phrase_retrieve
 
 void encode_file_section(const char* label_name, const char* label_strand, int length);
 void encode_register(const char* reg, char* nasm_reg);
+
+
+
 void encode_call_manager_instruction(const char* label);
-void encode_call_function_instruction(const char* label_one, const char* label_two);
+void encode_call_function_instruction(const char* label_two);
+
+
+
 
 void encode_set_flag_instruction(phrase_retrievel dest, phrase_retrievel src);
 void encode_test_instruction(phrase_retrievel dest, phrase_retrievel src);
@@ -476,7 +482,7 @@ void encode_fetch_reference(const char* dest, const char* src);
 
 /*functions that process the conversion to nasm ouput*/
 void encode_push_instruction(int byte_size, phrase_retrievel src);
-void encode_pop_instruction(phrase_retrievel src);
+void encode_pop_instruction(int byte_size, phrase_retrievel src);
 
 //void encode_move_instruction(int byte_size, phrase_retrievel dest, phrase_retrievel src);
 void encode_move_dest_instruction(int byte_size, phrase_retrievel dest);

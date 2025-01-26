@@ -1,1 +1,1 @@
-    msg db "Hello World", 0x0A
+    msg db "Hello, World. Testing strand!", 0x0A

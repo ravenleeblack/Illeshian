@@ -4,15 +4,18 @@
 
 void process_assign_section(enum scope_type current_scope)
 {
-    assign(_assign_section, ".assign");
+    assign(_assign_section, "assign");
    
     while(1)    // loop the .assign section body and get all the assigments
     {
         scan(&Token);
         
-        if(Token.token_rep == _end)
+        if(Token.token_rep == _period)
         {
-            end(_end, ".end");
+            period(_period, ".");
+            
+            scan(&Token);
+            end(_end, "end");
             return 0;
         }
         if(Token.token_rep == _assign)

@@ -7,7 +7,6 @@
 void process_local_block_label(int parent_global_id)
 {
     local_block(_local_block, "local_block");
-
     scan(&Token);
     ident(_ident, Text);
     local_block_id = insert_local_block_scope(Text, scope_local_block_tool, scope_local_block_label);
@@ -32,7 +31,7 @@ void process_local_block_child_labels(int parent_global_id)
         if(Token.token_rep == _local ||Token.token_rep == _end_section || Token.token_rep == _enfi)
         {
             reject_token(&Token);
-            return 0;
+            break;
         }
 
         if(Token.token_rep == _local_block)
