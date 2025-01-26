@@ -1,4 +1,4 @@
-# Illeshian Compiler - Source Code Tests
+# Seedling Assembler - Source Code Tests
 
 If you are going through the tests. Right now you have to delete the temp files and the .asm before you can use ./seed
 to run another file. If you dont then there be previous stuff in the temp getting carried over that will make your nasm

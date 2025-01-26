@@ -1,11 +1,4 @@
-# Illeshian is a series of programs.
+# Illeshian Compiler - Comp
 
-```
-[Illeshian Driver](https://github.com/ravenleeblack/Illeshian/wiki)
-[Illeshian Runtime Preprocessor](https://github.com/ravenleeblack/Illeshian/wiki)
-[Illeshian Compiler](https://github.com/ravenleeblack/Illeshian/wiki)
-[Seedling Assembler](https://github.com/ravenleeblack/Illeshian/wiki)
-```
-
-You can also find out more in the wiki:
-[Wiki](https://github.com/ravenleeblack/Illeshian/wiki) !!
+The illeshian compiler program is named comp. The compi will take in either a .p or .i file and compile them into either seedling or nasm based
+off a flag. It doesnt do that yet but it will.
