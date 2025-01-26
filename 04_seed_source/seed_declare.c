@@ -10,15 +10,18 @@ int assign_flag = 0;
 
 void process_declare_section(enum scope_type current_scope)
 {
-    declare(_declare_section, ".declare");
+    declare(_declare_section, "declare");
 
     while(1)
     {
         scan(&Token);
 
-        if(Token.token_rep == _end)
+        if(Token.token_rep == _period)
         {
-            end(_end, ".end");
+            period(_period, ".");
+            
+            scan(&Token);
+            end(_end, "end");
             return 0;
         }
 

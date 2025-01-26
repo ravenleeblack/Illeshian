@@ -72,6 +72,11 @@ char ident_buffer[64];
 
 int byte_size_buffer[64]; // Buffer to hold the file name
 
+char global_to_local_buffer[64]; // Buffer to hold the file name
+char global_to_global_block_buffer[64]; // Buffer to hold the file name
+char local_to_local_block_buffer[64]; // Buffer to hold the file name
+
+
 int declare_type;
 int byte_size;
 
@@ -81,4 +86,6 @@ int current_architecture; // Global variable to track the current architecture.
 
 char output_filename[256];
 
+char manager_call_buffer[64];
+char function_call_buffer[64];
 

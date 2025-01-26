@@ -1,3 +1,7 @@
+section .data
+    msg db "Hello, World. Testing strand!", 0x0A
+
+section .text
 global _start
 _start:
     call main

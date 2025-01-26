@@ -10,6 +10,7 @@ void process_sections(enum scope_type current_scope)
     //start_section(_start_section, ".start_section");
     lbracket(_lbracket, "{");
 
+    
     while(1)
     {
         scan(&Token);
@@ -18,22 +19,35 @@ void process_sections(enum scope_type current_scope)
             rbracket(_rbracket, "}");
 
             scan(&Token);
-            semicolon(_semicolon, ";");
+            if(Token.token_rep == _pass_arg)
+            {
+                 process_pass_arg_instruction(current_scope);
+            }
+            else
+            {
+                semicolon(_semicolon, ";");
+            }
             return 0;
         }
-        switch(Token.token_rep)
+        if(Token.token_rep == _period)
         {
-            case _file_section:     process_file_section(current_scope);        break; 
-            case _declare_section:  process_declare_section(current_scope);     break;
-            case _assign_section:   process_assign_section(current_scope);      break;
-            case _literal_section:  process_literal_section(current_scope);     break;
-            case _code_section:     process_code_section(current_scope);        break;
+            period(_period, ".");
+            
+            scan(&Token);
+            switch(Token.token_rep)
+            {
+                case _file_section:     process_file_section(current_scope);        break; 
+                case _declare_section:  process_declare_section(current_scope);     break;
+                case _assign_section:   process_assign_section(current_scope);      break;
+                case _literal_section:  process_literal_section(current_scope);     break;
+                case _code_section:     process_code_section(current_scope);        break;
 
-            case _arch_8_section:   process_arch_section(current_scope);        break;
-            case _arch_16_section:  process_arch_section(current_scope);        break;
-            case _arch_32_section:  process_arch_section(current_scope);        break;
-            case _arch_64_section:  process_arch_section(current_scope);        break;
-            default: break;
+                case _arch_8_section:   process_arch_section(current_scope);        break;
+                case _arch_16_section:  process_arch_section(current_scope);        break;
+                case _arch_32_section:  process_arch_section(current_scope);        break;
+                case _arch_64_section:  process_arch_section(current_scope);        break;
+                default: break;
+            }
         }
     }
     //end_section(_end_section, ".end_section");

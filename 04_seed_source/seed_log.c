@@ -6,7 +6,7 @@
 
 void process_log_section(enum scope_type current_scope)
 {
-    match_log(_log_section, ".log");
+    match_log(_log_section, "log");
 }
 
 

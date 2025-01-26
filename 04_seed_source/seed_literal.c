@@ -8,16 +8,19 @@ void process_literal_section(enum scope_type current_scope)
 
     char preserve_text[60]; // Temporary buffer to store Text
 
-    literal(_literal_section, ".literal");
+    literal(_literal_section, "literal");
 
 
     while(1) 
     {
         scan(&Token);
 
-        if(Token.token_rep == _end)
+        if(Token.token_rep == _period)
         {
-            end(_end, ".end");
+            period(_period, ".");
+            
+            scan(&Token);
+            end(_end, "end");
             return 0;
         }
         if(Token.token_rep == _assign)

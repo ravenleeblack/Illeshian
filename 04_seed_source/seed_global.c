@@ -9,6 +9,8 @@ void process_global_label(void)
 
     scan(&Token);
     ident(_ident, Text);
+    strcpy(global_to_local_buffer, Text);
+    strcpy(global_to_global_block_buffer, Text);
     global_id = insert_global_scope(Text, scope_global_tool, scope_global_label);        // Add to scope table and save label
     encode_global_label(Text);
     

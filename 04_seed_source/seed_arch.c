@@ -16,15 +16,18 @@ int process_arch_section(enum scope_type current_scope)
     
     switch(Token.token_rep)
     {
-        case _arch_8_section:   arch_08(_arch_8_section, ".arch_8");    current_architecture = 8;   break;
-        case _arch_16_section:  arch_16(_arch_16_section, ".arch_16");  current_architecture = 16;  break;
-        case _arch_32_section:  arch_32(_arch_32_section, ".arch_32");  current_architecture = 32;  break;
-        case _arch_64_section:  arch_64(_arch_64_section, ".arch_64");  current_architecture = 64;  break;
+        case _arch_8_section:   arch_08(_arch_8_section, "arch_8");    current_architecture = 8;   break;
+        case _arch_16_section:  arch_16(_arch_16_section, "arch_16");  current_architecture = 16;  break;
+        case _arch_32_section:  arch_32(_arch_32_section, "arch_32");  current_architecture = 32;  break;
+        case _arch_64_section:  arch_64(_arch_64_section, "arch_64");  current_architecture = 64;  break;
         default: break;
     }
 
     scan(&Token);
-    end_section(_end_section, ".end_section");
+    period(_period, ".");
+    
+    scan(&Token);
+    end(_end, "end");
 
     global_architecture = current_architecture;
     return global_architecture;

@@ -5,7 +5,7 @@
 
 void process_code_section(enum scope_type current_scope) 
 {
-    code(_code_section, ".code");
+    code(_code_section, "code");
     
     int move_counter = 0;
 
@@ -13,9 +13,12 @@ void process_code_section(enum scope_type current_scope)
     {
         scan(&Token);
         
-        if(Token.token_rep == _end)
+        if(Token.token_rep == _period)
         {
-            end(_end, ".end");
+            period(_period, ".");
+            
+            scan(&Token);
+            end(_end, "end");
             return 0;
         }
         switch(Token.token_rep) 
@@ -38,7 +41,7 @@ void process_code_section(enum scope_type current_scope)
             case _inc_zone:      process_increment_instruction(current_scope);   break;
             case _inc_zones:     process_increment_instruction(current_scope);   break;
 
-            case _call:          process_call_instruction(current_scope );       break;
+            case _call:          process_call_instruction(current_scope);       break;
             case _call_system:   process_system_instruction(current_scope);        break;
 
             case _add_den:   process_arith_instruction(current_scope); break;

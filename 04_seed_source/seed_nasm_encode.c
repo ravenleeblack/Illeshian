@@ -25,7 +25,8 @@ void encode_global_block_label(const char *label)
 // Function to convert local scope label into nasm
 void encode_local_label(const char *label_name)
 {
-	fprintf(temp_text, ".%s:\n", label_name);
+	fprintf(temp_text, "\n");
+	fprintf(temp_text, "%s:\n", label_name);
 }
 
 // Function to convert local block scope label into nasm
@@ -46,9 +47,9 @@ void encode_extern_label(const char *label_name)
 }
 
 // Function to encode a Seedling call function instruction to NASM
-void encode_call_function_instruction(const char *label_one, const char *label_two)
+void encode_call_function_instruction(const char *label_two)
 {
-	fprintf(temp_text, "    call %s.%s\n", label_one, label_two);
+	fprintf(temp_text, "    call %s\n", label_two);
 }
 
 // Function to encode a Seedling call manager instruction to NASM
@@ -244,71 +245,87 @@ void encode_source_phrase(int byte_size, phrase_retrievel src)
 // Function to encode a Seedling push instruction to NASM
 void encode_push_instruction(int byte_size, phrase_retrievel src)
 {
-
-	switch (src.type)
+	if (src.type != NULL)
 	{
-	case phrase_pointer:
-	{
-		switch (byte_size)
+		switch (src.type)
 		{
-			case 8:  fprintf(temp_text, "    push byte [%s]\n", src.phrase); break;
-			case 16: fprintf(temp_text, "    push word [%s]\n", src.phrase); break;
-			case 32: fprintf(temp_text, "    push dword [%s]\n", src.phrase); break;
-			case 64: fprintf(temp_text, "    push qword [%s]\n", src.phrase); break;
+			case phrase_pointer:
+			{
+				switch (byte_size)
+				{
+					case 8:  fprintf(temp_text, "    push byte [%s]\n", src.phrase); break;
+					case 16: fprintf(temp_text, "    push word [%s]\n", src.phrase); break;
+					case 32: fprintf(temp_text, "    push dword [%s]\n", src.phrase); break;
+					case 64: fprintf(temp_text, "    push qword [%s]\n", src.phrase); break;
+					default: break;
+				}
+			}
+			break;
+			case phrase_address:
+			{
+				switch (byte_size)
+				{
+					case 8:  fprintf(temp_text, "    push byte [%s]\n", src.phrase);  break;
+					case 16: fprintf(temp_text, "    push word [%s]\n", src.phrase);  break;
+					case 32: fprintf(temp_text, "    push dword [%s]\n", src.phrase); break;
+					case 64: fprintf(temp_text, "    push qword [%s]\n", src.phrase); break;
+					default: break;
+				}
+			}
+			break;
+			case phrase_fetch:
+			{
+				switch (byte_size)
+				{
+					case 8:  fprintf(temp_text, "    push byte [%s]\n", src.phrase); break;
+					case 16: fprintf(temp_text, "    push word [%s]\n", src.phrase); break;
+					case 32: fprintf(temp_text, "    push dword [%s]\n", src.phrase); break;
+					case 64: fprintf(temp_text, "    push qword [%s]\n", src.phrase); break;
+					default: break;
+				}
+			}
+			break;
+			case phrase_register:
+			{
+				switch (byte_size)
+				{
+				case 8:  fprintf(temp_text, "    push %s\n", src.phrase_reg_value);  break;
+				case 16: fprintf(temp_text, "    push %s\n", src.phrase_reg_value);  break;
+				case 32: fprintf(temp_text, "    push %s\n", src.phrase_reg_value); break;
+				case 64: fprintf(temp_text, "    push %s\n", src.phrase_reg_value); break;
+				default: break;
+				}
+			}
+			break;
 			default: break;
 		}
-	}
-	break;
-	case phrase_address:
-	{
-		switch (byte_size)
-		{
-			case 8:  fprintf(temp_text, "    push byte [%s]\n", src.phrase);  break;
-			case 16: fprintf(temp_text, "    push word [%s]\n", src.phrase);  break;
-			case 32: fprintf(temp_text, "    push dword [%s]\n", src.phrase); break;
-			case 64: fprintf(temp_text, "    push qword [%s]\n", src.phrase); break;
-			default: break;
-		}
-	}
-	break;
-	case phrase_fetch:
-	{
-		switch (byte_size)
-		{
-			case 8:  fprintf(temp_text, "    push byte [%s]\n", src.phrase); break;
-			case 16: fprintf(temp_text, "    push word [%s]\n", src.phrase); break;
-			case 32: fprintf(temp_text, "    push dword [%s]\n", src.phrase); break;
-			case 64: fprintf(temp_text, "    push qword [%s]\n", src.phrase); break;
-			default: break;
-		}
-	}
-	break;
-	case phrase_register:
-	{
-		switch (byte_size)
-		{
-		case 8:  fprintf(temp_text, "    push byte  %s\n", src.phrase);  break;
-		case 16: fprintf(temp_text, "    push word  %s\n", src.phrase);  break;
-		case 32: fprintf(temp_text, "    push dword  %s\n", src.phrase); break;
-		case 64: fprintf(temp_text, "    push qword  %s\n", src.phrase); break;
-		default: break;
-		}
-	}
-	break;
-	default: break;
 	}
 }
 
 // Function to encode a Seedling pop instruction to NASM
-void encode_pop_instruction(phrase_retrievel src)
+void encode_pop_instruction(int byte_size, phrase_retrievel src)
 {
-	switch (src.type)
+	if (src.type != NULL)
 	{
-		case phrase_pointer:  fprintf(temp_text, "    pop [%s]\n", src.phrase);  break;
-		case phrase_address:  fprintf(temp_text, "    pop [%s]\n", src.phrase);  break;
-		case phrase_fetch:    fprintf(temp_text, "    pop [%s]\n", src.phrase);  break;
-		case phrase_register: fprintf(temp_text, "    pop  %s\n", src.phrase);   break;
-		default:break;
+		switch (src.type)
+		{
+			case phrase_pointer:  fprintf(temp_text, "    pop [%s]\n", src.phrase);  break;
+			case phrase_address:  fprintf(temp_text, "    pop [%s]\n", src.phrase);  break;
+			case phrase_fetch:    fprintf(temp_text, "    pop [%s]\n", src.phrase);  break;
+			case phrase_register:
+			{
+				switch (byte_size)
+				{
+				case 8:  fprintf(temp_text, "    pop %s\n", src.phrase_reg_value);  break;
+				case 16: fprintf(temp_text, "    pop %s\n", src.phrase_reg_value);  break;
+				case 32: fprintf(temp_text, "    pop %s\n", src.phrase_reg_value); break;
+				case 64: fprintf(temp_text, "    pop %s\n", src.phrase_reg_value); break;
+				default: break;
+				}
+			}
+			break;
+			default:break;
+		}
 	}
 }
 

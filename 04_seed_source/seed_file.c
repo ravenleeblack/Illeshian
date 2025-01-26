@@ -7,15 +7,18 @@ void process_file_section(enum scope_type current_scope)
 {
     phrase_retrievel src_index;
 
-    file_section(_file_section, ".file");
+    file_section(_file_section, "file");
 
     while(1)
     {
         scan(&Token);
 
-        if(Token.token_rep == _end)
+        if(Token.token_rep == _period)
         {
-            end(_end, ".end");
+            period(_period, ".");
+            
+            scan(&Token);
+            end(_end, "end");
             return 0;
         }
         if(Token.token_rep == _extern)
