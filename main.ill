@@ -1,0 +1,44 @@
+
+num main manager: num argc, mark_ptr[argv[]]`
+{
+    hold num: test;
+    assign: test = 5;
+    
+    `
+    check: test > 0`
+    {
+       call write.num:`;
+    } pass_arg: 0`;
+
+    call write.strand: "hello world!\n"`;
+    
+} yield: 0`;
+
+
+num write manager:`
+{
+
+    num mark function:`
+    {
+
+    } pass_arg: 0`;
+
+    num strand function:`
+    {
+      
+    } pass_arg: 0`;
+
+    num num function:`
+    {
+      
+    } pass_arg: 0`;
+
+    num hex function:`
+    {
+      
+    } pass_arg: 0`;
+
+} pass_arg: 0`;
+
+
+

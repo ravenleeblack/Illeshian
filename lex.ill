@@ -1,0 +1,7 @@
+num lex manager:`
+{
+    hold num: i;
+    assign: i = 5;
+    
+} pass_arg: 0`;
+
