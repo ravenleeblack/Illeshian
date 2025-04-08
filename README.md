@@ -1,1 +1,3 @@
 # Illeshian
+
+Illeshain is a procedural language with a block structure designed to have a 2 tier function system. It was designed to be easy to learn but still fast and powerful enough to handle business. Illeshian introduces a new scoping system as well as some new kinds of tools like the state machine data tools and the tripare. WHat makes Illeshian unique is that the Seedling Assembler is being designed for Illeshian so there is a one to one scope conversion to help make sure the 2 tier function becomes very fast and stable. The irp or Illeshian runtime processor takes in all the required files so that Illeshian source code does not require you to declare headers throughout all your source code.
