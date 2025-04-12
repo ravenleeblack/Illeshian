@@ -18,4 +18,9 @@ In short, Illeshian focuses on clarity, speed, and simplicity—achieving a bala
 
 [Getting Started](https://github.com/ravenleeblack/Illeshian/wiki/Getting-Started)
 
+[Logs Lists](https://github.com/ravenleeblack/Illeshian/wiki/Logs-and-Lists)
+
+
+
+
 
