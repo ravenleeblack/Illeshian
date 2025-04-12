@@ -18,6 +18,10 @@ In short, Illeshian focuses on clarity, speed, and simplicity—achieving a bala
 
 [Getting Started](https://github.com/ravenleeblack/Illeshian/wiki/Getting-Started)
 
+[Data Types](https://github.com/ravenleeblack/Seedling/wiki/Data-Types)
+
+[Data Tools](https://github.com/ravenleeblack/Illeshian/wiki/Data-Tools)
+
 [Logs Lists](https://github.com/ravenleeblack/Illeshian/wiki/Logs-and-Lists)
 
 [Managers Functions](https://github.com/ravenleeblack/Illeshian/wiki/Manager-Function)
