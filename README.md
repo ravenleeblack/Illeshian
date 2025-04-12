@@ -15,5 +15,3 @@ At runtime, the Illeshian Runtime Processor (IRP) handles all file dependencies 
 In short, Illeshian focuses on clarity, speed, and simplicity—achieving a balance between accessibility and performance by redefining how language structure and tooling work together.
 
 [Illeshian Home](https://github.com/ravenleeblack/Illeshian/wiki)
-
-
