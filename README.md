@@ -22,12 +22,11 @@ In short, Illeshian focuses on clarity, speed, and simplicity—achieving a bala
 
 [Data Tools](https://github.com/ravenleeblack/Illeshian/wiki/Data-Tools)
 
+[Encasement](https://github.com/ravenleeblack/Illeshian/wiki/Encasement)
+
 [Logs Lists](https://github.com/ravenleeblack/Illeshian/wiki/Logs-and-Lists)
 
 [Managers Functions](https://github.com/ravenleeblack/Illeshian/wiki/Manager-Function)
-
-
-
 
 
 
