@@ -18,7 +18,7 @@ In short, Illeshian focuses on clarity, speed, and simplicity—achieving a bala
 
 [Getting Started](https://github.com/ravenleeblack/Illeshian/wiki/Getting-Started)
 
-[Data Structure](https://github.com/ravenleeblack/Illeshian/wiki/Data-Structure)
+[Structure Overview](https://github.com/ravenleeblack/Illeshian/wiki/Structure-Overview)
 
 [Data Types](https://github.com/ravenleeblack/Seedling/wiki/Data-Types)
 
